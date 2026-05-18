@@ -60,3 +60,18 @@ def filter_hours(rows: list[dict], target_date: date, hours: list[int]) -> list[
         if r["time"].startswith(date_str)
         and int(r["time"][11:13]) in hours
     ]
+
+def degrees_to_compass(degrees: float) -> str:
+    """
+    Convert wind direction from degrees (0–360) to compass label.
+    16-point compass: N, NNE, NE, ENE, E, ESE, SE, SSE, S, SSW, SW, WSW, W, WNW, NW, NNW
+    """
+    directions = [
+        "N", "NNE", "NE", "ENE",
+        "E", "ESE", "SE", "SSE",
+        "S", "SSW", "SW", "WSW",
+        "W", "WNW", "NW", "NNW",
+    ]
+    # Normalize to 0–360, then map to 16 sectors (each sector = 22.5°)
+    idx = round((degrees % 360) / 22.5) % 16
+    return directions[idx]
