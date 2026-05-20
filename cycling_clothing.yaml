@@ -1,0 +1,28 @@
+# cycling_clothing.yaml
+# Temperature bands are matched top-down; first band whose range
+# contains the slot temperature wins. "wet" applies when rain/snow
+# probability crosses a threshold (we'll set that threshold in
+# config.yaml — default proposal: 30%).
+
+bands:
+  - max_c: -5          # below -5°C (totally freezing)
+    dry: "underpants, warm socks, warm long pants, long sleeve shirt, cycling pants, cycling short shirt, thick winter jacket, bandana, warm hat/balaclava mask, light undergloves, the warmest gloves, warm shoe covers"
+    wet: "visor helmet, rain bag cover"
+  - max_c: 0          # -5 to 0°C
+    dry: "underpants, warm socks, warm long pants, long sleeve shirt, cycling pants, cycling short shirt, thick winter jacket, bandana, warm hat, the warmest gloves, warm shoe covers"
+    wet: "visor helmet, rain bag cover"    
+  - max_c: 5          # 0 to 5°C
+    dry: "underpants, light socks, long pants, long sleeve shirt, cycling pants, cycling short shirt, medium jacket, bandana, warm hat, warm gloves"
+    wet: "visor helmet, rain bag cover, rain shoe covers, rain jacket (replaces medium jacket)"
+  - max_c: 10         # 5 to 10°C
+    dry: "underpants, light socks, long pants, long sleeve shirt, cycling pants, cycling short shirt, medium jacket, bandana, warm hat, medium long gloves"
+    wet: "visor helmet, rain bag cover, rain shoe covers, rain jacket (replaces medium jacket)"
+  - max_c: 15         # 10 to 15°C
+    dry: "underpants, light socks, long sleeve shirt, cycling pants, cycling short shirt, warm hat, medium long gloves"
+    wet: "visor helmet, rain bag cover, rain shoe covers, rain jacket"
+  - max_c: 20         # 15 to 20°C
+    dry: "underpants, light socks, cycling pants, cycling short shirt, light hat/cap, short gloves"
+    wet: "cap, rain bag cover, rain jacket (optional)"
+  - max_c: 99         # 20°C and above
+    dry: "underpants, short socks, cycling pants, cycling short shirt, light hat/cap, short gloves"
+    wet: "cap, rain bag cover"

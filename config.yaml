@@ -1,0 +1,57 @@
+timezone: Europe/Zurich
+language_default: en
+
+baby:
+  birthdate: 2026-01-05
+  creche:
+    days: [Mon, Tue, Thu, Fri]
+    location: { postcode: 8400, city: Winterthur, lat: 47.4979, lon: 8.7240 }
+    drop_off: "08:00"
+    pick_up: "16:15"
+    midday_alert_window: ["09:00", "16:00"]
+    rain_snow_threshold_pct: 40
+
+workouts:
+  cycling:
+    times: ["06:30", "16:30"]
+    location: { postcode: 8001, city: Zurich, lat: 47.3769, lon: 8.5417 }
+    clothing_table: cycling_clothing.yaml
+    wet_threshold_pct: 30
+  running:
+    times: ["07:00"]
+    location: { postcode: 8400, city: Winterthur, lat: 47.4979, lon: 8.7240 }
+    clothing_table: running_clothing.yaml
+    wet_threshold_pct: 30
+  swimming:
+    times: ["07:00"]
+    location: { postcode: 8800, city: Thalwil, lat: 47.2920, lon: 8.5633 }
+    lake: zurich
+    min_water_temp_to_show_c: 10
+
+cloud_cover_labels:
+  Sunny:           [0,  20]
+  Partially sunny: [21, 50]
+  Mostly cloudy:   [51, 80]
+  Overcast:        [81, 100]
+
+stocks:
+  - ticker: KRU
+    exchange: WSE
+    shares_secret: STOCKS_KRU_SHARES
+    currency: PLN
+
+recipients:
+  - name: Pawel
+    role: full
+    language: en
+    channels:
+      - type: email
+        address_secret: RECIPIENT_PAWEL_EMAIL
+      - type: telegram
+        chat_id_secret: RECIPIENT_PAWEL_TELEGRAM
+  - name: Liliana
+    role: baby_only
+    language: en
+    channels:
+      - type: email
+        address_secret: RECIPIENT_LILIANA_EMAIL
