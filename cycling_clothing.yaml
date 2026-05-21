@@ -18,7 +18,7 @@ bands:
     dry: "underpants, light socks, long pants, long sleeve shirt, cycling pants, cycling short shirt, medium jacket, bandana, warm hat, medium long gloves"
     wet: "visor helmet, rain bag cover, rain shoe covers, rain jacket (replaces medium jacket)"
   - max_c: 15         # 10 to 15°C
-    dry: "underpants, light socks, long sleeve shirt, cycling pants, cycling short shirt, warm hat, medium long gloves"
+    dry: "underpants, light socks, long sleeve shirt, cycling pants, cycling short shirt, light hat/cap, medium long gloves"
     wet: "visor helmet, rain bag cover, rain shoe covers, rain jacket"
   - max_c: 20         # 15 to 20°C
     dry: "underpants, light socks, cycling pants, cycling short shirt, light hat/cap, short gloves"
