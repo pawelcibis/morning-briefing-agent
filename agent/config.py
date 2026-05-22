@@ -25,5 +25,6 @@ def load_config() -> dict:
             continue
         with open(table_path) as f:
             workout_cfg["clothing_bands"] = yaml.safe_load(f)["bands"]
-
+        with open(cfg["workouts"]["running"]["clothing_table"], "r", encoding="utf-8") as f:
+             cfg["workouts"]["running"]["clothing_bands"] = yaml.safe_load(f)["bands"]
     return cfg

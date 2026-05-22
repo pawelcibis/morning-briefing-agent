@@ -1,0 +1,39 @@
+# Running clothing recommendations
+#
+# Lookup rule: find the FIRST band where temp_c < max_c.
+#   temp = -10  -> matches first band (max_c: -5,  "below -5")
+#   temp =  -5  -> matches second band (max_c: 0,  "-5 to 0")
+#   temp =   0  -> matches third band  (max_c: 5,  "0 to 5")
+#   temp =  25  -> matches last band   (max_c: 99, "25 and above")
+#
+# `dry` is the baseline outfit shown when precip probability < wet_threshold_pct.
+# `wet` describes ADJUSTMENTS (additions, replacements, removals) when precip
+# probability >= wet_threshold_pct. The renderer shows it as a separate line
+# rather than concatenating, because some entries are replacements not additions.
+# Empty `wet` means no adjustment (e.g. coldest band — already at maximum).
+
+bands:
+  - max_c: -5        # below -5°C
+    dry: "very warm long-sleeved top, long pants, standard socks, warm hat, light gloves, buff"
+    wet: ""
+  - max_c: 0         # -5 to 0°C
+    dry: "long-sleeved warm top, long pants, standard socks, warm hat, light gloves"
+    wet: "very warm long-sleeved top (replaces: warm long-sleeved top)"
+  - max_c: 5         # 0 to 5°C
+    dry: "long-sleeved top, long pants, standard socks"
+    wet: "warm hat, light gloves, warm long-sleeved top (replaces: long-sleeved top)"
+  - max_c: 10        # 5 to 10°C
+    dry: "long-sleeved top, shorts, standard socks"
+    wet: "cap"
+  - max_c: 15        # 10 to 15°C
+    dry: "short-sleeved top, shorts, standard socks"
+    wet: "cap"
+  - max_c: 20        # 15 to 20°C
+    dry: "short-sleeved top, shorts, short socks"
+    wet: "cap"
+  - max_c: 25        # 20 to 25°C
+    dry: "short-sleeved light top, shorts, short socks, sunglasses (optional)"
+    wet: "no sunglasses, cap (recommended)"
+  - max_c: 99        # 25°C and above
+    dry: "sleeveless top, shorts, short socks, sunglasses (optional), cap (optional)"
+    wet: "no sunglasses, cap (recommended)"
