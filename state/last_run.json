@@ -1,0 +1,117 @@
+{
+  "target_date": "2026-05-26",
+  "blocks": {
+    "baby": {
+      "location": {
+        "postcode": 8400,
+        "city": "Winterthur"
+      },
+      "date": "Tuesday, 26 May 2026",
+      "weekday": "Tue",
+      "baby_age_months": 4.6,
+      "drop_off": {
+        "time": "08:00",
+        "temp_c": 18.7,
+        "wind_ms": 0.1,
+        "wind_dir": "N",
+        "rain_pct": 0,
+        "cloud_label": "Sunny"
+      },
+      "pick_up": {
+        "time": "16:15",
+        "temp_c": 30.8,
+        "wind_ms": 1.98,
+        "wind_dir": "NE",
+        "rain_pct": 0,
+        "cloud_label": "Sunny"
+      },
+      "clothing": {
+        "outfit": "Long-sleeved bodysuit, cotton trousers, lightweight cardigan, socks, hat",
+        "pushchair_extras": "Light cellular blanket for morning, remove by midday",
+        "pick_up_note": "Baby will be warm by pick-up; dress in short sleeves only and bring a sunhat and lightweight blanket for shade in pushchair."
+      }
+    },
+    "cycling": {
+      "location": "Zurich 8001",
+      "date": "2026-05-26",
+      "slots": [
+        {
+          "time": "06:30",
+          "temp_c": 17.8,
+          "wind_ms": 0.9,
+          "wind_dir": "N",
+          "rain_pct": 0,
+          "cloud_pct": 24,
+          "cloud_label": "Partially sunny"
+        },
+        {
+          "time": "16:30",
+          "temp_c": 31.7,
+          "wind_ms": 1.9,
+          "wind_dir": "NNE",
+          "rain_pct": 0,
+          "cloud_pct": 0,
+          "cloud_label": "Sunny"
+        }
+      ],
+      "clothing": {
+        "wear": "underpants, light socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
+        "pack": "short socks"
+      }
+    },
+    "running": {
+      "location": {
+        "postcode": 8400,
+        "city": "Winterthur"
+      },
+      "date": "Tuesday, 26 May 2026",
+      "slot": {
+        "time": "07:00",
+        "temp_c": 16.8,
+        "wind_ms": 0.58,
+        "wind_dir": "SSE",
+        "rain_pct": 0,
+        "cloud_label": "Sunny"
+      },
+      "clothing": {
+        "dry": "short-sleeved top, shorts, short socks",
+        "wet": "cap",
+        "wet_active": false
+      }
+    },
+    "swimming": {
+      "location": {
+        "postcode": 8800,
+        "city": "Thalwil",
+        "lake": "zurich"
+      },
+      "date": "Tuesday, 26 May 2026",
+      "swim_time": "07:00",
+      "water_temp_c": 18.7,
+      "air": {
+        "temp_c": 19.0,
+        "wind_ms": 0.72,
+        "wind_dir": "SW",
+        "rain_pct": 0,
+        "cloud_label": "Sunny"
+      }
+    },
+    "stocks": {
+      "tickers": [
+        {
+          "ticker": "KRU",
+          "exchange": "WSE",
+          "currency": "PLN",
+          "date": "2026-05-22",
+          "close": 429.2,
+          "prev_close": 426.2,
+          "change_pct": 0.7,
+          "shares": 3019,
+          "portfolio_value": 1295754.8,
+          "portfolio_change": 9057.0,
+          "error": null
+        }
+      ]
+    }
+  }
+}
