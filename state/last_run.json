@@ -26,9 +26,9 @@
         "cloud_label": "Sunny"
       },
       "clothing": {
-        "outfit": "Long-sleeved bodysuit, cotton trousers, lightweight cardigan, socks, hat",
-        "pushchair_extras": "Light cellular blanket for morning, remove by midday",
-        "pick_up_note": "Baby will be warm by pick-up; dress in short sleeves only and bring a sunhat and lightweight blanket for shade in pushchair."
+        "outfit": "Long-sleeve bodysuit, lightweight trousers, thin cardigan or sweater, socks, and a sun hat",
+        "pushchair_extras": "Light cotton blanket for morning chill; sunshade or parasol for afternoon UV protection",
+        "pick_up_note": "Remove cardigan and blanket by mid-morning as temperature will rise significantly; ensure baby has sunscreen applied and stays shaded during outdoor time."
       }
     },
     "cycling": {

@@ -34,6 +34,15 @@ cloud_cover_labels:
   Mostly cloudy:   [51, 80]
   Overcast:        [81, 100]
 
+# --- ADD THIS BLOCK to config.yaml (after cloud_cover_labels, before stocks) ---
+ 
+diff_thresholds:
+  temp_c:       0.5   # °C  — annotate temp changes ≥ 0.5 °C
+  rain_pct:     5     # %   — annotate rain-prob changes ≥ 5 pp
+  wind_ms:      1.0   # m/s — annotate wind changes ≥ 1 m/s
+  water_temp_c: 0.5   # °C  — annotate lake temp changes ≥ 0.5 °C
+ 
+
 stocks:
   - ticker: KRU
     exchange: WSE
