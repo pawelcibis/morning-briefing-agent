@@ -184,3 +184,27 @@ def render_digest(blocks, target_date):
  
     parts.append("— end —")
     return "\n".join(parts)
+
+# Which block keys each role receives.
+# render_digest() already skips None values, so we zero out the rest.
+ROLE_BLOCKS = {
+    "full":      {"baby", "cycling", "running", "swimming", "stocks"},
+    "baby_only": {"baby"},
+}
+ 
+ 
+def render_for_recipient(blocks: dict, target_date, role: str) -> str:
+    """
+    Render the digest for a specific recipient role.
+ 
+    Args:
+        blocks:      Full blocks dict (all keys present, values may be None).
+        target_date: datetime.date for the header.
+        role:        "full" or "baby_only" (from config.yaml).
+ 
+    Returns:
+        Formatted digest string containing only the blocks for that role.
+    """
+    allowed = ROLE_BLOCKS.get(role, set())
+    filtered = {k: (v if k in allowed else None) for k, v in blocks.items()}
+    return render_digest(filtered, target_date)
