@@ -1,0 +1,174 @@
+name: Morning briefing
+
+# ---------------------------------------------------------------------------
+# Scheduling
+#
+# Times are in UTC because GitHub Actions cron always runs in UTC.
+# Europe/Zurich is UTC+2 in summer (CEST) and UTC+1 in winter (CET).
+# Per SPEC §5 Option (a): we hardcode UTC and update twice a year.
+#
+#   CEST (UTC+2, summer  — last Sun in March → last Sun in October):
+#       Evening 20:00 Zurich → 18:00 UTC → "0 18 * * *"
+#       Morning 05:30 Zurich → 03:30 UTC → "30 3 * * *"
+#
+#   CET  (UTC+1, winter  — last Sun in October → last Sun in March):
+#       Evening 20:00 Zurich → 19:00 UTC → "0 19 * * *"
+#       Morning 05:30 Zurich → 04:30 UTC → "30 4 * * *"
+#
+# At each DST changeover, swap the two `cron:` lines below AND the two
+# entries in the "Determine run type" case statement.
+# ---------------------------------------------------------------------------
+
+on:
+  schedule:
+    - cron: "0 18 * * *"     # evening (CEST) — swap to "0 19 * * *" for CET
+    - cron: "30 3 * * *"     # morning (CEST) — swap to "30 4 * * *" for CET
+
+  workflow_dispatch:
+    inputs:
+      run_type:
+        description: "Which run to execute"
+        required: true
+        type: choice
+        options: [evening, morning]
+        default: evening
+
+permissions:
+  contents: write    # required to push to the `state` branch
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      # -------------------------------------------------------------------
+      # 1. Checkout code
+      # -------------------------------------------------------------------
+      - name: Checkout main
+        uses: actions/checkout@v4
+        # GITHUB_TOKEN has push perms via `contents: write` above.
+
+      # -------------------------------------------------------------------
+      # 2. Python + dependencies
+      # -------------------------------------------------------------------
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      # -------------------------------------------------------------------
+      # 3. Decide whether this is an evening or morning run
+      #    workflow_dispatch input wins; otherwise we map the cron string.
+      # -------------------------------------------------------------------
+      - name: Determine run type
+        id: rt
+        run: |
+          if [ -n "${{ inputs.run_type }}" ]; then
+            TYPE="${{ inputs.run_type }}"
+            SOURCE="workflow_dispatch"
+          else
+            case "${{ github.event.schedule }}" in
+              # If you change cron lines above for DST, mirror here too.
+              "30 3 * * *"|"30 4 * * *") TYPE="morning" ;;
+              *)                          TYPE="evening" ;;
+            esac
+            SOURCE="cron(${{ github.event.schedule }})"
+          fi
+          echo "type=$TYPE" >> "$GITHUB_OUTPUT"
+          echo "Run type: $TYPE  (resolved from: $SOURCE)"
+
+      # -------------------------------------------------------------------
+      # 4. Fetch previous state from the `state` branch
+      #    Falls back to '{}' if the branch is empty (first ever run) or
+      #    the file is missing.
+      # -------------------------------------------------------------------
+      - name: Fetch previous state
+        run: |
+          mkdir -p state logs
+          if git fetch origin state 2>/dev/null \
+             && git show origin/state:state/last_run.json > state/last_run.json 2>/dev/null; then
+            echo "Loaded existing state from origin/state."
+          else
+            echo "No prior state found — initialising with {}."
+            echo '{}' > state/last_run.json
+          fi
+
+      # -------------------------------------------------------------------
+      # 5. Run the agent
+      #    All secrets are exposed as env vars here. The agent reads them
+      #    via os.environ.get(...) inside dispatch/email.py,
+      #    dispatch/telegram.py, llm.py, and fetchers/stocks.py.
+      #
+      #    `tee` writes output to BOTH the Actions live log and a file
+      #    that gets uploaded as an artifact. The default bash shell on
+      #    Ubuntu runners has `pipefail` set, so a Python crash propagates.
+      # -------------------------------------------------------------------
+      - name: Run agent
+        env:
+          ANTHROPIC_API_KEY:        ${{ secrets.ANTHROPIC_API_KEY }}
+          SMTP_HOST:                ${{ secrets.SMTP_HOST }}
+          SMTP_PORT:                ${{ secrets.SMTP_PORT }}
+          SMTP_USERNAME:            ${{ secrets.SMTP_USERNAME }}
+          SMTP_PASSWORD:            ${{ secrets.SMTP_PASSWORD }}
+          TELEGRAM_BOT_TOKEN:       ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          RECIPIENT_PAWEL_EMAIL:    ${{ secrets.RECIPIENT_PAWEL_EMAIL }}
+          RECIPIENT_PAWEL_TELEGRAM: ${{ secrets.RECIPIENT_PAWEL_TELEGRAM }}
+          RECIPIENT_LILIANA_EMAIL:  ${{ secrets.RECIPIENT_LILIANA_EMAIL }}
+          STOCKS_KRU_SHARES:        ${{ secrets.STOCKS_KRU_SHARES }}
+        run: |
+          TYPE="${{ steps.rt.outputs.type }}"
+          STAMP="$(date -u +%Y%m%d-%H%MZ)"
+          LOG="logs/run-${TYPE}-${STAMP}.log"
+          python -m agent.main --run-type "$TYPE" 2>&1 | tee "$LOG"
+
+      # -------------------------------------------------------------------
+      # 6. Commit new state to the `state` branch (evening only)
+      #    Uses `git worktree` so we don't disturb the main checkout.
+      #    The -B flag forces the local `state` branch to track
+      #    origin/state, which also works correctly on the first run.
+      # -------------------------------------------------------------------
+      - name: Commit new state (evening only)
+        if: steps.rt.outputs.type == 'evening'
+        run: |
+          # Re-fetch in case the earlier fetch had a transient failure.
+          if ! git fetch origin state 2>/dev/null; then
+            echo "::warning::Cannot fetch origin/state — skipping state commit."
+            exit 0
+          fi
+
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name  "github-actions[bot]"
+
+          # Worktree: checks out `state` branch into ../state-branch
+          # without touching the main checkout.
+          git worktree add ../state-branch -B state origin/state
+
+          # Copy the freshly-written state file into the state worktree.
+          mkdir -p ../state-branch/state
+          cp state/last_run.json ../state-branch/state/last_run.json
+
+          cd ../state-branch
+          git add state/last_run.json
+          if git diff --cached --quiet; then
+            echo "No state change to commit."
+          else
+            git commit -m "state: evening $(date -u +%Y-%m-%d)"
+            git push origin state
+          fi
+
+      # -------------------------------------------------------------------
+      # 7. Upload run logs as an artifact (90-day retention)
+      #    Runs even if previous steps failed, so we always capture output.
+      # -------------------------------------------------------------------
+      - name: Upload run log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: digest-log-${{ steps.rt.outputs.type }}-${{ github.run_id }}
+          path: logs/
+          retention-days: 90
+          if-no-files-found: ignore
