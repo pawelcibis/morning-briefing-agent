@@ -119,6 +119,7 @@ jobs:
           RECIPIENT_PAWEL_TELEGRAM: ${{ secrets.RECIPIENT_PAWEL_TELEGRAM }}
           RECIPIENT_LILIANA_EMAIL:  ${{ secrets.RECIPIENT_LILIANA_EMAIL }}
           STOCKS_KRU_SHARES:        ${{ secrets.STOCKS_KRU_SHARES }}
+          STOOQ_API_KEY:            ${{ secrets.STOOQ_API_KEY }}            
         run: |
           TYPE="${{ steps.rt.outputs.type }}"
           STAMP="$(date -u +%Y%m%d-%H%MZ)"
