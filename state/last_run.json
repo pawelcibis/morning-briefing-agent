@@ -27,9 +27,9 @@
       },
       "alerts": [],
       "clothing": {
-        "outfit": "Long-sleeve bodysuit, lightweight trousers, thin cardigan, socks, and a sun hat",
-        "pushchair_extras": "Lightweight blanket for the morning chill; remove before pick-up",
-        "pick_up_note": "Baby will be warm by afternoon\u2014dress in short sleeves or remove layers; bring a light blanket for pushchair shade if needed"
+        "outfit": "Long-sleeve bodysuit, lightweight trousers, thin cardigan or fleece layer, warm socks, and a sun hat",
+        "pushchair_extras": "Lightweight cellular blanket for morning coolness; sunshade/canopy for afternoon UV protection",
+        "pick_up_note": "Baby will be warm by pick-up\u2014remove the cardigan and blanket before leaving, and ensure the sunshade is in place to protect from intense midday sun."
       }
     },
     "cycling": {
@@ -90,9 +90,31 @@
       },
       "date": "Tuesday, 26 May 2026",
       "swim_time": "07:00",
-      "water_temp_c": 19.8,
-      "air": null
+      "water_temp_c": 19.4,
+      "air": {
+        "temp_c": 18.8,
+        "wind_ms": 0.92,
+        "wind_dir": "SW",
+        "rain_pct": 0,
+        "cloud_label": "Sunny"
+      }
     },
-    "stocks": null
+    "stocks": {
+      "tickers": [
+        {
+          "ticker": "KRU",
+          "exchange": "WSE",
+          "currency": "PLN",
+          "date": "2026-05-25",
+          "close": 436.0,
+          "prev_close": 429.2,
+          "change_pct": 1.58,
+          "shares": 3109,
+          "portfolio_value": 1355524.0,
+          "portfolio_change": 21141.2,
+          "error": null
+        }
+      ]
+    }
   }
 }
