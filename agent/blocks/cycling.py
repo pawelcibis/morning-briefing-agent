@@ -1,6 +1,7 @@
 from datetime import date
 
 from agent.fetchers.weather import fetch_hourly, degrees_to_compass
+from agent.fetchers.alerts import fetch_meteoswiss_alerts, format_alert_line
 
 
 def _extract_slot(raw: list, target_date: date, slot_time: str) -> dict | None:
@@ -35,6 +36,48 @@ def _find_band(temp_c: float, bands: list) -> dict:
     return bands[-1]
 
 
+def _alerts_for_slots(raw_alerts: list[dict], slot_times: list[str]) -> list[str]:
+    """
+    Filter MeteoSwiss alerts to those whose window overlaps any slot time.
+
+    We do a simple check: if an alert has no start/end, include it (be safe).
+    If it has both, include it only if the alert window covers one of the
+    workout slots.
+
+    Returns formatted alert strings.
+    """
+    if not raw_alerts:
+        return []
+
+    result = []
+    for alert in raw_alerts:
+        start = alert.get("start")
+        end   = alert.get("end")
+
+        # If no timing info, include the alert — better safe than silent.
+        if not start and not end:
+            result.append(format_alert_line(alert))
+            continue
+
+        # Check if any slot time falls within (or near) the alert window.
+        # Slot times are "06:30", "16:30" etc.; alert times are "HH:MM".
+        # Simple heuristic: extract HH from slot and alert start/end.
+        for slot_time in slot_times:
+            slot_h = int(slot_time.split(":")[0])
+            try:
+                start_h = int(start[11:13]) if start and len(start) >= 13 else 0
+                end_h   = int(end[11:13])   if end   and len(end)   >= 13 else 23
+                if start_h <= slot_h <= end_h:
+                    result.append(format_alert_line(alert))
+                    break  # one match per alert is enough
+            except (ValueError, TypeError):
+                # Unparseable times → include the alert (be safe)
+                result.append(format_alert_line(alert))
+                break
+
+    return result
+
+
 def build_cycling_block(cfg: dict, target_date: date) -> dict:
     from agent.llm import cycling_clothing_recommendation
 
@@ -55,6 +98,13 @@ def build_cycling_block(cfg: dict, target_date: date) -> dict:
         slots.append(data)
         bands.append(_find_band(data["temp_c"], cc["clothing_bands"]))
 
+    # Phase 11: MeteoSwiss icing/frost alerts for the cycling postcode.
+    alert_cfg     = cfg.get("alerts", {}).get("meteoswiss", {})
+    postcode      = str(loc.get("postcode", "8001"))
+    severity_min  = alert_cfg.get("severity_min", 2)
+    raw_alerts    = fetch_meteoswiss_alerts(postcode, severity_min)
+    alerts        = _alerts_for_slots(raw_alerts, cc["times"])
+
     # LLM recommendation requires both slots
     clothing = {"wear": "n/a", "pack": "n/a"}
     if (
@@ -74,5 +124,6 @@ def build_cycling_block(cfg: dict, target_date: date) -> dict:
         "location": f"{loc['city']} {loc['postcode']}",
         "date":     str(target_date),
         "slots":    slots,
+        "alerts":   alerts,   # list[str], [] if none
         "clothing": clothing,
     }

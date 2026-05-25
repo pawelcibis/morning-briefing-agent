@@ -65,6 +65,27 @@ def _fmt_wind(ms, direction):
     return f"{ms} m/s {direction}" if direction else f"{ms} m/s"
 
 
+ 
+# ---------------------------------------------------------------------------
+# Alert rendering helper (new in Phase 11)
+# ---------------------------------------------------------------------------
+ 
+def _render_alerts(alerts: list) -> list[str]:
+    """
+    Return indented alert lines for rendering inside a block.
+ 
+    Each alert is rendered as:
+        ⚠  {alert text}
+    with two spaces before and after the warning symbol.
+ 
+    Returns [] if alerts is empty/None, so callers can extend()
+    directly without checking.
+    """
+    if not alerts:
+        return []
+    return [f"  ⚠  {a}" for a in alerts]
+
+
 # ---------------------------------------------------------------------------
 # Block renderers
 # ---------------------------------------------------------------------------
@@ -72,13 +93,16 @@ def _fmt_wind(ms, direction):
 def render_cycling_block(block: dict,
                          deltas: dict | None = None,
                          thresholds: dict | None = None) -> str:
+    # (Import helpers from the top of render.py — they are already defined there)
+    from agent.render import _fmt_delta, DEFAULT_THRESHOLDS
+ 
     d = deltas or {}
     lines = [
         f"🚴  CYCLING — {block['location']}",
         f"    {block['date']}",
         "─" * 52,
     ]
-
+ 
     for slot in block["slots"]:
         if "error" in slot:
             lines += [f"  {slot['time']}  ⚠  {slot['error']}", ""]
@@ -95,31 +119,37 @@ def render_cycling_block(block: dict,
             f"☁  {slot['cloud_label']}"
         )
         lines.append("")
-
+ 
+    # Alerts (Phase 11): shown after slots, before clothing.
+    lines.extend(_render_alerts(block.get("alerts", [])))
+    if block.get("alerts"):
+        lines.append("")  # blank line to separate from clothing
+ 
     c = block.get("clothing", {})
     lines.append("  👕 Wear in the morning:")
     lines.append(f"     {c.get('wear', 'n/a')}")
     lines.append("  🎒 Pack for the return:")
     lines.append(f"     {c.get('pack', 'n/a')}")
     lines.append("")
-
+ 
     return "\n".join(lines)
-
 
 def render_running_block(block,
                          deltas: dict | None = None,
                          thresholds: dict | None = None):
     if block is None:
         return ""
-    d = deltas or {}
+    from agent.render import _fmt_delta, _fmt_temp, _fmt_wind, _fmt_pct
+ 
+    d    = deltas or {}
     slot = block["slot"]
     clothing = block["clothing"]
     t = slot["time"]
-
+ 
     temp_ann = _fmt_delta(d.get(f"running.{t}.temp_c"),   "temp_c",   thresholds)
     wind_ann = _fmt_delta(d.get(f"running.{t}.wind_ms"),  "wind_ms",  thresholds)
     rain_ann = _fmt_delta(d.get(f"running.{t}.rain_pct"), "rain_pct", thresholds)
-
+ 
     lines = []
     lines.append(f"RUNNING — {block['location']['city']} {block['location']['postcode']}")
     lines.append(f"  {t}")
@@ -127,27 +157,34 @@ def render_running_block(block,
     lines.append(f"    Wind:         {_fmt_wind(slot['wind_ms'], slot['wind_dir'])}{wind_ann}")
     lines.append(f"    Rain prob.:   {_fmt_pct(slot['rain_pct'])}{rain_ann}")
     lines.append(f"    Cloud cover:  {slot['cloud_label']}")
+ 
+    # Alerts (Phase 11): shown after weather, before clothing.
+    alert_lines = _render_alerts(block.get("alerts", []))
+    if alert_lines:
+        lines.append("")
+        lines.extend(alert_lines)
+ 
     lines.append(f"  Clothing")
     lines.append(f"    Dry:               {clothing['dry']}")
     if clothing["wet_active"] and clothing["wet"]:
         lines.append(f"    Wet adjustments:   {clothing['wet']}")
     return "\n".join(lines)
 
-
 def render_baby_block(block,
                       deltas: dict | None = None,
                       thresholds: dict | None = None):
     if block is None:
         return ""
-    d = deltas or {}
+    from agent.render import _fmt_delta, _fmt_temp, _fmt_wind, _fmt_pct
+ 
+    d    = deltas or {}
     drop = block["drop_off"]
     pick = block["pick_up"]
     clothing = block["clothing"]
-
-    # Delta look-ups for each slot.
+ 
     def _ann(slot_key, field):
         return _fmt_delta(d.get(f"baby.{slot_key}.{field}"), field, thresholds)
-
+ 
     lines = []
     lines.append(f"BABY — {block['location']['city']} {block['location']['postcode']}")
     lines.append(f"  Baby age: {block['baby_age_months']} months")
@@ -163,6 +200,13 @@ def render_baby_block(block,
     lines.append(f"    Wind:         {_fmt_wind(pick['wind_ms'], pick['wind_dir'])}{_ann('pick_up', 'wind_ms')}")
     lines.append(f"    Rain prob.:   {_fmt_pct(pick['rain_pct'])}{_ann('pick_up', 'rain_pct')}")
     lines.append(f"    Cloud cover:  {pick['cloud_label']}")
+ 
+    # Alerts (Phase 11): shown after pick-up, before clothing.
+    alert_lines = _render_alerts(block.get("alerts", []))
+    if alert_lines:
+        lines.append("")
+        lines.extend(alert_lines)
+ 
     lines.append("")
     lines.append("  Clothing")
     lines.append(f"    Outfit:            {clothing['outfit']}")

@@ -42,6 +42,19 @@ diff_thresholds:
   wind_ms:      1.0   # m/s — annotate wind changes ≥ 1 m/s
   water_temp_c: 0.5   # °C  — annotate lake temp changes ≥ 0.5 °C
  
+alerts:
+  meteoswiss:
+    # Unofficial MeteoSwiss app backend — per-postcode warnings.
+    # Endpoint: https://app-prod-ws.meteoswiss-app.ch/v1/plzDetail?plz=XXXX00
+    # Postcode comes from the block's own location (cycling → 8001, running → 8400).
+    # Only icing/frost/snow types (4, 5, 6) are extracted — see fetchers/alerts.py.
+    severity_min: 2   # 1=no danger, 2=moderate, 3=considerable, 4=high, 5=very high
+                      # MeteoSwiss only issues public warnings from level 2 upward.
+ 
+  # Rain threshold for workout blocks (cycling/running).
+  # If rain_pct at the workout slot is ≥ this value, an alert line is added.
+  # Baby midday alerts use baby.creche.rain_snow_threshold_pct (already in config).
+  workout_rain_threshold_pct: 40
 
 stocks:
   - ticker: KRU

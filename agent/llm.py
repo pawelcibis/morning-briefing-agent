@@ -101,6 +101,7 @@ def baby_clothing_recommendation(
     age_months: float,
     drop_off_weather: dict,
     pickup_weather: dict,
+    midday_alerts: list | None = None,
     language: str = "en",
 ) -> dict:
     """
@@ -116,6 +117,17 @@ def baby_clothing_recommendation(
             "pick_up_note": "",
         }
 
+# Format midday alerts for the prompt (empty string if none).
+    midday_section = ""
+    if midday_alerts:
+        alert_lines = "\n".join(f"  - {a}" for a in midday_alerts)
+        midday_section = (
+            f"\nMidday conditions (between drop-off and pick-up):\n"
+            f"{alert_lines}\n"
+            f"Factor this into pushchair_extras (e.g. rain cover) "
+            f"and pick_up_note if relevant.\n"
+        )
+
     user_msg = (
         f"Baby age: {age_months} months. Language: {language}.\n"
         f"\n"
@@ -126,6 +138,7 @@ def baby_clothing_recommendation(
         f"Pick-up (16:15): {pickup_weather['temp_c']:.1f}°C, "
         f"{pickup_weather['wind_ms']} m/s {pickup_weather['wind_dir']}, "
         f"{pickup_weather['rain_pct']}% rain, {pickup_weather['cloud_label']}\n"
+        f"{midday_section}"
         f"\n"
         f"Fields to fill:\n"
         f"  outfit           — full outfit for drop-off\n"
