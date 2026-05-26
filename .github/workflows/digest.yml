@@ -20,10 +20,6 @@ name: Morning briefing
 # ---------------------------------------------------------------------------
 
 on:
-  schedule:
-    - cron: "0 18 * * *"     # evening (CEST) — swap to "0 19 * * *" for CET
-    - cron: "30 3 * * *"     # morning (CEST) — swap to "30 4 * * *" for CET
-
   workflow_dispatch:
     inputs:
       run_type:
@@ -67,19 +63,9 @@ jobs:
       - name: Determine run type
         id: rt
         run: |
-          if [ -n "${{ inputs.run_type }}" ]; then
             TYPE="${{ inputs.run_type }}"
-            SOURCE="workflow_dispatch"
-          else
-            case "${{ github.event.schedule }}" in
-              # If you change cron lines above for DST, mirror here too.
-              "30 3 * * *"|"30 4 * * *") TYPE="morning" ;;
-              *)                          TYPE="evening" ;;
-            esac
-            SOURCE="cron(${{ github.event.schedule }})"
-          fi
-          echo "type=$TYPE" >> "$GITHUB_OUTPUT"
-          echo "Run type: $TYPE  (resolved from: $SOURCE)"
+            echo "type=$TYPE" >> "$GITHUB_OUTPUT"
+            echo "Run type: $TYPE"
 
       # -------------------------------------------------------------------
       # 4. Fetch previous state from the `state` branch
