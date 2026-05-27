@@ -1,55 +1,55 @@
 {
-  "target_date": "2026-05-26",
+  "target_date": "2026-05-28",
   "blocks": {
     "baby": {
       "location": {
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Tuesday, 26 May 2026",
-      "weekday": "Tue",
-      "baby_age_months": 4.6,
+      "date": "Thursday, 28 May 2026",
+      "weekday": "Thu",
+      "baby_age_months": 4.7,
       "drop_off": {
         "time": "08:00",
-        "temp_c": 18.6,
-        "wind_ms": 0.1,
-        "wind_dir": "E",
+        "temp_c": 17.6,
+        "wind_ms": 0.58,
+        "wind_dir": "NNE",
         "rain_pct": 0,
         "cloud_label": "Sunny"
       },
       "pick_up": {
         "time": "16:15",
-        "temp_c": 31.2,
-        "wind_ms": 1.71,
-        "wind_dir": "N",
-        "rain_pct": 0,
+        "temp_c": 27.9,
+        "wind_ms": 2.77,
+        "wind_dir": "ENE",
+        "rain_pct": 3,
         "cloud_label": "Sunny"
       },
       "alerts": [],
       "clothing": {
-        "outfit": "Long-sleeve bodysuit, lightweight trousers, thin cardigan, socks, and a sun hat",
-        "pushchair_extras": "Lightweight cellular blanket for morning cool, sunshade or parasol for afternoon UV protection",
-        "pick_up_note": "Baby will need the cardigan removed by mid-morning as temperature rises significantly; ensure sunshade is in place for the afternoon heat."
+        "outfit": "Long-sleeve bodysuit, lightweight trousers, thin cardigan or fleece jacket, socks, and a warm hat for the morning. Pack a short-sleeve bodysuit and lightweight trousers for the afternoon change.",
+        "pushchair_extras": "Lightweight blanket for warmth during the cool morning journey; lightweight rain cover in the pushchair bag as a precaution despite low rain risk.",
+        "pick_up_note": "Baby will need to change into short sleeves and the lightweight trousers for the warmer afternoon pickup, as the temperature will rise significantly."
       }
     },
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-05-26",
+      "date": "2026-05-28",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 17.4,
-          "wind_ms": 0.9,
-          "wind_dir": "NNE",
+          "temp_c": 18.3,
+          "wind_ms": 1.4,
+          "wind_dir": "N",
           "rain_pct": 0,
           "cloud_pct": 0,
           "cloud_label": "Sunny"
         },
         {
           "time": "16:30",
-          "temp_c": 32.0,
-          "wind_ms": 2.1,
-          "wind_dir": "N",
+          "temp_c": 29.2,
+          "wind_ms": 2.7,
+          "wind_dir": "NE",
           "rain_pct": 0,
           "cloud_pct": 0,
           "cloud_label": "Sunny"
@@ -66,12 +66,12 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Tuesday, 26 May 2026",
+      "date": "Thursday, 28 May 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 16.7,
-        "wind_ms": 0.63,
-        "wind_dir": "SSE",
+        "temp_c": 15.4,
+        "wind_ms": 0.36,
+        "wind_dir": "SE",
         "rain_pct": 0,
         "cloud_label": "Sunny"
       },
@@ -88,16 +88,10 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Tuesday, 26 May 2026",
+      "date": "Thursday, 28 May 2026",
       "swim_time": "07:00",
-      "water_temp_c": 19.4,
-      "air": {
-        "temp_c": 18.8,
-        "wind_ms": 0.92,
-        "wind_dir": "SW",
-        "rain_pct": 0,
-        "cloud_label": "Sunny"
-      }
+      "water_temp_c": 21.2,
+      "air": null
     },
     "stocks": {
       "tickers": [
@@ -105,13 +99,13 @@
           "ticker": "KRU",
           "exchange": "WSE",
           "currency": "PLN",
-          "date": "2026-05-25",
-          "close": 436.0,
-          "prev_close": 429.2,
-          "change_pct": 1.58,
+          "date": "2026-05-27",
+          "close": 433.0,
+          "prev_close": 430.6,
+          "change_pct": 0.56,
           "shares": 3109,
-          "portfolio_value": 1355524.0,
-          "portfolio_change": 21141.2,
+          "portfolio_value": 1346197.0,
+          "portfolio_change": 7461.6,
           "error": null
         }
       ]
