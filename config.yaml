@@ -77,3 +77,5 @@ recipients:
     channels:
       - type: email
         address_secret: RECIPIENT_LILIANA_EMAIL
+      - type: telegram                                   # ← add this
+        chat_id_secret: RECIPIENT_LILIANA_TELEGRAM       # ← and this        
