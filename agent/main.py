@@ -29,7 +29,7 @@ import traceback
 from agent.config import load_config
 from agent.state  import read_state, write_state, STATE_PATH
 from agent.diff   import diff_blocks
-from agent.render import render_for_recipient
+from agent.render import render_for_recipient, ROLE_BLOCKS
 
 from agent.blocks.baby     import build_baby_block
 from agent.blocks.cycling  import build_cycling_block
@@ -216,7 +216,16 @@ def main(run_type: str, dry_run: bool = False) -> int:
     print(f"\n[main] Dispatching to {len(recipients)} recipient(s)  subject={subject!r}")
     total_ok, total_fail = 0, 0
     for recipient in recipients:
+        name = recipient.get("name", "?")
         role = recipient.get("role", "full")
+
+        # Skip entirely if every block this role would receive is None.
+        # e.g. Liliana (baby_only) on a non-crèche day — no content to send.
+        allowed_blocks = ROLE_BLOCKS.get(role, set())
+        if not any(blocks.get(k) is not None for k in allowed_blocks):
+            print(f"  [{name:<10}] skipping — no content for role {role!r}")
+            continue
+
         body = render_for_recipient(
             blocks, target_date, role,
             deltas=deltas, thresholds=thresholds,
