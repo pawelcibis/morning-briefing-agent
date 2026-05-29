@@ -31,9 +31,23 @@ def fetch_hourly(latitude: float, longitude: float, timezone: str = "Europe/Zuri
         "forecast_days": 2,               # today + tomorrow
     }
 
-    response = requests.get(OPEN_METEO_URL, params=params, timeout=10)
-    response.raise_for_status()           # raises if HTTP 4xx/5xx
-    data = response.json()
+    from agent.retry import with_retries
+
+    def _do_request():
+        response = requests.get(OPEN_METEO_URL, params=params, timeout=10)
+        response.raise_for_status()           # raises if HTTP 4xx/5xx
+        return response.json()
+
+    # Open-Meteo blips (timeout, connection reset, transient 5xx) are common.
+    # Retry a few times before giving up; on FINAL failure with_retries re-raises,
+    # and the caller (main._safe_build) turns that into a None block so the
+    # digest still sends. ValueError covers a truncated/garbled JSON body.
+    data = with_retries(
+        _do_request,
+        attempts=3, base_delay=0.5,
+        exceptions=(requests.RequestException, ValueError),
+        label="weather",
+    )
 
     hourly = data["hourly"]
     rows = []
