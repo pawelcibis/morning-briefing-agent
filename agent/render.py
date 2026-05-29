@@ -1,18 +1,26 @@
 """
 agent/render.py — Format structured blocks as plain text.
 
-All render_*_block() functions accept two optional keyword arguments:
-    deltas:     flat dict from diff.diff_blocks() — or None / {} for no deltas.
-    thresholds: dict of field → minimum abs-delta to display an annotation.
-                Falls back to DEFAULT_THRESHOLDS when not supplied.
-                Should be cfg["diff_thresholds"] in production.
+House style (Phase 13, item H): every block renders the same way —
+    {emoji}  TITLE — location
+        optional subtitle (date / age)
+    ──────────────────────────────
+      slot / section
+        Label:        value  (↑ +delta)
+The emoji header + rule gives scannability; the plain "Label: value" body is
+robust across email and Telegram (no box-drawing that mis-aligns in some
+clients). Cycling and stocks were converted from the old emoji/box layout.
 
-When deltas are present, numeric lines get an inline annotation:
-    Temperature:  8.2°C  (↑ +2.1)
-    Rain prob.:   45%    (↓ -10)
+Delta annotations (morning edition): render_* functions accept
+    deltas:     flat {dot-path: float} dict from diff.diff_blocks() (or None).
+    thresholds: {field: min abs-delta to display}, normally cfg["diff_thresholds"].
+The dot-path keys (e.g. "cycling.06:30.temp_c") MUST match diff.py exactly.
 
-Annotations are only shown when abs(delta) >= threshold for that field.
+run_type (Phase 13, item G): threaded into render_digest so the in-body banner
+("Morning Briefing" vs "Morning Update") matches the email subject line.
 """
+
+RULE_WIDTH = 52
 
 # ---------------------------------------------------------------------------
 # Delta annotation helpers
@@ -27,12 +35,9 @@ DEFAULT_THRESHOLDS = {
 
 
 def _fmt_delta(delta, field: str, thresholds: dict | None = None) -> str:
-    """
-    Return an annotation string like '  (↑ +2.1)' or '' (empty).
+    """Return an annotation like '  (↑ +2.1)' or '' (empty).
 
-    Empty when:
-      * delta is None (no previous value to compare)
-      * abs(delta) is below the threshold for this field
+    Empty when delta is None or abs(delta) is below the field threshold.
     """
     if delta is None:
         return ""
@@ -41,14 +46,13 @@ def _fmt_delta(delta, field: str, thresholds: dict | None = None) -> str:
         return ""
     arrow = "↑" if delta > 0 else "↓"
     sign  = "+" if delta > 0 else ""
-    # Format: 1 decimal for temperatures/wind; 0 decimals for percentages.
     if field == "rain_pct":
         return f"  ({arrow} {sign}{delta:.0f})"
     return f"  ({arrow} {sign}{delta:.1f})"
 
 
 # ---------------------------------------------------------------------------
-# Shared formatting helpers (unchanged from Phase 9)
+# Shared formatting helpers
 # ---------------------------------------------------------------------------
 
 def _fmt_pct(v):
@@ -65,22 +69,17 @@ def _fmt_wind(ms, direction):
     return f"{ms} m/s {direction}" if direction else f"{ms} m/s"
 
 
- 
-# ---------------------------------------------------------------------------
-# Alert rendering helper (new in Phase 11)
-# ---------------------------------------------------------------------------
- 
+def _block_header(emoji: str, title: str, subtitle: str | None = None) -> list[str]:
+    """Consistent block header: emoji + UPPERCASE title, optional subtitle, rule."""
+    lines = [f"{emoji}  {title}"]
+    if subtitle:
+        lines.append(f"    {subtitle}")
+    lines.append("─" * RULE_WIDTH)
+    return lines
+
+
 def _render_alerts(alerts: list) -> list[str]:
-    """
-    Return indented alert lines for rendering inside a block.
- 
-    Each alert is rendered as:
-        ⚠  {alert text}
-    with two spaces before and after the warning symbol.
- 
-    Returns [] if alerts is empty/None, so callers can extend()
-    directly without checking.
-    """
+    """Indented alert lines ('  ⚠  text'); [] when there are no alerts."""
     if not alerts:
         return []
     return [f"  ⚠  {a}" for a in alerts]
@@ -93,102 +92,90 @@ def _render_alerts(alerts: list) -> list[str]:
 def render_cycling_block(block: dict,
                          deltas: dict | None = None,
                          thresholds: dict | None = None) -> str:
-    # (Import helpers from the top of render.py — they are already defined there)
-    from agent.render import _fmt_delta, DEFAULT_THRESHOLDS
- 
+    if block is None:
+        return ""
     d = deltas or {}
-    lines = [
-        f"🚴  CYCLING — {block['location']}",
-        f"    {block['date']}",
-        "─" * 52,
-    ]
- 
+    lines = _block_header("🚴", f"CYCLING — {block['location']}", block.get("date"))
+
     for slot in block["slots"]:
         if "error" in slot:
-            lines += [f"  {slot['time']}  ⚠  {slot['error']}", ""]
+            lines += [f"  {slot['time']}", f"    ⚠  {slot['error']}", ""]
             continue
         t = slot["time"]
+        temp_ann = _fmt_delta(d.get(f"cycling.{t}.temp_c"),  "temp_c",   thresholds)
+        wind_ann = _fmt_delta(d.get(f"cycling.{t}.wind_ms"), "wind_ms",  thresholds)
+        rain_ann = _fmt_delta(d.get(f"cycling.{t}.rain_pct"),"rain_pct", thresholds)
         lines.append(f"  {t}")
-        temp_ann  = _fmt_delta(d.get(f"cycling.{t}.temp_c"),   "temp_c",   thresholds)
-        wind_ann  = _fmt_delta(d.get(f"cycling.{t}.wind_ms"),  "wind_ms",  thresholds)
-        rain_ann  = _fmt_delta(d.get(f"cycling.{t}.rain_pct"), "rain_pct", thresholds)
-        lines.append(
-            f"    🌡  {slot['temp_c']:.1f}°C{temp_ann}  │  "
-            f"💨 {slot['wind_ms']} m/s {slot['wind_dir']}{wind_ann}  │  "
-            f"🌧 {slot['rain_pct']}%{rain_ann}  │  "
-            f"☁  {slot['cloud_label']}"
-        )
+        lines.append(f"    Temperature:  {_fmt_temp(slot['temp_c'])}{temp_ann}")
+        lines.append(f"    Wind:         {_fmt_wind(slot['wind_ms'], slot['wind_dir'])}{wind_ann}")
+        lines.append(f"    Rain prob.:   {_fmt_pct(slot['rain_pct'])}{rain_ann}")
+        lines.append(f"    Cloud cover:  {slot['cloud_label']}")
         lines.append("")
- 
-    # Alerts (Phase 11): shown after slots, before clothing.
-    lines.extend(_render_alerts(block.get("alerts", [])))
-    if block.get("alerts"):
-        lines.append("")  # blank line to separate from clothing
- 
+
+    alert_lines = _render_alerts(block.get("alerts", []))
+    if alert_lines:
+        lines.extend(alert_lines)
+        lines.append("")
+
     c = block.get("clothing", {})
-    lines.append("  👕 Wear in the morning:")
-    lines.append(f"     {c.get('wear', 'n/a')}")
-    lines.append("  🎒 Pack for the return:")
-    lines.append(f"     {c.get('pack', 'n/a')}")
-    lines.append("")
- 
+    lines.append("  Clothing")
+    lines.append(f"    Wear (morning):  {c.get('wear', 'n/a')}")
+    lines.append(f"    Pack (return):   {c.get('pack', 'n/a')}")
     return "\n".join(lines)
+
 
 def render_running_block(block,
                          deltas: dict | None = None,
                          thresholds: dict | None = None):
     if block is None:
         return ""
-    from agent.render import _fmt_delta, _fmt_temp, _fmt_wind, _fmt_pct
- 
     d    = deltas or {}
     slot = block["slot"]
     clothing = block["clothing"]
     t = slot["time"]
- 
-    temp_ann = _fmt_delta(d.get(f"running.{t}.temp_c"),   "temp_c",   thresholds)
-    wind_ann = _fmt_delta(d.get(f"running.{t}.wind_ms"),  "wind_ms",  thresholds)
-    rain_ann = _fmt_delta(d.get(f"running.{t}.rain_pct"), "rain_pct", thresholds)
- 
-    lines = []
-    lines.append(f"RUNNING — {block['location']['city']} {block['location']['postcode']}")
+
+    temp_ann = _fmt_delta(d.get(f"running.{t}.temp_c"),  "temp_c",   thresholds)
+    wind_ann = _fmt_delta(d.get(f"running.{t}.wind_ms"), "wind_ms",  thresholds)
+    rain_ann = _fmt_delta(d.get(f"running.{t}.rain_pct"),"rain_pct", thresholds)
+
+    loc = block["location"]
+    lines = _block_header("🏃", f"RUNNING — {loc['city']} {loc['postcode']}")
     lines.append(f"  {t}")
     lines.append(f"    Temperature:  {_fmt_temp(slot['temp_c'])}{temp_ann}")
     lines.append(f"    Wind:         {_fmt_wind(slot['wind_ms'], slot['wind_dir'])}{wind_ann}")
     lines.append(f"    Rain prob.:   {_fmt_pct(slot['rain_pct'])}{rain_ann}")
     lines.append(f"    Cloud cover:  {slot['cloud_label']}")
- 
-    # Alerts (Phase 11): shown after weather, before clothing.
+
     alert_lines = _render_alerts(block.get("alerts", []))
     if alert_lines:
         lines.append("")
         lines.extend(alert_lines)
- 
-    lines.append(f"  Clothing")
+
+    lines.append("")
+    lines.append("  Clothing")
     lines.append(f"    Dry:               {clothing['dry']}")
     if clothing["wet_active"] and clothing["wet"]:
         lines.append(f"    Wet adjustments:   {clothing['wet']}")
     return "\n".join(lines)
+
 
 def render_baby_block(block,
                       deltas: dict | None = None,
                       thresholds: dict | None = None):
     if block is None:
         return ""
-    from agent.render import _fmt_delta, _fmt_temp, _fmt_wind, _fmt_pct
- 
     d    = deltas or {}
     drop = block["drop_off"]
     pick = block["pick_up"]
     clothing = block["clothing"]
- 
+
     def _ann(slot_key, field):
         return _fmt_delta(d.get(f"baby.{slot_key}.{field}"), field, thresholds)
- 
-    lines = []
-    lines.append(f"BABY — {block['location']['city']} {block['location']['postcode']}")
-    lines.append(f"  Baby age: {block['baby_age_months']} months")
-    lines.append("")
+
+    loc = block["location"]
+    lines = _block_header("👶", f"BABY — {loc['city']} {loc['postcode']}",
+                          f"Baby age: {block['baby_age_months']} months")
+
     lines.append(f"  Drop-off ({drop['time']})")
     lines.append(f"    Temperature:  {_fmt_temp(drop['temp_c'])}{_ann('drop_off', 'temp_c')}")
     lines.append(f"    Wind:         {_fmt_wind(drop['wind_ms'], drop['wind_dir'])}{_ann('drop_off', 'wind_ms')}")
@@ -200,13 +187,12 @@ def render_baby_block(block,
     lines.append(f"    Wind:         {_fmt_wind(pick['wind_ms'], pick['wind_dir'])}{_ann('pick_up', 'wind_ms')}")
     lines.append(f"    Rain prob.:   {_fmt_pct(pick['rain_pct'])}{_ann('pick_up', 'rain_pct')}")
     lines.append(f"    Cloud cover:  {pick['cloud_label']}")
- 
-    # Alerts (Phase 11): shown after pick-up, before clothing.
+
     alert_lines = _render_alerts(block.get("alerts", []))
     if alert_lines:
         lines.append("")
         lines.extend(alert_lines)
- 
+
     lines.append("")
     lines.append("  Clothing")
     lines.append(f"    Outfit:            {clothing['outfit']}")
@@ -225,17 +211,16 @@ def render_swimming_block(block,
     d = deltas or {}
     air = block.get("air")
     water = block["water_temp_c"]
-
     water_ann = _fmt_delta(d.get("swimming.water_temp_c"), "water_temp_c", thresholds)
 
-    lines = []
-    lines.append(f"SWIMMING — {block['location']['city']} {block['location']['postcode']} (Lake Zurich)")
+    loc = block["location"]
+    lines = _block_header("🏊", f"SWIMMING — {loc['city']} {loc['postcode']} (Lake Zurich)")
     lines.append(f"  {block['swim_time']}")
     lines.append(f"    Water temp:   {_fmt_temp(water)}{water_ann}")
     if air:
-        air_temp_ann = _fmt_delta(d.get("swimming.air.temp_c"),   "temp_c",   thresholds)
-        air_wind_ann = _fmt_delta(d.get("swimming.air.wind_ms"),  "wind_ms",  thresholds)
-        air_rain_ann = _fmt_delta(d.get("swimming.air.rain_pct"), "rain_pct", thresholds)
+        air_temp_ann = _fmt_delta(d.get("swimming.air.temp_c"),  "temp_c",   thresholds)
+        air_wind_ann = _fmt_delta(d.get("swimming.air.wind_ms"), "wind_ms",  thresholds)
+        air_rain_ann = _fmt_delta(d.get("swimming.air.rain_pct"),"rain_pct", thresholds)
         lines.append(f"    Air temp:     {_fmt_temp(air['temp_c'])}{air_temp_ann}")
         lines.append(f"    Wind:         {_fmt_wind(air['wind_ms'], air['wind_dir'])}{air_wind_ann}")
         lines.append(f"    Rain prob.:   {_fmt_pct(air['rain_pct'])}{air_rain_ann}")
@@ -248,38 +233,27 @@ def render_swimming_block(block,
 def render_stocks_block(block: dict,
                         deltas: dict | None = None,       # accepted but unused
                         thresholds: dict | None = None) -> str:
-    """Render the stocks block as plain text. Deltas not applied to stocks."""
+    """Render the stocks block. Tightened (item C): one line of figures per
+    ticker beneath a date header. Deltas are not applied to stocks."""
     if block is None:
         return ""
-
     tickers = block.get("tickers", [])
     if not tickers:
         return ""
 
-    lines = ["📈  STOCKS"]
-    lines.append("─" * 52)
-
+    lines = _block_header("📈", "STOCKS")
     for t in tickers:
         if t["error"]:
             lines.append(f"  {t['ticker']}.{t['exchange']}  ⚠  {t['error']}")
-            lines.append("")
             continue
-
         sign     = "+" if t["change_pct"] >= 0 else ""
         val_sign = "+" if t["portfolio_change"] >= 0 else ""
-
-        lines.append(f"  {t['ticker']}.{t['exchange']}  ({t['date']})")
+        lines.append(f"  {t['ticker']}.{t['exchange']} ({t['date']})")
         lines.append(
-            f"    Close:     {t['close']:.2f} {t['currency']}  "
-            f"({sign}{t['change_pct']:.2f}%)"
+            f"    {t['close']:.2f} {t['currency']}  ({sign}{t['change_pct']:.2f}%)"
+            f"   ·   Portfolio {t['portfolio_value']:,.2f} {t['currency']}  "
+            f"({val_sign}{t['portfolio_change']:,.2f}, {t['shares']} sh)"
         )
-        lines.append(
-            f"    Portfolio: {t['portfolio_value']:,.2f} {t['currency']}  "
-            f"({val_sign}{t['portfolio_change']:,.2f} {t['currency']})"
-        )
-        lines.append(f"    Shares:    {t['shares']}")
-        lines.append("")
-
     return "\n".join(lines)
 
 
@@ -289,20 +263,19 @@ def render_stocks_block(block: dict,
 
 def render_digest(blocks, target_date,
                   deltas: dict | None = None,
-                  thresholds: dict | None = None):
+                  thresholds: dict | None = None,
+                  run_type: str = "evening"):
     """
     Assemble all non-None blocks into the final digest text.
 
-    Args:
-        blocks:       dict with keys 'baby', 'cycling', 'running', 'swimming',
-                      'stocks' — values are block dicts or None.
-        target_date:  datetime.date for the header.
-        deltas:       optional flat dict from diff.diff_blocks().
-        thresholds:   optional dict from cfg["diff_thresholds"].
+    run_type drives the banner so it matches the email subject:
+      evening → "Morning Briefing — <date>"   (full forecast for tomorrow)
+      morning → "Morning Update — <date>"      (delta vs last night)
 
     Block order matches SPEC §3: Baby, Cycling, Running, Swimming, Stocks.
     """
-    header = f"Morning Briefing — {target_date.strftime('%A, %d %B %Y')}"
+    banner = "Morning Update" if run_type == "morning" else "Morning Briefing"
+    header = f"{banner} — {target_date.strftime('%A, %d %B %Y')}"
     sep    = "=" * len(header)
 
     parts = [header, sep, ""]
@@ -332,7 +305,6 @@ def render_digest(blocks, target_date,
 # Role-filtered rendering
 # ---------------------------------------------------------------------------
 
-# Which block keys each role receives.
 ROLE_BLOCKS = {
     "full":      {"baby", "cycling", "running", "swimming", "stocks"},
     "baby_only": {"baby"},
@@ -341,20 +313,10 @@ ROLE_BLOCKS = {
 
 def render_for_recipient(blocks: dict, target_date, role: str,
                          deltas: dict | None = None,
-                         thresholds: dict | None = None) -> str:
-    """
-    Render the digest for a specific recipient role.
-
-    Args:
-        blocks:      Full blocks dict (all keys present, values may be None).
-        target_date: datetime.date for the header.
-        role:        "full" or "baby_only" (from config.yaml).
-        deltas:      optional flat dict from diff.diff_blocks().
-        thresholds:  optional dict from cfg["diff_thresholds"].
-
-    Returns:
-        Formatted digest string containing only the blocks for that role.
-    """
+                         thresholds: dict | None = None,
+                         run_type: str = "evening") -> str:
+    """Render the digest for a specific recipient role (filters blocks by role)."""
     allowed  = ROLE_BLOCKS.get(role, set())
     filtered = {k: (v if k in allowed else None) for k, v in blocks.items()}
-    return render_digest(filtered, target_date, deltas=deltas, thresholds=thresholds)
+    return render_digest(filtered, target_date, deltas=deltas,
+                         thresholds=thresholds, run_type=run_type)
