@@ -30,6 +30,7 @@ from agent.config import load_config
 from agent.state  import read_state, write_state, STATE_PATH
 from agent.diff   import diff_blocks
 from agent.render import render_for_recipient, ROLE_BLOCKS
+from agent.log    import RunLog, write_message, prune_old
 
 from agent.blocks.baby     import build_baby_block
 from agent.blocks.cycling  import build_cycling_block
@@ -45,7 +46,7 @@ from agent.dispatch.telegram import send_telegram
 # Block building — per-block exception isolation
 # ---------------------------------------------------------------------------
 
-def _safe_build(name: str, fn, *args):
+def _safe_build(name: str, fn, *args, rl: "RunLog | None" = None):
     """
     Call build_*_block with isolation.
 
@@ -55,29 +56,36 @@ def _safe_build(name: str, fn, *args):
 
     A single fetcher failure must not abort the digest — every block is
     independently optional. render_for_recipient already skips None blocks.
+    Status is also recorded into the RunLog (if supplied) for the run summary.
     """
     try:
         block = fn(*args)
     except Exception as exc:
         print(f"[main] [{name:<10}] FAILED: {exc!r}")
         traceback.print_exc()
+        if rl:
+            rl.block(name, "failed", repr(exc))
         return None
 
     if block is None:
         print(f"[main] [{name:<10}] None (skipped — non-creche day, cold lake, etc.)")
+        if rl:
+            rl.block(name, "skipped")
     else:
         print(f"[main] [{name:<10}] built")
+        if rl:
+            rl.block(name, "built")
     return block
 
 
-def _build_all_blocks(cfg, target_date):
+def _build_all_blocks(cfg, target_date, rl: "RunLog | None" = None):
     print(f"\n[main] Building blocks for target_date={target_date.isoformat()}")
     return {
-        "baby":     _safe_build("baby",     build_baby_block,     cfg, target_date),
-        "cycling":  _safe_build("cycling",  build_cycling_block,  cfg, target_date),
-        "running":  _safe_build("running",  build_running_block,  cfg, target_date),
-        "swimming": _safe_build("swimming", build_swimming_block, cfg, target_date),
-        "stocks":   _safe_build("stocks",   build_stocks_block,   cfg),
+        "baby":     _safe_build("baby",     build_baby_block,     cfg, target_date, rl=rl),
+        "cycling":  _safe_build("cycling",  build_cycling_block,  cfg, target_date, rl=rl),
+        "running":  _safe_build("running",  build_running_block,  cfg, target_date, rl=rl),
+        "swimming": _safe_build("swimming", build_swimming_block, cfg, target_date, rl=rl),
+        "stocks":   _safe_build("stocks",   build_stocks_block,   cfg, rl=rl),
     }
 
 
@@ -102,13 +110,12 @@ def _dispatch_email(channel: dict, subject: str, body: str,
         print(f"{log_prefix} DRY-RUN would send to {address} ({len(body)} chars)")
         return (True, "dry-run")
 
-    try:
-        send_email(to=address, subject=subject, body=body)
+    ok, err = send_email(to=address, subject=subject, body=body)
+    if ok:
         print(f"{log_prefix} sent → {address}")
         return (True, None)
-    except Exception as exc:
-        print(f"{log_prefix} FAILED → {address}: {exc!r}")
-        return (False, str(exc))
+    print(f"{log_prefix} FAILED → {address}: {err}")
+    return (False, err)
 
 
 def _dispatch_telegram(channel: dict, body: str,
@@ -128,20 +135,21 @@ def _dispatch_telegram(channel: dict, body: str,
         print(f"{log_prefix} DRY-RUN would send to chat {chat_id} ({len(body)} chars)")
         return (True, "dry-run")
 
-    ok = send_telegram(chat_id=chat_id, text=body)
+    ok, err = send_telegram(chat_id=chat_id, text=body)
     if ok:
         print(f"{log_prefix} sent → chat {chat_id}")
         return (True, None)
-    print(f"{log_prefix} FAILED → chat {chat_id} (send_telegram returned False)")
-    return (False, "send_telegram returned False")
+    print(f"{log_prefix} FAILED → chat {chat_id}: {err}")
+    return (False, err)
 
 
 def _dispatch_to_recipient(recipient: dict, body: str, subject: str,
-                           dry_run: bool):
+                           dry_run: bool, rl: "RunLog | None" = None):
     """
     Dispatch body to all of recipient's channels.
 
-    Returns (n_ok, n_fail) so the orchestrator can build the summary.
+    Returns (n_ok, n_fail) so the orchestrator can build the summary, and
+    records per-channel status into the RunLog (if supplied).
     """
     n_ok, n_fail = 0, 0
     name = recipient.get("name", "?")
@@ -149,12 +157,19 @@ def _dispatch_to_recipient(recipient: dict, body: str, subject: str,
         ctype  = channel.get("type", "?")
         prefix = f"  [{name:<10} {ctype:<8}]"
         if ctype == "email":
-            ok, _ = _dispatch_email(channel, subject, body, dry_run, prefix)
+            ok, err = _dispatch_email(channel, subject, body, dry_run, prefix)
         elif ctype == "telegram":
-            ok, _ = _dispatch_telegram(channel, body, dry_run, prefix)
+            ok, err = _dispatch_telegram(channel, body, dry_run, prefix)
         else:
             print(f"{prefix} unknown channel type {ctype!r} — skipping")
-            ok = False
+            ok, err = False, f"unknown channel type {ctype!r}"
+        if rl:
+            if err == "dry-run":
+                rl.dispatch(name, ctype, "dry-run")
+            elif ok:
+                rl.dispatch(name, ctype, "ok")
+            else:
+                rl.dispatch(name, ctype, "failed", err)
         n_ok  += int(ok)
         n_fail += int(not ok)
     return n_ok, n_fail
@@ -185,6 +200,8 @@ def main(run_type: str, dry_run: bool = False) -> int:
         target_date = today
     print(f"[main] today={today.isoformat()}  target_date={target_date.isoformat()}")
 
+    rl = RunLog(run_type, target_date)
+
     # State — read always (morning needs it for diff; evening just logs it)
     previous_state = read_state()
     if previous_state:
@@ -194,7 +211,7 @@ def main(run_type: str, dry_run: bool = False) -> int:
         print(f"[main] previous state: empty (first run, or state file missing)")
 
     # Build blocks
-    blocks = _build_all_blocks(cfg, target_date)
+    blocks = _build_all_blocks(cfg, target_date, rl=rl)
 
     # Compute deltas (morning only)
     deltas = None
@@ -224,13 +241,14 @@ def main(run_type: str, dry_run: bool = False) -> int:
         allowed_blocks = ROLE_BLOCKS.get(role, set())
         if not any(blocks.get(k) is not None for k in allowed_blocks):
             print(f"  [{name:<10}] skipping — no content for role {role!r}")
+            rl.dispatch(name, "(all)", "skipped", f"no content for role {role!r}")
             continue
 
         body = render_for_recipient(
             blocks, target_date, role,
-            deltas=deltas, thresholds=thresholds,
+            deltas=deltas, thresholds=thresholds, run_type=run_type,
         )
-        ok, fail = _dispatch_to_recipient(recipient, body, subject, dry_run)
+        ok, fail = _dispatch_to_recipient(recipient, body, subject, dry_run, rl=rl)
         total_ok  += ok
         total_fail += fail
 
@@ -242,11 +260,24 @@ def main(run_type: str, dry_run: bool = False) -> int:
             print(f"[main] state write FAILED: {exc!r}")
             traceback.print_exc()
 
+    # Archive the full rendered digest (item A). Rendered regardless of which
+    # recipients actually received it, so logs/messages/ always holds a complete
+    # record even on a baby_only-only morning. Cheap: no network / no LLM.
+    archive_body = render_for_recipient(
+        blocks, target_date, role="full",
+        deltas=deltas, thresholds=thresholds, run_type=run_type,
+    )
+    write_message(target_date, run_type, archive_body)
+
     # Summary
     n_recip = len(recipients)
     n_chan  = total_ok + total_fail
     print(f"\n[main] === DONE — {n_recip} recipient(s), "
           f"{n_chan} channel attempts, {total_ok} ok, {total_fail} error(s) ===")
+
+    # Structured run summary → logs/YYYY-MM.log, then tidy any old LOCAL logs.
+    rl.finish(ok=total_ok, fail=total_fail)
+    prune_old()   # no-op on ephemeral CI runners; tidies a local dev machine
     return 0
 
 
