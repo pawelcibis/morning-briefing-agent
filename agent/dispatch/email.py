@@ -11,32 +11,53 @@ All credentials are read from environment variables — never hardcoded:
 
 Usage:
     from agent.dispatch.email import send
-    send(to="you@example.com", subject="Morning briefing", body="...")
+    ok, error = send(to="you@example.com", subject="Morning briefing", body="...")
+
+Contract (Phase 13, item B): returns (ok: bool, error: str | None), matching
+telegram.send_telegram(). It never raises for SMTP/network problems — those are
+caught, retried (SPEC §6.3), and reported via the return value so the
+orchestrator can log them uniformly.
 """
 
 import os
 import smtplib
 from email.message import EmailMessage
 
+from agent.retry import with_retries
 
-def send(to: str, subject: str, body: str) -> None:
+_REQUIRED = ("SMTP_HOST", "SMTP_PORT", "SMTP_USERNAME", "SMTP_PASSWORD")
+
+
+def send(to: str, subject: str, body: str) -> tuple[bool, str | None]:
     """
-    Send a plain-text email.
+    Send a plain-text email, retrying transient SMTP/network failures.
 
     Args:
         to:      Recipient email address.
         subject: Email subject line.
         body:    Plain-text body.
 
-    Raises:
-        EnvironmentError: if any required env var is missing.
-        smtplib.SMTPException: on any SMTP-level failure.
+    Returns:
+        (True, None)        on success.
+        (False, reason)     on a config problem (missing/invalid env) or after
+                            all retry attempts are exhausted.
     """
-    # --- Read credentials from environment ---
-    host     = _require_env("SMTP_HOST")
-    port     = int(_require_env("SMTP_PORT"))
-    username = _require_env("SMTP_USERNAME")
-    password = _require_env("SMTP_PASSWORD")
+    # --- Config validation: a missing secret is NOT transient — fail fast. ---
+    missing = [name for name in _REQUIRED if not os.environ.get(name)]
+    if missing:
+        msg = f"missing env var(s): {', '.join(missing)}"
+        print(f"[email] {msg}")
+        return (False, msg)
+
+    host     = os.environ["SMTP_HOST"]
+    username = os.environ["SMTP_USERNAME"]
+    password = os.environ["SMTP_PASSWORD"]
+    try:
+        port = int(os.environ["SMTP_PORT"])
+    except ValueError:
+        msg = f"SMTP_PORT is not an integer: {os.environ['SMTP_PORT']!r}"
+        print(f"[email] {msg}")
+        return (False, msg)
 
     # --- Build the message ---
     msg = EmailMessage()
@@ -45,23 +66,25 @@ def send(to: str, subject: str, body: str) -> None:
     msg["Subject"] = subject
     msg.set_content(body)
 
-    # --- Connect, authenticate, send ---
-    # STARTTLS (port 587): starts an unencrypted connection, then upgrades
-    # to TLS before credentials are ever transmitted. Standard for Gmail.
-    with smtplib.SMTP(host, port) as smtp:
-        smtp.ehlo()           # introduce ourselves to the server
-        smtp.starttls()       # upgrade the connection to encrypted
-        smtp.ehlo()           # re-introduce after TLS handshake
-        smtp.login(username, password)
-        smtp.send_message(msg)
+    # --- Connect, authenticate, send (retried on transient failure) ---
+    # STARTTLS (port 587): starts unencrypted, then upgrades to TLS before
+    # credentials are ever transmitted. Standard for Gmail.
+    def _do_send():
+        with smtplib.SMTP(host, port, timeout=20) as smtp:
+            smtp.ehlo()           # introduce ourselves to the server
+            smtp.starttls()       # upgrade the connection to encrypted
+            smtp.ehlo()           # re-introduce after TLS handshake
+            smtp.login(username, password)
+            smtp.send_message(msg)
 
-
-def _require_env(name: str) -> str:
-    """Return the value of an env var, or raise a clear error if missing."""
-    value = os.environ.get(name)
-    if not value:
-        raise EnvironmentError(
-            f"Required environment variable '{name}' is not set. "
-            "Set it in your terminal before running, or add it to GitHub Secrets."
+    try:
+        # OSError covers socket/connection errors; SMTPException covers the
+        # protocol-level ones. (A bad-password SMTPAuthenticationError will be
+        # retried too — wasteful but harmless for a personal tool.)
+        with_retries(
+            _do_send, attempts=3, base_delay=1.0,
+            exceptions=(smtplib.SMTPException, OSError), label="email",
         )
-    return value
+        return (True, None)
+    except Exception as exc:
+        return (False, str(exc))
