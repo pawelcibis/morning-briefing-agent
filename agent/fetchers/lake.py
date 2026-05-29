@@ -44,9 +44,18 @@ def fetch_lake_temp_thalwil():
     Per the spec (§6.3), fetchers never raise — they return None on failure
     so the digest can still be sent with a "missing" marker.
     """
-    try:
+    from agent.retry import with_retries
+
+    def _do_request():
         resp = requests.get(THALWIL_URL, headers=_HEADERS, timeout=REQUEST_TIMEOUT_S)
         resp.raise_for_status()
+        return resp
+
+    try:
+        resp = with_retries(
+            _do_request, attempts=3, base_delay=0.5,
+            exceptions=(requests.RequestException,), label="lake",
+        )
     except requests.RequestException as e:
         print(f"[lake] HTTP error fetching badi-info: {e}")
         return None
