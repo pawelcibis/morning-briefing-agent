@@ -43,20 +43,33 @@ def fetch_stock_quote(ticker: str, exchange: str) -> dict | None:
     """
     api_key = os.environ.get("STOOQ_API_KEY", "")
     if not api_key:
-        raise EnvironmentError(
-            "STOOQ_API_KEY environment variable is not set. "
-            "Get your key at https://stooq.pl/q/d/?s=kru&get_apikey"
+        # §6.3: fetchers never raise — they return None so the digest still
+        # sends with a "missing" marker. (Previously this raised, which crashed
+        # the whole run if the secret was absent.)
+        print(
+            "[stocks] STOOQ_API_KEY not set — skipping stock fetch. "
+            "Get a key at https://stooq.pl/q/d/?s=kru&get_apikey"
         )
+        return None
 
     symbol = ticker.lower()   # Stooq uses bare ticker: "kru"
 
     try:
-        resp = requests.get(
-            STOOQ_URL,
-            params={"s": symbol, "i": "d", "apikey": api_key},
-            timeout=10,
+        from agent.retry import with_retries
+
+        def _do_request():
+            r = requests.get(
+                STOOQ_URL,
+                params={"s": symbol, "i": "d", "apikey": api_key},
+                timeout=10,
+            )
+            r.raise_for_status()
+            return r
+
+        resp = with_retries(
+            _do_request, attempts=3, base_delay=0.5,
+            exceptions=(requests.RequestException,), label="stocks",
         )
-        resp.raise_for_status()
 
         text = resp.text.strip()
 
