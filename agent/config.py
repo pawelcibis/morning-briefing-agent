@@ -20,11 +20,10 @@ def load_config() -> dict:
         if not table_file:
             continue
         table_path = REPO_ROOT / table_file
-#         print(f"[config] {workout_name}: looking for {table_path} — exists={table_path.exists()}")
         if not table_path.exists():
             continue
-        with open(table_path) as f:
+        # Load THIS workout's own clothing table, anchored at REPO_ROOT so it
+        # works regardless of the process's current working directory.
+        with open(table_path, encoding="utf-8") as f:
             workout_cfg["clothing_bands"] = yaml.safe_load(f)["bands"]
-        with open(cfg["workouts"]["running"]["clothing_table"], "r", encoding="utf-8") as f:
-             cfg["workouts"]["running"]["clothing_bands"] = yaml.safe_load(f)["bands"]
     return cfg
