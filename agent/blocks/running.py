@@ -83,7 +83,10 @@ def build_running_block(cfg, target_date):
     loc     = run_cfg["location"]
     bands   = run_cfg["clothing_bands"]
     cloud_labels_cfg = cfg["cloud_cover_labels"]
-    wet_threshold    = cfg.get("wet_threshold_pct", 30)
+    # wet_threshold_pct lives under workouts.running in config.yaml — read it
+    # from run_cfg (cycling reads its own from cc.get(...)). Reading top-level
+    # cfg here silently ignored the configured value and always used 30.
+    wet_threshold    = run_cfg.get("wet_threshold_pct", 30)
 
     try:
         hourly = fetch_hourly(latitude=loc["lat"], longitude=loc["lon"])
