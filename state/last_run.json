@@ -1,26 +1,26 @@
 {
-  "target_date": "2026-05-30",
+  "target_date": "2026-05-31",
   "blocks": {
     "baby": null,
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-05-30",
+      "date": "2026-05-31",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 16.4,
-          "wind_ms": 1.1,
-          "wind_dir": "N",
+          "temp_c": 19.0,
+          "wind_ms": 0.9,
+          "wind_dir": "ESE",
           "rain_pct": 0,
-          "cloud_pct": 100,
-          "cloud_label": "Overcast"
+          "cloud_pct": 68,
+          "cloud_label": "Mostly cloudy"
         },
         {
           "time": "16:30",
-          "temp_c": 30.4,
-          "wind_ms": 1.6,
-          "wind_dir": "NNW",
-          "rain_pct": 0,
+          "temp_c": 24.3,
+          "wind_ms": 2.7,
+          "wind_dir": "ENE",
+          "rain_pct": 65,
           "cloud_pct": 100,
           "cloud_label": "Overcast"
         }
@@ -28,7 +28,7 @@
       "alerts": [],
       "clothing": {
         "wear": "underpants, light socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
-        "pack": "short socks to change into; consider leaving light hat/cap at home or packing it as afternoon will be significantly warmer (30.4\u00b0C vs 16.4\u00b0C)"
+        "pack": "rain jacket"
       }
     },
     "running": {
@@ -36,14 +36,14 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Saturday, 30 May 2026",
+      "date": "Sunday, 31 May 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 13.6,
-        "wind_ms": 1.0,
-        "wind_dir": "NE",
+        "temp_c": 14.9,
+        "wind_ms": 0.82,
+        "wind_dir": "SSW",
         "rain_pct": 0,
-        "cloud_label": "Overcast"
+        "cloud_label": "Sunny"
       },
       "alerts": [],
       "clothing": {
@@ -58,15 +58,15 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Saturday, 30 May 2026",
+      "date": "Sunday, 31 May 2026",
       "swim_time": "07:00",
-      "water_temp_c": 20.7,
+      "water_temp_c": 21.6,
       "air": {
-        "temp_c": 17.1,
-        "wind_ms": 0.61,
-        "wind_dir": "W",
+        "temp_c": 19.3,
+        "wind_ms": 1.06,
+        "wind_dir": "SW",
         "rain_pct": 0,
-        "cloud_label": "Overcast"
+        "cloud_label": "Sunny"
       }
     },
     "stocks": {
