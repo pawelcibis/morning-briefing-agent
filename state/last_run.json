@@ -1,34 +1,64 @@
 {
-  "target_date": "2026-05-31",
+  "target_date": "2026-06-01",
   "blocks": {
-    "baby": null,
+    "baby": {
+      "location": {
+        "postcode": 8400,
+        "city": "Winterthur"
+      },
+      "date": "Monday, 01 June 2026",
+      "weekday": "Mon",
+      "baby_age_months": 4.8,
+      "drop_off": {
+        "time": "08:00",
+        "temp_c": 15.9,
+        "wind_ms": 1.53,
+        "wind_dir": "W",
+        "rain_pct": 43,
+        "cloud_label": "Overcast"
+      },
+      "pick_up": {
+        "time": "16:15",
+        "temp_c": 22.6,
+        "wind_ms": 1.62,
+        "wind_dir": "NNW",
+        "rain_pct": 0,
+        "cloud_label": "Overcast"
+      },
+      "alerts": [],
+      "clothing": {
+        "outfit": "Long-sleeve bodysuit, fleece-lined leggings, warm cardigan or fleece jacket, warm hat, mittens, warm socks, and cozy booties",
+        "pushchair_extras": "Waterproof rain cover, thermal blanket or fleece pram liner, windproof pram quilt",
+        "pick_up_note": "Bring a lightweight cardigan or swaddle to remove layers as the afternoon warms to 22.6\u00b0C, and remove the thermal blanket before pick-up."
+      }
+    },
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-05-31",
+      "date": "2026-06-01",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 19.0,
-          "wind_ms": 0.9,
-          "wind_dir": "ESE",
-          "rain_pct": 0,
-          "cloud_pct": 68,
-          "cloud_label": "Mostly cloudy"
+          "temp_c": 16.9,
+          "wind_ms": 1.1,
+          "wind_dir": "W",
+          "rain_pct": 18,
+          "cloud_pct": 97,
+          "cloud_label": "Overcast"
         },
         {
           "time": "16:30",
-          "temp_c": 24.3,
-          "wind_ms": 2.7,
-          "wind_dir": "ENE",
-          "rain_pct": 65,
-          "cloud_pct": 100,
+          "temp_c": 23.4,
+          "wind_ms": 1.5,
+          "wind_dir": "W",
+          "rain_pct": 0,
+          "cloud_pct": 90,
           "cloud_label": "Overcast"
         }
       ],
       "alerts": [],
       "clothing": {
         "wear": "underpants, light socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
-        "pack": "rain jacket"
+        "pack": "short socks"
       }
     },
     "running": {
@@ -36,20 +66,20 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Sunday, 31 May 2026",
+      "date": "Monday, 01 June 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 14.9,
-        "wind_ms": 0.82,
-        "wind_dir": "SSW",
-        "rain_pct": 0,
-        "cloud_label": "Sunny"
+        "temp_c": 16.1,
+        "wind_ms": 1.4,
+        "wind_dir": "W",
+        "rain_pct": 48,
+        "cloud_label": "Overcast"
       },
       "alerts": [],
       "clothing": {
-        "dry": "short-sleeved top, shorts, standard socks",
+        "dry": "short-sleeved top, shorts, short socks",
         "wet": "cap",
-        "wet_active": false
+        "wet_active": true
       }
     },
     "swimming": {
@@ -58,15 +88,15 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Sunday, 31 May 2026",
+      "date": "Monday, 01 June 2026",
       "swim_time": "07:00",
-      "water_temp_c": 21.6,
+      "water_temp_c": 21.4,
       "air": {
-        "temp_c": 19.3,
-        "wind_ms": 1.06,
-        "wind_dir": "SW",
-        "rain_pct": 0,
-        "cloud_label": "Sunny"
+        "temp_c": 16.3,
+        "wind_ms": 1.0,
+        "wind_dir": "W",
+        "rain_pct": 35,
+        "cloud_label": "Overcast"
       }
     },
     "stocks": {
