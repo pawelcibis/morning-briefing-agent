@@ -1,64 +1,66 @@
 {
-  "target_date": "2026-06-01",
+  "target_date": "2026-06-02",
   "blocks": {
     "baby": {
       "location": {
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Monday, 01 June 2026",
-      "weekday": "Mon",
-      "baby_age_months": 4.8,
+      "date": "Tuesday, 02 June 2026",
+      "weekday": "Tue",
+      "baby_age_months": 4.9,
       "drop_off": {
         "time": "08:00",
-        "temp_c": 15.9,
-        "wind_ms": 1.53,
-        "wind_dir": "W",
-        "rain_pct": 43,
+        "temp_c": 16.8,
+        "wind_ms": 0.22,
+        "wind_dir": "ESE",
+        "rain_pct": 0,
         "cloud_label": "Overcast"
       },
       "pick_up": {
         "time": "16:15",
-        "temp_c": 22.6,
-        "wind_ms": 1.62,
-        "wind_dir": "NNW",
-        "rain_pct": 0,
+        "temp_c": 24.4,
+        "wind_ms": 1.33,
+        "wind_dir": "WNW",
+        "rain_pct": 60,
         "cloud_label": "Overcast"
       },
-      "alerts": [],
+      "alerts": [
+        "Rain likely 16:00\u201316:00 (peak 60%)"
+      ],
       "clothing": {
-        "outfit": "Long-sleeve bodysuit, fleece-lined leggings, warm cardigan or fleece jacket, warm hat, mittens, warm socks, and cozy booties",
-        "pushchair_extras": "Waterproof rain cover, thermal blanket or fleece pram liner, windproof pram quilt",
-        "pick_up_note": "Bring a lightweight cardigan or swaddle to remove layers as the afternoon warms to 22.6\u00b0C, and remove the thermal blanket before pick-up."
+        "outfit": "Long-sleeve bodysuit, fleece-lined leggings, closed-toe booties, and a lightweight quilted jacket. Hat and mittens for drop-off warmth.",
+        "pushchair_extras": "Cellular blanket for insulation during the cool morning, rain cover for the afternoon downpour (peak at 16:00), and a windproof pram liner.",
+        "pick_up_note": "Rain cover will likely still be needed at pick-up; bring a dry blanket or change of clothes in case of splash-through or diaper mishap in wet conditions."
       }
     },
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-06-01",
+      "date": "2026-06-02",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 16.9,
-          "wind_ms": 1.1,
-          "wind_dir": "W",
-          "rain_pct": 18,
-          "cloud_pct": 97,
+          "temp_c": 16.4,
+          "wind_ms": 0.6,
+          "wind_dir": "N",
+          "rain_pct": 0,
+          "cloud_pct": 100,
           "cloud_label": "Overcast"
         },
         {
           "time": "16:30",
-          "temp_c": 23.4,
-          "wind_ms": 1.5,
+          "temp_c": 25.2,
+          "wind_ms": 2.4,
           "wind_dir": "W",
-          "rain_pct": 0,
-          "cloud_pct": 90,
+          "rain_pct": 65,
+          "cloud_pct": 100,
           "cloud_label": "Overcast"
         }
       ],
       "alerts": [],
       "clothing": {
         "wear": "underpants, light socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
-        "pack": "short socks"
+        "pack": "rain jacket, short socks"
       }
     },
     "running": {
@@ -66,20 +68,20 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Monday, 01 June 2026",
+      "date": "Tuesday, 02 June 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 16.1,
-        "wind_ms": 1.4,
-        "wind_dir": "W",
-        "rain_pct": 48,
+        "temp_c": 14.7,
+        "wind_ms": 0.22,
+        "wind_dir": "SSW",
+        "rain_pct": 0,
         "cloud_label": "Overcast"
       },
       "alerts": [],
       "clothing": {
-        "dry": "short-sleeved top, shorts, short socks",
+        "dry": "short-sleeved top, shorts, standard socks",
         "wet": "cap",
-        "wet_active": true
+        "wet_active": false
       }
     },
     "swimming": {
@@ -88,14 +90,14 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Monday, 01 June 2026",
+      "date": "Tuesday, 02 June 2026",
       "swim_time": "07:00",
-      "water_temp_c": 21.4,
+      "water_temp_c": 21.0,
       "air": {
-        "temp_c": 16.3,
-        "wind_ms": 1.0,
-        "wind_dir": "W",
-        "rain_pct": 35,
+        "temp_c": 15.4,
+        "wind_ms": 1.03,
+        "wind_dir": "WSW",
+        "rain_pct": 0,
         "cloud_label": "Overcast"
       }
     },
@@ -105,13 +107,13 @@
           "ticker": "KRU",
           "exchange": "WSE",
           "currency": "PLN",
-          "date": "2026-05-29",
-          "close": 410.0,
-          "prev_close": 413.0,
-          "change_pct": -0.73,
+          "date": "2026-06-01",
+          "close": 400.0,
+          "prev_close": 410.0,
+          "change_pct": -2.44,
           "shares": 3109,
-          "portfolio_value": 1274690.0,
-          "portfolio_change": -9327.0,
+          "portfolio_value": 1243600.0,
+          "portfolio_change": -31090.0,
           "error": null
         }
       ]
