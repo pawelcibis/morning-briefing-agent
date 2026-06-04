@@ -1,66 +1,64 @@
 {
-  "target_date": "2026-06-04",
+  "target_date": "2026-06-05",
   "blocks": {
     "baby": {
       "location": {
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Thursday, 04 June 2026",
-      "weekday": "Thu",
-      "baby_age_months": 4.9,
+      "date": "Friday, 05 June 2026",
+      "weekday": "Fri",
+      "baby_age_months": 5.0,
       "drop_off": {
         "time": "08:00",
-        "temp_c": 15.1,
-        "wind_ms": 0.92,
+        "temp_c": 12.3,
+        "wind_ms": 1.46,
         "wind_dir": "SSW",
-        "rain_pct": 0,
+        "rain_pct": 5,
         "cloud_label": "Overcast"
       },
       "pick_up": {
         "time": "16:15",
-        "temp_c": 18.0,
-        "wind_ms": 2.95,
+        "temp_c": 18.1,
+        "wind_ms": 1.94,
         "wind_dir": "WSW",
-        "rain_pct": 83,
+        "rain_pct": 0,
         "cloud_label": "Overcast"
       },
-      "alerts": [
-        "Rain likely 15:00\u201316:00 (peak 83%)"
-      ],
+      "alerts": [],
       "clothing": {
-        "outfit": "Long-sleeved bodysuit, knit cardigan, warm leggings, warm socks, and a lightweight hat. A light blanket for additional warmth in the pushchair.",
-        "pushchair_extras": "Insulated pushchair liner or padded footmuff, waterproof rain cover, and an extra dry blanket for the journey home.",
-        "pick_up_note": "Rain cover will likely be in use; check that baby's clothing is dry and add the extra blanket immediately when leaving daycare as conditions will be cooler and wetter."
+        "outfit": "Long-sleeve bodysuit, fleece-lined trousers, warm socks, and a lightweight fleece jacket or cardigan",
+        "pushchair_extras": "Insulated pushchair liner or sleeping bag (tog rating 2.5), waterproof rain cover, and a cellular blanket for extra warmth during the colder morning",
+        "pick_up_note": "Remove the fleece jacket and blanket before pick-up as it will be warmer; keep the rain cover accessible in case of afternoon clouds."
       }
     },
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-06-04",
+      "date": "2026-06-05",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 13.6,
-          "wind_ms": 0.7,
+          "temp_c": 13.1,
+          "wind_ms": 0.8,
           "wind_dir": "SSW",
-          "rain_pct": 0,
-          "cloud_pct": 97,
+          "rain_pct": 18,
+          "cloud_pct": 99,
           "cloud_label": "Overcast"
         },
         {
           "time": "16:30",
           "temp_c": 18.2,
-          "wind_ms": 3.1,
+          "wind_ms": 2.5,
           "wind_dir": "WSW",
-          "rain_pct": 98,
-          "cloud_pct": 98,
+          "rain_pct": 0,
+          "cloud_pct": 100,
           "cloud_label": "Overcast"
         }
       ],
       "alerts": [],
       "clothing": {
         "wear": "underpants, light socks, long sleeve shirt, cycling pants, cycling short shirt, light hat/cap, medium long gloves",
-        "pack": "short gloves, rain jacket"
+        "pack": "short gloves"
       }
     },
     "running": {
@@ -68,13 +66,13 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Thursday, 04 June 2026",
+      "date": "Friday, 05 June 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 12.4,
-        "wind_ms": 0.95,
-        "wind_dir": "SSE",
-        "rain_pct": 0,
+        "temp_c": 12.0,
+        "wind_ms": 1.7,
+        "wind_dir": "SSW",
+        "rain_pct": 10,
         "cloud_label": "Overcast"
       },
       "alerts": [],
@@ -90,14 +88,14 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Thursday, 04 June 2026",
+      "date": "Friday, 05 June 2026",
       "swim_time": "07:00",
-      "water_temp_c": 19.5,
+      "water_temp_c": 19.1,
       "air": {
-        "temp_c": 12.8,
-        "wind_ms": 1.14,
-        "wind_dir": "SSW",
-        "rain_pct": 0,
+        "temp_c": 12.3,
+        "wind_ms": 0.94,
+        "wind_dir": "WSW",
+        "rain_pct": 15,
         "cloud_label": "Overcast"
       }
     },
