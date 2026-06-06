@@ -1,34 +1,34 @@
 {
-  "target_date": "2026-06-06",
+  "target_date": "2026-06-07",
   "blocks": {
     "baby": null,
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-06-06",
+      "date": "2026-06-07",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 11.4,
-          "wind_ms": 0.7,
-          "wind_dir": "NE",
-          "rain_pct": 0,
+          "temp_c": 16.1,
+          "wind_ms": 0.8,
+          "wind_dir": "WNW",
+          "rain_pct": 5,
           "cloud_pct": 100,
           "cloud_label": "Overcast"
         },
         {
           "time": "16:30",
-          "temp_c": 22.2,
-          "wind_ms": 2.8,
-          "wind_dir": "WSW",
-          "rain_pct": 3,
-          "cloud_pct": 76,
-          "cloud_label": "Mostly cloudy"
+          "temp_c": 22.9,
+          "wind_ms": 1.9,
+          "wind_dir": "WNW",
+          "rain_pct": 0,
+          "cloud_pct": 18,
+          "cloud_label": "Sunny"
         }
       ],
       "alerts": [],
       "clothing": {
-        "wear": "underpants, light socks, long sleeve shirt, cycling pants, cycling short shirt, light hat/cap, medium long gloves",
-        "pack": "short socks, short gloves"
+        "wear": "underpants, light socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
+        "pack": "short socks"
       }
     },
     "running": {
@@ -36,11 +36,11 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Saturday, 06 June 2026",
+      "date": "Sunday, 07 June 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 11.2,
-        "wind_ms": 0.28,
+        "temp_c": 14.9,
+        "wind_ms": 1.27,
         "wind_dir": "SW",
         "rain_pct": 0,
         "cloud_label": "Overcast"
@@ -58,13 +58,13 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Saturday, 06 June 2026",
+      "date": "Sunday, 07 June 2026",
       "swim_time": "07:00",
       "water_temp_c": 19.4,
       "air": {
-        "temp_c": 11.3,
-        "wind_ms": 1.66,
-        "wind_dir": "WSW",
+        "temp_c": 15.1,
+        "wind_ms": 0.86,
+        "wind_dir": "NW",
         "rain_pct": 0,
         "cloud_label": "Overcast"
       }
@@ -75,14 +75,14 @@
           "ticker": "KRU",
           "exchange": "WSE",
           "currency": "PLN",
-          "date": "2026-06-05",
-          "close": 397.7,
-          "prev_close": 396.6,
-          "change_pct": 0.28,
+          "date": null,
+          "close": null,
+          "prev_close": null,
+          "change_pct": null,
           "shares": 3109,
-          "portfolio_value": 1236449.3,
-          "portfolio_change": 3419.9,
-          "error": null
+          "portfolio_value": null,
+          "portfolio_change": null,
+          "error": "Price fetch failed (Stooq unavailable or bad response)"
         }
       ]
     }
