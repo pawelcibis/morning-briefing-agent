@@ -89,11 +89,21 @@ def cycling_clothing_recommendation(
 # pattern it has. The skeleton below assumes you create the client per call;
 # adjust to match your existing style.
 _BABY_SYSTEM = """\
-You are advising on what to dress a young baby in for daycare.
-The baby travels in a pushchair, so they are NOT self-warming through movement —
-cold air and wind chill matter more than for an active toddler.
-Respond ONLY with a JSON object, no markdown, no commentary:
-{"outfit": "...", "pushchair_extras": "...", "pick_up_note": "..."}
+You are advising on what to dress a young baby in for a very short pushchair journey to daycare.
+
+Key context (read carefully before answering):
+- The journey is ONLY 5 minutes long — brief cold exposure.
+- The pushchair is WELL-PROTECTED from wind (good canopy and footmuff shield the baby).
+- Therefore: do NOT over-layer and do NOT worry about wind chill.
+- Recommend ONE simple outfit appropriate for the temperature. Two items only if the
+  temperature genuinely demands it (e.g. a base layer + warm suit below 5 °C).
+  NEVER recommend three or more layers.
+- pushchair_extras: "Add rain cover" if rain probability is ≥ 40%. Empty string "" otherwise.
+  Do not mention footmuffs, blankets, or other pushchair items.
+- pick_up_note: always return empty string "". Spare clothes are kept at daycare.
+
+Respond ONLY with a JSON object — no markdown, no commentary:
+{"outfit": "...", "pushchair_extras": "...", "pick_up_note": ""}
 """
 
 
@@ -105,8 +115,12 @@ def baby_clothing_recommendation(
     language: str = "en",
 ) -> dict:
     """
-    Ask Claude Haiku what to dress the baby in for drop-off, what to put
-    in the pushchair, and whether pick-up conditions need adjustment.
+    Ask Claude Haiku what to dress the baby in for drop-off.
+
+    The revised prompt (Phase 14) focuses on a 5-minute, wind-protected pushchair
+    journey: minimal outfit, rain cover only when needed, pick_up_note always empty
+    (spare clothes are kept at crèche).
+
     Falls back gracefully if the API key is missing or the call fails.
     """
     api_key = os.environ.get("ANTHROPIC_API_KEY", "")
@@ -117,33 +131,13 @@ def baby_clothing_recommendation(
             "pick_up_note": "",
         }
 
-# Format midday alerts for the prompt (empty string if none).
-    midday_section = ""
-    if midday_alerts:
-        alert_lines = "\n".join(f"  - {a}" for a in midday_alerts)
-        midday_section = (
-            f"\nMidday conditions (between drop-off and pick-up):\n"
-            f"{alert_lines}\n"
-            f"Factor this into pushchair_extras (e.g. rain cover) "
-            f"and pick_up_note if relevant.\n"
-        )
-
+    # Only temperature and rain matter — pushchair blocks wind and the journey
+    # is 5 minutes, so pick-up weather and midday alerts are not relevant here.
     user_msg = (
-        f"Baby age: {age_months} months. Language: {language}.\n"
-        f"\n"
+        f"Baby age: {age_months} months.\n"
         f"Drop-off (08:00): {drop_off_weather['temp_c']:.1f}°C, "
-        f"{drop_off_weather['wind_ms']} m/s {drop_off_weather['wind_dir']}, "
-        f"{drop_off_weather['rain_pct']}% rain, {drop_off_weather['cloud_label']}\n"
-        f"\n"
-        f"Pick-up (16:15): {pickup_weather['temp_c']:.1f}°C, "
-        f"{pickup_weather['wind_ms']} m/s {pickup_weather['wind_dir']}, "
-        f"{pickup_weather['rain_pct']}% rain, {pickup_weather['cloud_label']}\n"
-        f"{midday_section}"
-        f"\n"
-        f"Fields to fill:\n"
-        f"  outfit           — full outfit for drop-off\n"
-        f"  pushchair_extras — items for/over the pushchair (rain cover, blanket, etc.)\n"
-        f"  pick_up_note     — one sentence on pick-up adjustment, or empty string\n"
+        f"{drop_off_weather['rain_pct']}% rain probability.\n"
+        f"What should the baby wear for the short pushchair journey to daycare?"
     )
 
     try:
@@ -156,7 +150,7 @@ def baby_clothing_recommendation(
             },
             json={
                 "model": _MODEL,
-                "max_tokens": 400,
+                "max_tokens": 200,
                 "system": _BABY_SYSTEM,
                 "messages": [{"role": "user", "content": user_msg}],
             },
