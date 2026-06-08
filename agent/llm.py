@@ -118,7 +118,7 @@ def baby_clothing_recommendation(
     Ask Claude Haiku what to dress the baby in for drop-off.
 
     The revised prompt (Phase 14) focuses on a 5-minute, wind-protected pushchair
-    journey: minimal outfit, rain cover only when needed, pick_up_note always empty
+    journey: reasonable (not minimal, but not too warm) outfit, rain cover only when needed, pick_up_note always empty
     (spare clothes are kept at crèche).
 
     Falls back gracefully if the API key is missing or the call fails.
