@@ -36,7 +36,8 @@ from agent.blocks.baby     import build_baby_block
 from agent.blocks.cycling  import build_cycling_block
 from agent.blocks.running  import build_running_block
 from agent.blocks.swimming import build_swimming_block
-from agent.blocks.stocks   import build_stocks_block
+from agent.blocks.stocks         import build_stocks_block
+from agent.blocks.wednesday_event import build_wednesday_event_block
 
 from agent.dispatch.email    import send as send_email
 from agent.dispatch.telegram import send_telegram
@@ -78,14 +79,28 @@ def _safe_build(name: str, fn, *args, rl: "RunLog | None" = None):
     return block
 
 
-def _build_all_blocks(cfg, target_date, rl: "RunLog | None" = None):
+def _build_all_blocks(cfg, target_date, run_type="evening", today=None,
+                      rl: "RunLog | None" = None):
+    import datetime as _dt
+    today = today or _dt.date.today()
     print(f"\n[main] Building blocks for target_date={target_date.isoformat()}")
+
+    # Stocks: only on weekday evenings (Mon–Fri). Weekend markets are closed and
+    # the morning delta for stocks is not useful (nothing changes overnight).
+    stocks_eligible = run_type == "evening" and today.weekday() < 5
+    if not stocks_eligible:
+        weekday_name = today.strftime("%a")
+        print(f"[main] [stocks    ] skipped (run_type={run_type}, today={weekday_name})")
+        if rl:
+            rl.block("stocks", "skipped")
+
     return {
-        "baby":     _safe_build("baby",     build_baby_block,     cfg, target_date, rl=rl),
-        "cycling":  _safe_build("cycling",  build_cycling_block,  cfg, target_date, rl=rl),
-        "running":  _safe_build("running",  build_running_block,  cfg, target_date, rl=rl),
-        "swimming": _safe_build("swimming", build_swimming_block, cfg, target_date, rl=rl),
-        "stocks":   _safe_build("stocks",   build_stocks_block,   cfg, rl=rl),
+        "baby":            _safe_build("baby",            build_baby_block,           cfg, target_date, rl=rl),
+        "cycling":         _safe_build("cycling",         build_cycling_block,         cfg, target_date, rl=rl),
+        "running":         _safe_build("running",         build_running_block,         cfg, target_date, rl=rl),
+        "swimming":        _safe_build("swimming",        build_swimming_block,        cfg, target_date, rl=rl),
+        "stocks":          _safe_build("stocks",          build_stocks_block,          cfg, rl=rl) if stocks_eligible else None,
+        "wednesday_event": _safe_build("wednesday_event", build_wednesday_event_block, cfg, target_date, rl=rl),
     }
 
 
@@ -211,7 +226,7 @@ def main(run_type: str, dry_run: bool = False) -> int:
         print(f"[main] previous state: empty (first run, or state file missing)")
 
     # Build blocks
-    blocks = _build_all_blocks(cfg, target_date, rl=rl)
+    blocks = _build_all_blocks(cfg, target_date, run_type=run_type, today=today, rl=rl)
 
     # Compute deltas (morning only)
     deltas = None

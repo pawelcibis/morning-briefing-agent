@@ -1,59 +1,61 @@
 {
-  "target_date": "2026-05-26",
+  "target_date": "2026-05-28",
   "blocks": {
     "baby": {
       "location": {
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Tuesday, 26 May 2026",
-      "weekday": "Tue",
-      "baby_age_months": 4.6,
+      "date": "Thursday, 28 May 2026",
+      "weekday": "Thu",
+      "baby_age_months": 4.7,
       "drop_off": {
         "time": "08:00",
-        "temp_c": 18.7,
-        "wind_ms": 0.1,
-        "wind_dir": "N",
+        "temp_c": 17.4,
+        "wind_ms": 0.73,
+        "wind_dir": "NNE",
         "rain_pct": 0,
         "cloud_label": "Sunny"
       },
       "pick_up": {
         "time": "16:15",
-        "temp_c": 30.8,
-        "wind_ms": 1.98,
+        "temp_c": 28.2,
+        "wind_ms": 2.72,
         "wind_dir": "NE",
         "rain_pct": 0,
-        "cloud_label": "Sunny"
+        "cloud_label": "Overcast"
       },
+      "alerts": [],
       "clothing": {
-        "outfit": "Long-sleeve bodysuit, lightweight trousers, cardigan or sweater for drop-off, socks and soft shoes",
-        "pushchair_extras": "Lightweight cellular blanket for morning coolness; remove blanket before midday",
-        "pick_up_note": "Baby will be warm by pickup time\u2014ensure they are in breathable clothing layers that can be easily removed, and offer extra water/feeds to stay hydrated in the heat."
+        "outfit": "Long-sleeved bodysuit, lightweight trousers, soft cardigan, warm hat, mittens, and warm socks",
+        "pushchair_extras": "Cellular blanket or merino wool layer for insulation during morning travel; wind shield for pushchair",
+        "pick_up_note": "Remove cardigan and hat before pick-up; bring a light muslin wrap for the warmer afternoon as baby warms up in the pushchair."
       }
     },
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-05-26",
+      "date": "2026-05-28",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 17.8,
-          "wind_ms": 0.9,
+          "temp_c": 17.9,
+          "wind_ms": 1.6,
           "wind_dir": "N",
           "rain_pct": 0,
-          "cloud_pct": 24,
-          "cloud_label": "Partially sunny"
+          "cloud_pct": 7,
+          "cloud_label": "Sunny"
         },
         {
           "time": "16:30",
-          "temp_c": 31.7,
-          "wind_ms": 1.9,
-          "wind_dir": "NNE",
+          "temp_c": 29.3,
+          "wind_ms": 3.1,
+          "wind_dir": "NE",
           "rain_pct": 0,
-          "cloud_pct": 0,
-          "cloud_label": "Sunny"
+          "cloud_pct": 100,
+          "cloud_label": "Overcast"
         }
       ],
+      "alerts": [],
       "clothing": {
         "wear": "underpants, light socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
         "pack": "short socks"
@@ -64,15 +66,16 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Tuesday, 26 May 2026",
+      "date": "Thursday, 28 May 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 16.8,
-        "wind_ms": 0.58,
-        "wind_dir": "SSE",
+        "temp_c": 15.9,
+        "wind_ms": 0.5,
+        "wind_dir": "NW",
         "rain_pct": 0,
         "cloud_label": "Sunny"
       },
+      "alerts": [],
       "clothing": {
         "dry": "short-sleeved top, shorts, short socks",
         "wet": "cap",
@@ -85,13 +88,13 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Tuesday, 26 May 2026",
+      "date": "Thursday, 28 May 2026",
       "swim_time": "07:00",
-      "water_temp_c": 18.7,
+      "water_temp_c": 20.2,
       "air": {
-        "temp_c": 19.0,
-        "wind_ms": 0.72,
-        "wind_dir": "SW",
+        "temp_c": 17.5,
+        "wind_ms": 1.71,
+        "wind_dir": "WNW",
         "rain_pct": 0,
         "cloud_label": "Sunny"
       }
@@ -102,13 +105,13 @@
           "ticker": "KRU",
           "exchange": "WSE",
           "currency": "PLN",
-          "date": "2026-05-22",
-          "close": 429.2,
-          "prev_close": 426.2,
-          "change_pct": 0.7,
+          "date": "2026-05-26",
+          "close": 430.6,
+          "prev_close": 436.0,
+          "change_pct": -1.24,
           "shares": 3019,
-          "portfolio_value": 1295754.8,
-          "portfolio_change": 9057.0,
+          "portfolio_value": 1299981.4,
+          "portfolio_change": -16302.6,
           "error": null
         }
       ]

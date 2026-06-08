@@ -25,6 +25,8 @@ def fetch_hourly(latitude: float, longitude: float, timezone: str = "Europe/Zuri
             "winddirection_10m",
             "precipitation_probability",
             "cloudcover",
+            "weather_code",    # WMO code; ≥95 = thunderstorm (used by wednesday_event block)
+            "precipitation",   # total precipitation mm/h (intensity proxy)
         ],
         "wind_speed_unit": "ms",          # metres per second (spec uses m/s)
         "timezone": timezone,
@@ -50,6 +52,11 @@ def fetch_hourly(latitude: float, longitude: float, timezone: str = "Europe/Zuri
     )
 
     hourly = data["hourly"]
+    n = len(hourly["time"])
+    # weather_code / weathercode: Open-Meteo uses "weather_code" in current API;
+    # fall back to "weathercode" if an older cached response is returned.
+    weather_codes  = hourly.get("weather_code") or hourly.get("weathercode") or ([None] * n)
+    precipitation  = hourly.get("precipitation") or ([None] * n)
     rows = []
     for i, time_str in enumerate(hourly["time"]):
         rows.append({
@@ -59,6 +66,8 @@ def fetch_hourly(latitude: float, longitude: float, timezone: str = "Europe/Zuri
             "winddirection_deg": hourly["winddirection_10m"][i],
             "precipitation_probability_pct": hourly["precipitation_probability"][i],
             "cloudcover_pct": hourly["cloudcover"][i],
+            "weather_code": weather_codes[i],      # int or None; ≥95 = thunderstorm
+            "precipitation_mm_h": precipitation[i],  # float or None; total precip mm/h
         })
     return rows
 

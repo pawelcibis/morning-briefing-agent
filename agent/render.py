@@ -258,6 +258,65 @@ def render_stocks_block(block: dict,
 
 
 # ---------------------------------------------------------------------------
+# Wednesday event renderer
+# ---------------------------------------------------------------------------
+
+_STATUS_EMOJI = {"green": "🟢", "amber": "🟡", "red": "🔴"}
+
+
+def render_wednesday_event_block(block: dict,
+                                 deltas: dict | None = None,   # accepted, not used
+                                 thresholds: dict | None = None) -> str:
+    """Render the Wednesday outdoor event block with traffic-light status."""
+    if block is None:
+        return ""
+    loc = block["location"]
+    e = _STATUS_EMOJI
+
+    lines = _block_header(
+        "🎪", f"WEDNESDAY EVENT — {loc['city']} {loc['postcode']}",
+        block["date"],
+    )
+    lines.append(f"  Overall status:  {e[block['status']]} {block['status'].upper()}")
+    lines.append("")
+
+    # --- Temperature ---
+    t = block["temperature"]
+    slots_str = "  ".join(
+        f"{s['time']}  {_fmt_temp(s['temp_c'])}"
+        for s in t["slots"]
+    )
+    lines.append(f"  Temperature (18–22h)          {e[t['status']]} {t['status'].upper()}")
+    lines.append(f"    {slots_str}")
+    lines.append("")
+
+    # --- Rain risk ---
+    r = block["rain"]
+    rain_line = f"  Rain risk (18–21h)            {e[r['status']]} {r['status'].upper()}"
+    lines.append(rain_line)
+    if r["max_pct"] == 0:
+        lines.append("    None forecast")
+    else:
+        intensity = r["intensity_label"]
+        mm = r["max_precip_mm_h"]
+        lines.append(
+            f"    Max: {r['max_pct']}%  ·  {intensity} ({mm:.1f} mm/h)"
+        )
+    lines.append("")
+
+    # --- Thunderstorm ---
+    ts = block["thunderstorm"]
+    lines.append(f"  Thunderstorm (18–21h)         {e[ts['status']]} {ts['status'].upper()}")
+    if ts["present"]:
+        hours_str = ", ".join(ts["hours"])
+        lines.append(f"    ⚡ Possible at: {hours_str}")
+    else:
+        lines.append("    None forecast")
+
+    return "\n".join(lines)
+
+
+# ---------------------------------------------------------------------------
 # Digest assembly
 # ---------------------------------------------------------------------------
 
@@ -272,7 +331,7 @@ def render_digest(blocks, target_date,
       evening → "Morning Briefing — <date>"   (full forecast for tomorrow)
       morning → "Morning Update — <date>"      (delta vs last night)
 
-    Block order matches SPEC §3: Baby, Cycling, Running, Swimming, Stocks.
+    Block order: Baby, Cycling, Running, Swimming, Stocks, Wednesday event.
     """
     banner = "Morning Update" if run_type == "morning" else "Morning Briefing"
     header = f"{banner} — {target_date.strftime('%A, %d %B %Y')}"
@@ -281,11 +340,12 @@ def render_digest(blocks, target_date,
     parts = [header, sep, ""]
 
     renderers = [
-        ("baby",     render_baby_block),
-        ("cycling",  render_cycling_block),
-        ("running",  render_running_block),
-        ("swimming", render_swimming_block),
-        ("stocks",   render_stocks_block),
+        ("baby",            render_baby_block),
+        ("cycling",         render_cycling_block),
+        ("running",         render_running_block),
+        ("swimming",        render_swimming_block),
+        ("stocks",          render_stocks_block),
+        ("wednesday_event", render_wednesday_event_block),
     ]
 
     for key, fn in renderers:
@@ -306,7 +366,7 @@ def render_digest(blocks, target_date,
 # ---------------------------------------------------------------------------
 
 ROLE_BLOCKS = {
-    "full":      {"baby", "cycling", "running", "swimming", "stocks"},
+    "full":      {"baby", "cycling", "running", "swimming", "stocks", "wednesday_event"},
     "baby_only": {"baby"},
 }
 

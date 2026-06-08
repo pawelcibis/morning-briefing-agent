@@ -62,6 +62,12 @@ stocks:
     shares_secret: STOCKS_KRU_SHARES
     currency: PLN
 
+wednesday_event:
+  # Outdoor evening event — every Wednesday June–September, 18:00–22:00.
+  # Block appears in: Tuesday evening briefing + Wednesday morning update.
+  # Location: Zurich 8001 (same as cycling).
+  location: { postcode: 8001, city: Zurich, lat: 47.3769, lon: 8.5417 }
+
 recipients:
   - name: Pawel
     role: full
@@ -78,4 +84,4 @@ recipients:
       - type: email
         address_secret: RECIPIENT_LILIANA_EMAIL
       - type: telegram                                   # ← add this
-        chat_id_secret: RECIPIENT_LILIANA_TELEGRAM       # ← and this        
+        chat_id_secret: RECIPIENT_LILIANA_TELEGRAM       # ← and this
