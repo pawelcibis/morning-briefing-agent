@@ -54,13 +54,21 @@ def fetch_stock_quote(ticker: str, exchange: str) -> dict | None:
 
     symbol = ticker.lower()   # Stooq uses bare ticker: "kru"
 
+    # Request the last 14 calendar days explicitly.  Without d1/d2 Stooq may
+    # return just 1 row (the latest close), which breaks the prev_close calc.
+    # 14 days guarantees ≥ 2 trading days even over a long weekend or holiday.
+    from datetime import date, timedelta
+    d2 = date.today().strftime("%Y%m%d")
+    d1 = (date.today() - timedelta(days=14)).strftime("%Y%m%d")
+
     try:
         from agent.retry import with_retries
 
         def _do_request():
             r = requests.get(
                 STOOQ_URL,
-                params={"s": symbol, "i": "d", "apikey": api_key},
+                params={"s": symbol, "i": "d", "apikey": api_key,
+                        "d1": d1, "d2": d2},
                 timeout=10,
             )
             r.raise_for_status()
@@ -76,13 +84,17 @@ def fetch_stock_quote(ticker: str, exchange: str) -> dict | None:
         # Guard: Stooq returns a Polish error page if the key/ticker is wrong.
         # Valid CSV always starts with "Data" (Polish for Date).
         if not text.startswith("Data"):
+            print(f"[stocks] unexpected Stooq response for {ticker} "
+                  f"(first 200 chars): {text[:200]!r}")
             return None
 
         reader = csv.DictReader(io.StringIO(text))
         rows = list(reader)
 
-        # Need at least 2 rows to compute prev_close
+        # Need at least 2 rows to compute prev_close (yesterday vs. today).
         if len(rows) < 2:
+            print(f"[stocks] only {len(rows)} row(s) returned for {ticker}; "
+                  f"need ≥2.  Full response: {text!r}")
             return None
 
         latest   = rows[-1]   # most-recent trading day
