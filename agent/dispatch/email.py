@@ -22,6 +22,7 @@ orchestrator can log them uniformly.
 import os
 import smtplib
 from email.message import EmailMessage
+from email.utils import formataddr
 
 from agent.retry import with_retries
 
@@ -60,8 +61,13 @@ def send(to: str, subject: str, body: str) -> tuple[bool, str | None]:
         return (False, msg)
 
     # --- Build the message ---
+    # SMTP_FROM_NAME sets the display name shown in recipients' inboxes
+    # (e.g. "Morning Briefing").  Not sensitive — defaults to "Morning Briefing"
+    # if the secret/env var isn't set.  The actual sending address is always
+    # SMTP_USERNAME.
+    from_name = os.environ.get("SMTP_FROM_NAME", "Morning Briefing")
     msg = EmailMessage()
-    msg["From"]    = username
+    msg["From"]    = formataddr((from_name, username))
     msg["To"]      = to
     msg["Subject"] = subject
     msg.set_content(body)
