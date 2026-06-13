@@ -246,14 +246,25 @@ def render_stocks_block(block: dict,
         if t["error"]:
             lines.append(f"  {t['ticker']}.{t['exchange']}  ⚠  {t['error']}")
             continue
-        sign     = "+" if t["change_pct"] >= 0 else ""
-        val_sign = "+" if t["portfolio_change"] >= 0 else ""
+
         lines.append(f"  {t['ticker']}.{t['exchange']} ({t['date']})")
-        lines.append(
-            f"    {t['close']:.2f} {t['currency']}  ({sign}{t['change_pct']:.2f}%)"
-            f"   ·   Portfolio {t['portfolio_value']:,.2f} {t['currency']}  "
-            f"({val_sign}{t['portfolio_change']:,.2f}, {t['shares']} sh)"
-        )
+
+        # change_pct and portfolio_change are None when Stooq returned only the
+        # latest close (no previous day to diff against).
+        if t["change_pct"] is not None:
+            sign     = "+" if t["change_pct"]       >= 0 else ""
+            val_sign = "+" if t["portfolio_change"]  >= 0 else ""
+            lines.append(
+                f"    {t['close']:.2f} {t['currency']}  ({sign}{t['change_pct']:.2f}%)"
+                f"   ·   Portfolio {t['portfolio_value']:,.2f} {t['currency']}  "
+                f"({val_sign}{t['portfolio_change']:,.2f}, {t['shares']} sh)"
+            )
+        else:
+            lines.append(
+                f"    {t['close']:.2f} {t['currency']}  (change: —)"
+                f"   ·   Portfolio {t['portfolio_value']:,.2f} {t['currency']}  "
+                f"({t['shares']} sh)"
+            )
     return "\n".join(lines)
 
 

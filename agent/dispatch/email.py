@@ -67,15 +67,25 @@ def send(to: str, subject: str, body: str) -> tuple[bool, str | None]:
     msg.set_content(body)
 
     # --- Connect, authenticate, send (retried on transient failure) ---
-    # STARTTLS (port 587): starts unencrypted, then upgrades to TLS before
-    # credentials are ever transmitted. Standard for Gmail.
+    # Port 465 → SSL/TLS from the start (SMTP_SSL).
+    # Any other port (587, 25, …) → plain connection upgraded via STARTTLS.
+    # This covers both Gmail-style setups (587/STARTTLS) and private mail
+    # servers that use SSL (465) — no code change needed when switching servers,
+    # just update the SMTP_HOST / SMTP_PORT / SMTP_USERNAME / SMTP_PASSWORD
+    # secrets to point at the new server.
     def _do_send():
-        with smtplib.SMTP(host, port, timeout=20) as smtp:
-            smtp.ehlo()           # introduce ourselves to the server
-            smtp.starttls()       # upgrade the connection to encrypted
-            smtp.ehlo()           # re-introduce after TLS handshake
-            smtp.login(username, password)
-            smtp.send_message(msg)
+        if port == 465:
+            with smtplib.SMTP_SSL(host, port, timeout=20) as smtp:
+                smtp.ehlo()
+                smtp.login(username, password)
+                smtp.send_message(msg)
+        else:
+            with smtplib.SMTP(host, port, timeout=20) as smtp:
+                smtp.ehlo()
+                smtp.starttls()
+                smtp.ehlo()
+                smtp.login(username, password)
+                smtp.send_message(msg)
 
     try:
         # OSError covers socket/connection errors; SMTPException covers the

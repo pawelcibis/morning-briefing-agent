@@ -54,6 +54,11 @@ def fetch_stock_quote(ticker: str, exchange: str) -> dict | None:
 
     symbol = ticker.lower()   # Stooq uses bare ticker: "kru"
 
+    # Note: d1/d2 date-range params cause a 404 with the free API key tier —
+    # Stooq doesn't support range queries through this endpoint+key combination.
+    # Without them Stooq may return just 1 row (the latest close); we handle
+    # that gracefully below by returning prev_close=None.
+
     try:
         from agent.retry import with_retries
 
@@ -76,14 +81,31 @@ def fetch_stock_quote(ticker: str, exchange: str) -> dict | None:
         # Guard: Stooq returns a Polish error page if the key/ticker is wrong.
         # Valid CSV always starts with "Data" (Polish for Date).
         if not text.startswith("Data"):
+            print(f"[stocks] unexpected Stooq response for {ticker} "
+                  f"(first 200 chars): {text[:200]!r}")
             return None
 
         reader = csv.DictReader(io.StringIO(text))
         rows = list(reader)
 
-        # Need at least 2 rows to compute prev_close
-        if len(rows) < 2:
+        if not rows:
+            print(f"[stocks] Stooq returned 0 data rows for {ticker}")
             return None
+
+        latest = rows[-1]
+        close  = float(latest[COL_CLOSE])
+
+        # If we got at least 2 rows, compute the day-over-day change.
+        # If Stooq returns only 1 row (latest close only), we surface the
+        # price without a % change rather than silently dropping the block.
+        if len(rows) >= 2:
+            prev_close = float(rows[-2][COL_CLOSE])
+            change_pct = round((close - prev_close) / prev_close * 100, 2)
+        else:
+            print(f"[stocks] only 1 row returned for {ticker}; "
+                  f"showing close price without change")
+            prev_close = None
+            change_pct = None
 
         latest   = rows[-1]   # most-recent trading day
         previous = rows[-2]
@@ -96,8 +118,8 @@ def fetch_stock_quote(ticker: str, exchange: str) -> dict | None:
             "ticker":     ticker.upper(),
             "date":       latest[COL_DATE],
             "close":      close,
-            "prev_close": prev_close,
-            "change_pct": change_pct,
+            "prev_close": prev_close,   # None when Stooq returned only 1 row
+            "change_pct": change_pct,   # None when prev_close unavailable
         }
 
     except Exception:

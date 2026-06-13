@@ -100,21 +100,24 @@ def build_stocks_block(cfg: dict) -> dict:
             })
             continue
 
-        portfolio_value  = round(quote["close"]      * shares, 2)
-        portfolio_change = round((quote["close"] - quote["prev_close"]) * shares, 2)
+        portfolio_value  = round(quote["close"] * shares, 2)
+        portfolio_change = (
+            round((quote["close"] - quote["prev_close"]) * shares, 2)
+            if quote["prev_close"] is not None else None
+        )
 
         tickers.append({
-            "ticker":          ticker,
-            "exchange":        exchange,
-            "currency":        currency,
-            "date":            quote["date"],
-            "close":           quote["close"],
-            "prev_close":      quote["prev_close"],
-            "change_pct":      quote["change_pct"],
-            "shares":          shares,
+            "ticker":           ticker,
+            "exchange":         exchange,
+            "currency":         currency,
+            "date":             quote["date"],
+            "close":            quote["close"],
+            "prev_close":       quote["prev_close"],
+            "change_pct":       quote["change_pct"],       # may be None
+            "shares":           shares,
             "portfolio_value":  portfolio_value,
-            "portfolio_change": portfolio_change,
-            "error":           None,
+            "portfolio_change": portfolio_change,          # may be None
+            "error":            None,
         })
 
     return {"tickers": tickers}
