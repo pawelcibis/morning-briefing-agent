@@ -1,25 +1,55 @@
 {
-  "target_date": "2026-06-14",
+  "target_date": "2026-06-15",
   "blocks": {
-    "baby": null,
+    "baby": {
+      "location": {
+        "postcode": 8400,
+        "city": "Winterthur"
+      },
+      "date": "Monday, 15 June 2026",
+      "weekday": "Mon",
+      "baby_age_months": 5.3,
+      "drop_off": {
+        "time": "08:00",
+        "temp_c": 15.3,
+        "wind_ms": 0.42,
+        "wind_dir": "SW",
+        "rain_pct": 0,
+        "cloud_label": "Sunny"
+      },
+      "pick_up": {
+        "time": "16:15",
+        "temp_c": 25.2,
+        "wind_ms": 3.61,
+        "wind_dir": "WNW",
+        "rain_pct": 0,
+        "cloud_label": "Overcast"
+      },
+      "alerts": [],
+      "clothing": {
+        "outfit": "Long-sleeved bodysuit and lightweight trousers, or a thin all-in-one suit",
+        "pushchair_extras": "",
+        "pick_up_note": ""
+      }
+    },
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-06-14",
+      "date": "2026-06-15",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 18.2,
-          "wind_ms": 0.8,
-          "wind_dir": "SW",
+          "temp_c": 14.7,
+          "wind_ms": 0.1,
+          "wind_dir": "N",
           "rain_pct": 0,
-          "cloud_pct": 1,
+          "cloud_pct": 15,
           "cloud_label": "Sunny"
         },
         {
           "time": "16:30",
-          "temp_c": 26.2,
-          "wind_ms": 5.2,
-          "wind_dir": "W",
+          "temp_c": 25.5,
+          "wind_ms": 4.6,
+          "wind_dir": "WNW",
           "rain_pct": 0,
           "cloud_pct": 0,
           "cloud_label": "Sunny"
@@ -27,8 +57,8 @@
       ],
       "alerts": [],
       "clothing": {
-        "wear": "underpants, light socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
-        "pack": "short socks"
+        "wear": "underpants, light socks, long sleeve shirt, cycling pants, cycling short shirt, light hat/cap, medium long gloves",
+        "pack": "short socks, short gloves"
       }
     },
     "running": {
@@ -36,18 +66,18 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Sunday, 14 June 2026",
+      "date": "Monday, 15 June 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 17.3,
-        "wind_ms": 1.75,
-        "wind_dir": "WSW",
+        "temp_c": 12.8,
+        "wind_ms": 0.89,
+        "wind_dir": "SSW",
         "rain_pct": 0,
         "cloud_label": "Sunny"
       },
       "alerts": [],
       "clothing": {
-        "dry": "short-sleeved top, shorts, short socks",
+        "dry": "short-sleeved top, shorts, standard socks",
         "wet": "cap",
         "wet_active": false
       }
@@ -58,13 +88,13 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Sunday, 14 June 2026",
+      "date": "Monday, 15 June 2026",
       "swim_time": "07:00",
-      "water_temp_c": 19.1,
+      "water_temp_c": 19.7,
       "air": {
-        "temp_c": 18.7,
-        "wind_ms": 1.56,
-        "wind_dir": "SW",
+        "temp_c": 14.7,
+        "wind_ms": 0.7,
+        "wind_dir": "W",
         "rain_pct": 0,
         "cloud_label": "Sunny"
       }
