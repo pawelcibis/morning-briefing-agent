@@ -1,71 +1,70 @@
 """
-Fetches daily stock price data from Stooq.pl (free, requires API key).
+agent/fetchers/stocks.py
 
-Stooq returns Polish column headers:
-  Data, Otwarcie, Najwyzszy, Najnizszy, Zamkniecie, Wolumen
-  (Date, Open,    High,      Low,       Close,       Volume)
+Fetches daily closing price and previous-day close from Yahoo Finance.
 
-API key obtained once from: https://stooq.pl/q/d/?s=kru&get_apikey
-Store as environment variable STOOQ_API_KEY (and GitHub Secret of same name).
+Yahoo Finance covers the Warsaw Stock Exchange under the ".WA" ticker suffix
+(KRU → KRU.WA). No API key required.
+
+The STOOQ_API_KEY secret is no longer needed and can be deleted from
+GitHub Secrets → Settings → Secrets and variables → Actions.
+
+Return shape (identical to old Stooq fetcher — no downstream changes needed):
+    {
+        "ticker":     "KRU",
+        "date":       "2026-06-12",
+        "close":      412.0,
+        "prev_close": 405.0,   # None when unavailable
+        "change_pct": 1.73,    # None when prev_close is None
+    }
+or None on complete failure.
 """
 
-import csv
-import io
-import os
-
+import datetime
 import requests
+from agent.retry import with_retries
 
+_URL = "https://query1.finance.yahoo.com/v8/finance/chart/{symbol}"
 
-STOOQ_URL = "https://stooq.pl/q/d/l/"
+# Map our exchange identifiers to Yahoo Finance ticker suffixes.
+_EXCHANGE_SUFFIX = {
+    "WSE": ".WA",   # Warsaw Stock Exchange / Giełda Papierów Wartościowych
+}
 
-# Polish → English column mapping
-COL_DATE  = "Data"
-COL_CLOSE = "Zamkniecie"
+# Yahoo Finance requires a browser-like User-Agent; a bare Python requests
+# user-agent is sometimes rejected with a 401 or empty result.
+_HEADERS = {
+    "User-Agent": (
+        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
+        "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+    ),
+    "Accept": "application/json",
+}
 
 
 def fetch_stock_quote(ticker: str, exchange: str) -> dict | None:
     """
-    Fetch the latest closing price for a stock from Stooq.pl.
+    Return the latest closing price and day-over-day change for *ticker*.
 
     Args:
-        ticker:   e.g. "KRU"
-        exchange: e.g. "WSE" (unused in the URL, kept for block metadata)
+        ticker:    Ticker symbol as stored in config.yaml, e.g. "KRU".
+        exchange:  Exchange code, e.g. "WSE".
 
     Returns:
-        {
-            "ticker":     "KRU",
-            "date":       "2026-05-22",
-            "close":      12.34,
-            "prev_close": 11.98,
-            "change_pct": 3.01,
-        }
-    or None on any failure.
+        Dict with ticker/date/close/prev_close/change_pct, or None on failure.
+        change_pct is None when prev_close is unavailable (market just opened,
+        etc.) — the render layer handles this with "(change: —)".
     """
-    api_key = os.environ.get("STOOQ_API_KEY", "")
-    if not api_key:
-        # §6.3: fetchers never raise — they return None so the digest still
-        # sends with a "missing" marker. (Previously this raised, which crashed
-        # the whole run if the secret was absent.)
-        print(
-            "[stocks] STOOQ_API_KEY not set — skipping stock fetch. "
-            "Get a key at https://stooq.pl/q/d/?s=kru&get_apikey"
-        )
-        return None
-
-    symbol = ticker.lower()   # Stooq uses bare ticker: "kru"
-
-    # Note: d1/d2 date-range params cause a 404 with the free API key tier —
-    # Stooq doesn't support range queries through this endpoint+key combination.
-    # Without them Stooq may return just 1 row (the latest close); we handle
-    # that gracefully below by returning prev_close=None.
+    suffix = _EXCHANGE_SUFFIX.get(exchange.upper(), "")
+    symbol = f"{ticker.upper()}{suffix}"   # e.g. "KRU.WA"
+    url    = _URL.format(symbol=symbol)
 
     try:
-        from agent.retry import with_retries
-
         def _do_request():
             r = requests.get(
-                STOOQ_URL,
-                params={"s": symbol, "i": "d", "apikey": api_key},
+                url,
+                params={"interval": "1d", "range": "5d"},
+                headers=_HEADERS,
                 timeout=10,
             )
             r.raise_for_status()
@@ -76,51 +75,41 @@ def fetch_stock_quote(ticker: str, exchange: str) -> dict | None:
             exceptions=(requests.RequestException,), label="stocks",
         )
 
-        text = resp.text.strip()
+        data   = resp.json()
+        result = data.get("chart", {}).get("result")
 
-        # Guard: Stooq returns a Polish error page if the key/ticker is wrong.
-        # Valid CSV always starts with "Data" (Polish for Date).
-        if not text.startswith("Data"):
-            print(f"[stocks] unexpected Stooq response for {ticker} "
-                  f"(first 200 chars): {text[:200]!r}")
+        if not result:
+            err = data.get("chart", {}).get("error")
+            print(f"[stocks] Yahoo Finance returned no result for {symbol}: {err}")
             return None
 
-        reader = csv.DictReader(io.StringIO(text))
-        rows = list(reader)
+        meta       = result[0]["meta"]
+        close      = meta.get("regularMarketPrice")
+        prev_close = meta.get("previousClose") or meta.get("chartPreviousClose")
 
-        if not rows:
-            print(f"[stocks] Stooq returned 0 data rows for {ticker}")
+        if close is None:
+            print(f"[stocks] Yahoo Finance: no close price in response for {symbol}")
             return None
 
-        latest = rows[-1]
-        close  = float(latest[COL_CLOSE])
-
-        # If we got at least 2 rows, compute the day-over-day change.
-        # If Stooq returns only 1 row (latest close only), we surface the
-        # price without a % change rather than silently dropping the block.
-        if len(rows) >= 2:
-            prev_close = float(rows[-2][COL_CLOSE])
-            change_pct = round((close - prev_close) / prev_close * 100, 2)
+        # Prefer the exchange's local trading date; fall back to today.
+        market_ts = meta.get("regularMarketTime")
+        if market_ts:
+            date_str = datetime.datetime.fromtimestamp(market_ts).strftime("%Y-%m-%d")
         else:
-            print(f"[stocks] only 1 row returned for {ticker}; "
-                  f"showing close price without change")
-            prev_close = None
-            change_pct = None
+            date_str = datetime.date.today().strftime("%Y-%m-%d")
 
-        latest   = rows[-1]   # most-recent trading day
-        previous = rows[-2]
-
-        close      = float(latest[COL_CLOSE])
-        prev_close = float(previous[COL_CLOSE])
-        change_pct = round((close - prev_close) / prev_close * 100, 2)
+        change_pct = None
+        if prev_close and prev_close != 0:
+            change_pct = round((close - prev_close) / prev_close * 100, 2)
 
         return {
             "ticker":     ticker.upper(),
-            "date":       latest[COL_DATE],
+            "date":       date_str,
             "close":      close,
-            "prev_close": prev_close,   # None when Stooq returned only 1 row
-            "change_pct": change_pct,   # None when prev_close unavailable
+            "prev_close": prev_close,
+            "change_pct": change_pct,
         }
 
-    except Exception:
+    except Exception as exc:
+        print(f"[stocks] unexpected error for {symbol}: {exc!r}")
         return None
