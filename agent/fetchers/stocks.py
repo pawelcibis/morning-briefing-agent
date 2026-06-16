@@ -1,15 +1,18 @@
 """
 agent/fetchers/stocks.py
 
-Fetches daily closing price and previous-day close from Yahoo Finance.
+Fetches the latest closing price and previous-day close from Twelve Data.
 
-Yahoo Finance covers the Warsaw Stock Exchange under the ".WA" ticker suffix
-(KRU → KRU.WA). No API key required.
+Twelve Data (twelvedata.com) covers the Warsaw Stock Exchange (WSE) and is
+designed for server-to-server use — unlike Yahoo Finance it does not block
+cloud-runner IP addresses.  The free tier provides 800 API calls/day; this
+agent uses roughly 20/month (one weekday evening run per weekday).
 
-The STOOQ_API_KEY secret is no longer needed and can be deleted from
-GitHub Secrets → Settings → Secrets and variables → Actions.
+Required secret:
+    TWELVEDATA_API_KEY   — free key from https://twelvedata.com/pricing
+    (STOOQ_API_KEY can be deleted from GitHub Secrets — no longer used)
 
-Return shape (identical to old Stooq fetcher — no downstream changes needed):
+Return shape (unchanged from previous Stooq/Yahoo fetcher):
     {
         "ticker":     "KRU",
         "date":       "2026-06-12",
@@ -20,26 +23,11 @@ Return shape (identical to old Stooq fetcher — no downstream changes needed):
 or None on complete failure.
 """
 
-import datetime
+import os
 import requests
 from agent.retry import with_retries
 
-_URL = "https://query1.finance.yahoo.com/v8/finance/chart/{symbol}"
-
-# Map our exchange identifiers to Yahoo Finance ticker suffixes.
-_EXCHANGE_SUFFIX = {
-    "WSE": ".WA",   # Warsaw Stock Exchange / Giełda Papierów Wartościowych
-}
-
-# Yahoo Finance requires a browser-like User-Agent; a bare Python requests
-# user-agent is sometimes rejected with a 401 or empty result.
-_HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
-        "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
-    ),
-    "Accept": "application/json",
-}
+_URL = "https://api.twelvedata.com/quote"
 
 
 def fetch_stock_quote(ticker: str, exchange: str) -> dict | None:
@@ -47,69 +35,70 @@ def fetch_stock_quote(ticker: str, exchange: str) -> dict | None:
     Return the latest closing price and day-over-day change for *ticker*.
 
     Args:
-        ticker:    Ticker symbol as stored in config.yaml, e.g. "KRU".
+        ticker:    Symbol as in config.yaml, e.g. "KRU".
         exchange:  Exchange code, e.g. "WSE".
 
     Returns:
         Dict with ticker/date/close/prev_close/change_pct, or None on failure.
-        change_pct is None when prev_close is unavailable (market just opened,
-        etc.) — the render layer handles this with "(change: —)".
+        change_pct is None when prev_close is unavailable; the render layer
+        displays "(change: —)" in that case.
     """
-    suffix = _EXCHANGE_SUFFIX.get(exchange.upper(), "")
-    symbol = f"{ticker.upper()}{suffix}"   # e.g. "KRU.WA"
-    url    = _URL.format(symbol=symbol)
+    api_key = os.environ.get("TWELVEDATA_API_KEY", "")
+    if not api_key:
+        print("[stocks] TWELVEDATA_API_KEY not set — skipping stock fetch. "
+              "Get a free key at https://twelvedata.com/pricing")
+        return None
 
     try:
         def _do_request():
             r = requests.get(
-                url,
-                params={"interval": "1d", "range": "5d"},
-                headers=_HEADERS,
+                _URL,
+                params={
+                    "symbol":   ticker.upper(),
+                    "exchange": exchange.upper(),   # e.g. "WSE"
+                    "apikey":   api_key,
+                },
                 timeout=10,
             )
             r.raise_for_status()
             return r
 
         resp = with_retries(
-            _do_request, attempts=3, base_delay=0.5,
+            _do_request, attempts=3, base_delay=1.0,
             exceptions=(requests.RequestException,), label="stocks",
         )
 
-        data   = resp.json()
-        result = data.get("chart", {}).get("result")
+        data = resp.json()
 
-        if not result:
-            err = data.get("chart", {}).get("error")
-            print(f"[stocks] Yahoo Finance returned no result for {symbol}: {err}")
+        # Twelve Data signals errors in the JSON body (not always via HTTP status).
+        if data.get("status") == "error" or "code" in data:
+            print(f"[stocks] Twelve Data error for {ticker}.{exchange}: "
+                  f"{data.get('message', data)}")
             return None
 
-        meta       = result[0]["meta"]
-        close      = meta.get("regularMarketPrice")
-        prev_close = meta.get("previousClose") or meta.get("chartPreviousClose")
+        close_str = data.get("close")
+        prev_str  = data.get("previous_close")
+        date_str  = data.get("datetime")          # "YYYY-MM-DD"
 
-        if close is None:
-            print(f"[stocks] Yahoo Finance: no close price in response for {symbol}")
+        if close_str is None:
+            print(f"[stocks] Twelve Data: no close price for {ticker}.{exchange}")
             return None
 
-        # Prefer the exchange's local trading date; fall back to today.
-        market_ts = meta.get("regularMarketTime")
-        if market_ts:
-            date_str = datetime.datetime.fromtimestamp(market_ts).strftime("%Y-%m-%d")
-        else:
-            date_str = datetime.date.today().strftime("%Y-%m-%d")
+        close = float(close_str)
 
+        prev_close = float(prev_str) if prev_str else None
         change_pct = None
         if prev_close and prev_close != 0:
             change_pct = round((close - prev_close) / prev_close * 100, 2)
 
         return {
             "ticker":     ticker.upper(),
-            "date":       date_str,
+            "date":       date_str or "",
             "close":      close,
             "prev_close": prev_close,
             "change_pct": change_pct,
         }
 
     except Exception as exc:
-        print(f"[stocks] unexpected error for {symbol}: {exc!r}")
+        print(f"[stocks] unexpected error for {ticker}.{exchange}: {exc!r}")
         return None
