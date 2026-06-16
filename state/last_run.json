@@ -8,27 +8,27 @@
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 20.4,
-          "wind_ms": 0.6,
-          "wind_dir": "E",
+          "temp_c": 20.3,
+          "wind_ms": 0.8,
+          "wind_dir": "ESE",
           "rain_pct": 0,
-          "cloud_pct": 53,
+          "cloud_pct": 64,
           "cloud_label": "Mostly cloudy"
         },
         {
           "time": "16:30",
           "temp_c": 30.1,
-          "wind_ms": 1.9,
-          "wind_dir": "WNW",
-          "rain_pct": 13,
-          "cloud_pct": 96,
+          "wind_ms": 1.6,
+          "wind_dir": "W",
+          "rain_pct": 0,
+          "cloud_pct": 100,
           "cloud_label": "Overcast"
         }
       ],
       "alerts": [],
       "clothing": {
         "wear": "underpants, short socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
-        "pack": "nothing"
+        "pack": "light hat/cap, short gloves"
       }
     },
     "running": {
@@ -39,11 +39,11 @@
       "date": "Wednesday, 17 June 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 17.6,
-        "wind_ms": 1.12,
-        "wind_dir": "S",
+        "temp_c": 17.4,
+        "wind_ms": 1.04,
+        "wind_dir": "SSW",
         "rain_pct": 0,
-        "cloud_label": "Overcast"
+        "cloud_label": "Mostly cloudy"
       },
       "alerts": [],
       "clothing": {
@@ -60,10 +60,10 @@
       },
       "date": "Wednesday, 17 June 2026",
       "swim_time": "07:00",
-      "water_temp_c": 20.2,
+      "water_temp_c": 19.8,
       "air": {
         "temp_c": 20.5,
-        "wind_ms": 0.67,
+        "wind_ms": 0.63,
         "wind_dir": "SSW",
         "rain_pct": 0,
         "cloud_label": "Mostly cloudy"
@@ -97,23 +97,23 @@
         "slots": [
           {
             "time": "18:00",
-            "temp_c": 30.2
+            "temp_c": 30.6
           },
           {
             "time": "19:00",
-            "temp_c": 29.8
+            "temp_c": 30.1
           },
           {
             "time": "20:00",
-            "temp_c": 29.4
+            "temp_c": 29.6
           },
           {
             "time": "21:00",
-            "temp_c": 28.4
+            "temp_c": 28.8
           },
           {
             "time": "22:00",
-            "temp_c": 26.1
+            "temp_c": 26.6
           }
         ],
         "status": "green"
@@ -122,7 +122,7 @@
         "slots": [
           {
             "time": "18:00",
-            "rain_pct": 5,
+            "rain_pct": 3,
             "precip_mm_h": 0.0
           },
           {
@@ -142,7 +142,7 @@
           }
         ],
         "status": "amber",
-        "max_pct": 5,
+        "max_pct": 3,
         "max_precip_mm_h": 0,
         "intensity_label": "none"
       },
