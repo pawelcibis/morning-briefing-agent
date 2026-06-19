@@ -29,6 +29,12 @@ from agent.retry import with_retries
 
 _URL = "https://api.twelvedata.com/quote"
 
+# Twelve Data uses its own exchange identifiers that differ from the standard
+# codes we store in config.yaml. Map our canonical codes to theirs.
+_EXCHANGE_MAP = {
+    "WSE": "GPW",   # Warsaw Stock Exchange → Giełda Papierów Wartościowych
+}
+
 
 def fetch_stock_quote(ticker: str, exchange: str) -> dict | None:
     """
@@ -51,16 +57,13 @@ def fetch_stock_quote(ticker: str, exchange: str) -> dict | None:
 
     try:
         def _do_request():
+            td_exchange = _EXCHANGE_MAP.get(exchange.upper(), exchange.upper())
             r = requests.get(
                 _URL,
                 params={
-                    "symbol": ticker.upper(),
-                    # No "exchange" filter — lets Twelve Data resolve the symbol
-                    # globally. Passing exchange="WSE" returns 404 because Twelve
-                    # Data may use a different exchange identifier internally.
-                    # If there are multiple KRU symbols across exchanges, Twelve
-                    # Data returns the most liquid one, which should be WSE.
-                    "apikey": api_key,
+                    "symbol":   ticker.upper(),
+                    "exchange": td_exchange,   # "GPW" for WSE
+                    "apikey":   api_key,
                 },
                 timeout=10,
             )
