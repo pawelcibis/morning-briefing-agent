@@ -105,7 +105,8 @@ jobs:
           RECIPIENT_PAWEL_TELEGRAM: ${{ secrets.RECIPIENT_PAWEL_TELEGRAM }}
           RECIPIENT_LILIANA_EMAIL:  ${{ secrets.RECIPIENT_LILIANA_EMAIL }}
           RECIPIENT_LILIANA_TELEGRAM: ${{ secrets.RECIPIENT_LILIANA_TELEGRAM }}
-          STOCKS_KRU_SHARES:        ${{ secrets.STOCKS_KRU_SHARES }}     
+          STOCKS_KRU_SHARES:        ${{ secrets.STOCKS_KRU_SHARES }}
+          MARKETSTACK_API_KEY:      ${{ secrets.MARKETSTACK_API_KEY }}
         run: |
           TYPE="${{ steps.rt.outputs.type }}"
           STAMP="$(date -u +%Y%m%d-%H%MZ)"

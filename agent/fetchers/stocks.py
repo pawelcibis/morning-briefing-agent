@@ -1,113 +1,121 @@
 """
 agent/fetchers/stocks.py
 
-Fetches daily closing price from Stooq.pl — a Polish financial data service
-that provides GPW (Warsaw Stock Exchange) data via a free CSV download endpoint.
-No API key or registration required for basic daily quotes.
+Fetches daily closing price from Marketstack.
 
-History:
-  Phase 6–12: Stooq with API key (free one-time key) — worked until key expired.
-  Phase 13+:  Tried Yahoo Finance (429 rate-limit from GHA IPs) and Twelve Data
-              (KRU only on paid Ultra plan). Returning to Stooq without API key:
-              the public CSV endpoint works without authentication.
+Marketstack (marketstack.com) covers the Warsaw Stock Exchange under the XWAR
+MIC code (e.g. KRU → KRU.XWAR). The free tier provides 100 API calls/month
+(we use ~20) but requires plain HTTP — HTTPS is a paid feature. The security
+risk is minimal: the key only grants access to public stock price data.
+
+Required secret:
+    MARKETSTACK_API_KEY   — free key from https://marketstack.com
 
 Return shape (unchanged throughout — no downstream changes needed):
-    {
-        "ticker":     "KRU",
-        "date":       "2026-06-12",
-        "close":      412.0,
-        "prev_close": 405.0,   # None when Stooq returns only 1 row
-        "change_pct": 1.73,    # None when prev_close is None
-    }
-or None on complete failure.
+    {"ticker": "KRU", "date": "2026-06-12", "close": 412.0,
+     "prev_close": 405.0, "change_pct": 1.73}
+    prev_close / change_pct are None when only 1 record is available.
+    Returns None on complete failure.
 """
 
-import csv
-import io
+import os
 import requests
 from agent.retry import with_retries
 
-_URL = "https://stooq.pl/q/d/l/"
+# HTTP (not HTTPS) — free tier restriction on Marketstack.
+_URL = "http://api.marketstack.com/v1/eod"
 
-# Stooq returns CSV with Polish column headers.
-COL_DATE  = "Data"
-COL_CLOSE = "Zamkniecie"
+# Map our canonical exchange codes to Marketstack's MIC codes.
+_EXCHANGE_MIC = {
+    "WSE": "XWAR",   # Warsaw Stock Exchange / Giełda Papierów Wartościowych
+}
 
 
 def fetch_stock_quote(ticker: str, exchange: str) -> dict | None:
     """
-    Fetch the latest closing price for *ticker* from Stooq.pl.
+    Fetch the two most recent EOD records for *ticker* and compute change%.
 
     Args:
-        ticker:   Symbol as stored in config.yaml, e.g. "KRU".
-        exchange: Not used for the request (Stooq is GPW-focused) but kept
-                  in the signature for interface consistency.
+        ticker:    Symbol as stored in config.yaml, e.g. "KRU".
+        exchange:  Exchange code, e.g. "WSE" — mapped to MIC internally.
 
     Returns:
         Dict with ticker/date/close/prev_close/change_pct, or None on failure.
-        change_pct is None when only 1 row is returned (prev_close unavailable);
-        the render layer shows "(change: —)" in that case.
+        change_pct is None when only 1 record is available; the render layer
+        shows "(change: —)" in that case.
     """
-    symbol = ticker.lower()   # Stooq uses bare lowercase ticker: "kru"
+    api_key = os.environ.get("MARKETSTACK_API_KEY", "")
+    if not api_key:
+        print("[stocks] MARKETSTACK_API_KEY not set — skipping stock fetch. "
+              "Get a free key at https://marketstack.com")
+        return None
+
+    mic    = _EXCHANGE_MIC.get(exchange.upper(), exchange.upper())
+    symbol = f"{ticker.upper()}.{mic}"   # e.g. "KRU.XWAR"
 
     try:
         def _do_request():
             r = requests.get(
                 _URL,
-                params={"s": symbol, "i": "d"},
+                params={
+                    "access_key": api_key,
+                    "symbols":    symbol,
+                    "limit":      2,      # latest + previous day for change%
+                },
                 timeout=10,
             )
-            # 4xx is a deterministic rejection — don't retry.
+            # 4xx = deterministic (bad key, symbol not found, plan limit).
+            # Raise ValueError so with_retries lets it through immediately
+            # without wasting retry attempts.
             if 400 <= r.status_code < 500:
                 raise ValueError(
-                    f"Stooq {r.status_code} for {ticker}: {r.text[:300]}"
+                    f"Marketstack {r.status_code} for {symbol}: {r.text[:300]}"
                 )
             r.raise_for_status()   # 5xx → HTTPError → retried normally
             return r
 
         resp = with_retries(
             _do_request, attempts=3, base_delay=1.0,
-            exceptions=(requests.RequestException,),   # ValueError not listed → no retry
+            exceptions=(requests.RequestException,),   # ValueError → immediate fail
             label="stocks",
         )
 
-        text = resp.text.strip()
+        body = resp.json()
 
-        # Valid CSV starts with "Data" (Polish for Date).
-        # Any other response is an error page or redirect.
-        if not text.startswith("Data"):
-            print(f"[stocks] unexpected Stooq response for {ticker} "
-                  f"(first 200 chars): {text[:200]!r}")
+        # Marketstack signals errors in the JSON body too (HTTP 200 + error key).
+        if "error" in body:
+            print(f"[stocks] Marketstack error for {symbol}: {body['error']}")
             return None
 
-        rows = list(csv.DictReader(io.StringIO(text)))
-
-        if not rows:
-            print(f"[stocks] Stooq returned 0 data rows for {ticker}")
+        records = body.get("data", [])
+        if not records:
+            print(f"[stocks] Marketstack returned 0 records for {symbol}")
             return None
 
-        latest = rows[-1]
-        close  = float(latest[COL_CLOSE])
+        # Records are returned newest-first.
+        latest = records[0]
+        close  = float(latest["close"])
 
-        # Stooq may return only 1 row (latest close only) depending on the
-        # query.  Surface the price without a % change rather than failing.
-        if len(rows) >= 2:
-            prev_close = float(rows[-2][COL_CLOSE])
+        # Parse date: "2026-06-12T00:00:00+0000" → "2026-06-12"
+        date_str = latest.get("date", "")[:10]
+
+        if len(records) >= 2:
+            prev_close = float(records[1]["close"])
             change_pct = round((close - prev_close) / prev_close * 100, 2)
         else:
-            print(f"[stocks] only 1 row returned for {ticker}; "
+            print(f"[stocks] only 1 record returned for {symbol}; "
                   "showing close price without day-over-day change")
             prev_close = None
             change_pct = None
 
         return {
             "ticker":     ticker.upper(),
-            "date":       latest[COL_DATE],
+            "date":       date_str,
             "close":      close,
             "prev_close": prev_close,
             "change_pct": change_pct,
         }
 
     except Exception as exc:
-        print(f"[stocks] unexpected error for {ticker}: {exc!r}")
+        print(f"[stocks] unexpected error for {symbol}: {exc!r}")
         return None
