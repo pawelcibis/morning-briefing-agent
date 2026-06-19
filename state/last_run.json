@@ -28,7 +28,7 @@
       "alerts": [],
       "clothing": {
         "wear": "underpants, short socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
-        "pack": "light hat/cap with better sun protection or sunglasses; consider removing short gloves for afternoon"
+        "pack": "nothing - afternoon is warmer with no rain; skip gloves and hat on return if desired"
       }
     },
     "running": {
@@ -60,7 +60,7 @@
       },
       "date": "Saturday, 20 June 2026",
       "swim_time": "07:00",
-      "water_temp_c": 22.2,
+      "water_temp_c": 22.0,
       "air": {
         "temp_c": 20.3,
         "wind_ms": 0.89,
@@ -75,14 +75,14 @@
           "ticker": "KRU",
           "exchange": "WSE",
           "currency": "PLN",
-          "date": null,
-          "close": null,
-          "prev_close": null,
-          "change_pct": null,
+          "date": "2026-06-19",
+          "close": 401.1,
+          "prev_close": 397.9,
+          "change_pct": 0.8,
           "shares": 3109,
-          "portfolio_value": null,
-          "portfolio_change": null,
-          "error": "Price fetch failed (Stooq unavailable or bad response)"
+          "portfolio_value": 1247019.9,
+          "portfolio_change": 9948.8,
+          "error": null
         }
       ]
     },
