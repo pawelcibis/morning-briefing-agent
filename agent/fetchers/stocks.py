@@ -1,121 +1,113 @@
 """
 agent/fetchers/stocks.py
 
-Fetches the latest closing price and previous-day close from Twelve Data.
+Fetches daily closing price from Stooq.pl — a Polish financial data service
+that provides GPW (Warsaw Stock Exchange) data via a free CSV download endpoint.
+No API key or registration required for basic daily quotes.
 
-Twelve Data (twelvedata.com) covers the Warsaw Stock Exchange (WSE) and is
-designed for server-to-server use — unlike Yahoo Finance it does not block
-cloud-runner IP addresses.  The free tier provides 800 API calls/day; this
-agent uses roughly 20/month (one weekday evening run per weekday).
+History:
+  Phase 6–12: Stooq with API key (free one-time key) — worked until key expired.
+  Phase 13+:  Tried Yahoo Finance (429 rate-limit from GHA IPs) and Twelve Data
+              (KRU only on paid Ultra plan). Returning to Stooq without API key:
+              the public CSV endpoint works without authentication.
 
-Required secret:
-    TWELVEDATA_API_KEY   — free key from https://twelvedata.com/pricing
-    (STOOQ_API_KEY can be deleted from GitHub Secrets — no longer used)
-
-Return shape (unchanged from previous Stooq/Yahoo fetcher):
+Return shape (unchanged throughout — no downstream changes needed):
     {
         "ticker":     "KRU",
         "date":       "2026-06-12",
         "close":      412.0,
-        "prev_close": 405.0,   # None when unavailable
+        "prev_close": 405.0,   # None when Stooq returns only 1 row
         "change_pct": 1.73,    # None when prev_close is None
     }
 or None on complete failure.
 """
 
-import os
+import csv
+import io
 import requests
 from agent.retry import with_retries
 
-_URL = "https://api.twelvedata.com/quote"
+_URL = "https://stooq.pl/q/d/l/"
 
-# Twelve Data uses its own exchange identifiers that differ from the standard
-# codes we store in config.yaml. Map our canonical codes to theirs.
-_EXCHANGE_MAP = {
-    "WSE": "GPW",   # Warsaw Stock Exchange → Giełda Papierów Wartościowych
-}
+# Stooq returns CSV with Polish column headers.
+COL_DATE  = "Data"
+COL_CLOSE = "Zamkniecie"
 
 
 def fetch_stock_quote(ticker: str, exchange: str) -> dict | None:
     """
-    Return the latest closing price and day-over-day change for *ticker*.
+    Fetch the latest closing price for *ticker* from Stooq.pl.
 
     Args:
-        ticker:    Symbol as in config.yaml, e.g. "KRU".
-        exchange:  Exchange code, e.g. "WSE".
+        ticker:   Symbol as stored in config.yaml, e.g. "KRU".
+        exchange: Not used for the request (Stooq is GPW-focused) but kept
+                  in the signature for interface consistency.
 
     Returns:
         Dict with ticker/date/close/prev_close/change_pct, or None on failure.
-        change_pct is None when prev_close is unavailable; the render layer
-        displays "(change: —)" in that case.
+        change_pct is None when only 1 row is returned (prev_close unavailable);
+        the render layer shows "(change: —)" in that case.
     """
-    api_key = os.environ.get("TWELVEDATA_API_KEY", "")
-    if not api_key:
-        print("[stocks] TWELVEDATA_API_KEY not set — skipping stock fetch. "
-              "Get a free key at https://twelvedata.com/pricing")
-        return None
+    symbol = ticker.lower()   # Stooq uses bare lowercase ticker: "kru"
 
     try:
         def _do_request():
-            td_exchange = _EXCHANGE_MAP.get(exchange.upper(), exchange.upper())
             r = requests.get(
                 _URL,
-                params={
-                    "symbol":   ticker.upper(),
-                    "exchange": td_exchange,   # "GPW" for WSE
-                    "apikey":   api_key,
-                },
+                params={"s": symbol, "i": "d"},
                 timeout=10,
             )
-            # 4xx errors are deterministic rejections (wrong symbol, bad key,
-            # plan limit) — retrying them wastes time and API credits.
-            # Raise a plain ValueError so with_retries lets it through immediately.
+            # 4xx is a deterministic rejection — don't retry.
             if 400 <= r.status_code < 500:
                 raise ValueError(
-                    f"Twelve Data {r.status_code} for {ticker}: {r.text[:200]}"
+                    f"Stooq {r.status_code} for {ticker}: {r.text[:300]}"
                 )
             r.raise_for_status()   # 5xx → HTTPError → retried normally
             return r
 
         resp = with_retries(
             _do_request, attempts=3, base_delay=1.0,
-            exceptions=(requests.RequestException,),   # ValueError not listed → immediate
+            exceptions=(requests.RequestException,),   # ValueError not listed → no retry
             label="stocks",
         )
 
-        data = resp.json()
+        text = resp.text.strip()
 
-        # Twelve Data signals errors in the JSON body (not always via HTTP status).
-        if data.get("status") == "error" or "code" in data:
-            print(f"[stocks] Twelve Data error for {ticker}: "
-                  f"{data.get('message', data)}\n"
-                  f"  Tip: check https://api.twelvedata.com/stocks?symbol={ticker}&apikey=... "
-                  f"to find the exact symbol Twelve Data uses.")
+        # Valid CSV starts with "Data" (Polish for Date).
+        # Any other response is an error page or redirect.
+        if not text.startswith("Data"):
+            print(f"[stocks] unexpected Stooq response for {ticker} "
+                  f"(first 200 chars): {text[:200]!r}")
             return None
 
-        close_str = data.get("close")
-        prev_str  = data.get("previous_close")
-        date_str  = data.get("datetime")          # "YYYY-MM-DD"
+        rows = list(csv.DictReader(io.StringIO(text)))
 
-        if close_str is None:
-            print(f"[stocks] Twelve Data: no close price for {ticker}.{exchange}")
+        if not rows:
+            print(f"[stocks] Stooq returned 0 data rows for {ticker}")
             return None
 
-        close = float(close_str)
+        latest = rows[-1]
+        close  = float(latest[COL_CLOSE])
 
-        prev_close = float(prev_str) if prev_str else None
-        change_pct = None
-        if prev_close and prev_close != 0:
+        # Stooq may return only 1 row (latest close only) depending on the
+        # query.  Surface the price without a % change rather than failing.
+        if len(rows) >= 2:
+            prev_close = float(rows[-2][COL_CLOSE])
             change_pct = round((close - prev_close) / prev_close * 100, 2)
+        else:
+            print(f"[stocks] only 1 row returned for {ticker}; "
+                  "showing close price without day-over-day change")
+            prev_close = None
+            change_pct = None
 
         return {
             "ticker":     ticker.upper(),
-            "date":       date_str or "",
+            "date":       latest[COL_DATE],
             "close":      close,
             "prev_close": prev_close,
             "change_pct": change_pct,
         }
 
     except Exception as exc:
-        print(f"[stocks] unexpected error for {ticker}.{exchange}: {exc!r}")
+        print(f"[stocks] unexpected error for {ticker}: {exc!r}")
         return None
