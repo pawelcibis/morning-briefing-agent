@@ -54,26 +54,40 @@ def fetch_stock_quote(ticker: str, exchange: str) -> dict | None:
             r = requests.get(
                 _URL,
                 params={
-                    "symbol":   ticker.upper(),
-                    "exchange": exchange.upper(),   # e.g. "WSE"
-                    "apikey":   api_key,
+                    "symbol": ticker.upper(),
+                    # No "exchange" filter — lets Twelve Data resolve the symbol
+                    # globally. Passing exchange="WSE" returns 404 because Twelve
+                    # Data may use a different exchange identifier internally.
+                    # If there are multiple KRU symbols across exchanges, Twelve
+                    # Data returns the most liquid one, which should be WSE.
+                    "apikey": api_key,
                 },
                 timeout=10,
             )
-            r.raise_for_status()
+            # 4xx errors are deterministic rejections (wrong symbol, bad key,
+            # plan limit) — retrying them wastes time and API credits.
+            # Raise a plain ValueError so with_retries lets it through immediately.
+            if 400 <= r.status_code < 500:
+                raise ValueError(
+                    f"Twelve Data {r.status_code} for {ticker}: {r.text[:200]}"
+                )
+            r.raise_for_status()   # 5xx → HTTPError → retried normally
             return r
 
         resp = with_retries(
             _do_request, attempts=3, base_delay=1.0,
-            exceptions=(requests.RequestException,), label="stocks",
+            exceptions=(requests.RequestException,),   # ValueError not listed → immediate
+            label="stocks",
         )
 
         data = resp.json()
 
         # Twelve Data signals errors in the JSON body (not always via HTTP status).
         if data.get("status") == "error" or "code" in data:
-            print(f"[stocks] Twelve Data error for {ticker}.{exchange}: "
-                  f"{data.get('message', data)}")
+            print(f"[stocks] Twelve Data error for {ticker}: "
+                  f"{data.get('message', data)}\n"
+                  f"  Tip: check https://api.twelvedata.com/stocks?symbol={ticker}&apikey=... "
+                  f"to find the exact symbol Twelve Data uses.")
             return None
 
         close_str = data.get("close")
