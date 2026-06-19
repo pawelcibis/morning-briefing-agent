@@ -8,18 +8,18 @@
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 19.4,
-          "wind_ms": 0.6,
-          "wind_dir": "NNE",
+          "temp_c": 20.2,
+          "wind_ms": 0.5,
+          "wind_dir": "NE",
           "rain_pct": 0,
-          "cloud_pct": 42,
-          "cloud_label": "Partially sunny"
+          "cloud_pct": 71,
+          "cloud_label": "Mostly cloudy"
         },
         {
           "time": "16:30",
           "temp_c": 33.3,
-          "wind_ms": 1.5,
-          "wind_dir": "W",
+          "wind_ms": 1.3,
+          "wind_dir": "WSW",
           "rain_pct": 0,
           "cloud_pct": 0,
           "cloud_label": "Sunny"
@@ -27,8 +27,8 @@
       ],
       "alerts": [],
       "clothing": {
-        "wear": "underpants, light socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
-        "pack": "short socks"
+        "wear": "underpants, short socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
+        "pack": "nothing - afternoon is warmer and dry, skip gloves and hat on return"
       }
     },
     "running": {
@@ -39,11 +39,11 @@
       "date": "Saturday, 20 June 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 17.3,
-        "wind_ms": 0.51,
-        "wind_dir": "S",
+        "temp_c": 18.1,
+        "wind_ms": 0.28,
+        "wind_dir": "SE",
         "rain_pct": 0,
-        "cloud_label": "Sunny"
+        "cloud_label": "Mostly cloudy"
       },
       "alerts": [],
       "clothing": {
@@ -60,13 +60,13 @@
       },
       "date": "Saturday, 20 June 2026",
       "swim_time": "07:00",
-      "water_temp_c": 22.3,
+      "water_temp_c": 22.2,
       "air": {
-        "temp_c": 20.0,
+        "temp_c": 20.3,
         "wind_ms": 0.89,
         "wind_dir": "WSW",
         "rain_pct": 0,
-        "cloud_label": "Sunny"
+        "cloud_label": "Partially sunny"
       }
     },
     "stocks": {
