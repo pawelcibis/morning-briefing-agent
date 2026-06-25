@@ -1,64 +1,64 @@
 {
-  "target_date": "2026-06-25",
+  "target_date": "2026-06-26",
   "blocks": {
     "baby": {
       "location": {
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Thursday, 25 June 2026",
-      "weekday": "Thu",
-      "baby_age_months": 5.6,
+      "date": "Friday, 26 June 2026",
+      "weekday": "Fri",
+      "baby_age_months": 5.7,
       "drop_off": {
         "time": "08:00",
-        "temp_c": 22.7,
-        "wind_ms": 0.45,
-        "wind_dir": "NNE",
+        "temp_c": 23.7,
+        "wind_ms": 0.2,
+        "wind_dir": "S",
         "rain_pct": 0,
-        "cloud_label": "Sunny"
+        "cloud_label": "Overcast"
       },
       "pick_up": {
         "time": "16:15",
-        "temp_c": 36.1,
-        "wind_ms": 3.81,
+        "temp_c": 35.8,
+        "wind_ms": 3.05,
         "wind_dir": "ENE",
         "rain_pct": 0,
-        "cloud_label": "Sunny"
+        "cloud_label": "Partially sunny"
       },
       "alerts": [],
       "clothing": {
-        "outfit": "Long-sleeved babygrow and lightweight trousers",
+        "outfit": "Short-sleeved bodysuit and lightweight trousers",
         "pushchair_extras": "",
         "pick_up_note": ""
       }
     },
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-06-25",
+      "date": "2026-06-26",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 22.0,
-          "wind_ms": 0.9,
-          "wind_dir": "N",
+          "temp_c": 24.2,
+          "wind_ms": 0.6,
+          "wind_dir": "NNE",
           "rain_pct": 0,
-          "cloud_pct": 0,
-          "cloud_label": "Sunny"
+          "cloud_pct": 100,
+          "cloud_label": "Overcast"
         },
         {
           "time": "16:30",
-          "temp_c": 35.8,
-          "wind_ms": 2.6,
+          "temp_c": 36.5,
+          "wind_ms": 3.6,
           "wind_dir": "NE",
           "rain_pct": 0,
-          "cloud_pct": 11,
+          "cloud_pct": 0,
           "cloud_label": "Sunny"
         }
       ],
       "alerts": [],
       "clothing": {
         "wear": "underpants, short socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
-        "pack": "nothing - afternoon is warmer and dry, remove short gloves and light hat on return if desired"
+        "pack": "nothing - afternoon is warmer and sunny, skip all morning layers on return"
       }
     },
     "running": {
@@ -66,14 +66,14 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Thursday, 25 June 2026",
+      "date": "Friday, 26 June 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 20.4,
-        "wind_ms": 0.28,
-        "wind_dir": "SE",
+        "temp_c": 21.4,
+        "wind_ms": 0.6,
+        "wind_dir": "S",
         "rain_pct": 0,
-        "cloud_label": "Sunny"
+        "cloud_label": "Overcast"
       },
       "alerts": [],
       "clothing": {
@@ -88,10 +88,16 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Thursday, 25 June 2026",
+      "date": "Friday, 26 June 2026",
       "swim_time": "07:00",
-      "water_temp_c": 24.9,
-      "air": null
+      "water_temp_c": 25.3,
+      "air": {
+        "temp_c": 23.1,
+        "wind_ms": 1.39,
+        "wind_dir": "WSW",
+        "rain_pct": 0,
+        "cloud_label": "Sunny"
+      }
     },
     "stocks": {
       "tickers": [
@@ -99,13 +105,13 @@
           "ticker": "KRU",
           "exchange": "WSE",
           "currency": "PLN",
-          "date": "2026-06-24",
-          "close": 399.5,
-          "prev_close": 399.2,
-          "change_pct": 0.08,
+          "date": "2026-06-25",
+          "close": 403.3,
+          "prev_close": 399.5,
+          "change_pct": 0.95,
           "shares": 3109,
-          "portfolio_value": 1242045.5,
-          "portfolio_change": 932.7,
+          "portfolio_value": 1253859.7,
+          "portfolio_change": 11814.2,
           "error": null
         }
       ]
