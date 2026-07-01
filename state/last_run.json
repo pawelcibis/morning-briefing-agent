@@ -1,28 +1,58 @@
 {
-  "target_date": "2026-07-01",
+  "target_date": "2026-07-02",
   "blocks": {
-    "baby": null,
+    "baby": {
+      "location": {
+        "postcode": 8400,
+        "city": "Winterthur"
+      },
+      "date": "Thursday, 02 July 2026",
+      "weekday": "Thu",
+      "baby_age_months": 5.8,
+      "drop_off": {
+        "time": "08:00",
+        "temp_c": 17.5,
+        "wind_ms": 0.1,
+        "wind_dir": "W",
+        "rain_pct": 0,
+        "cloud_label": "Sunny"
+      },
+      "pick_up": {
+        "time": "16:15",
+        "temp_c": 26.6,
+        "wind_ms": 1.56,
+        "wind_dir": "NW",
+        "rain_pct": 0,
+        "cloud_label": "Partially sunny"
+      },
+      "alerts": [],
+      "clothing": {
+        "outfit": "Long-sleeved bodysuit and lightweight trousers",
+        "pushchair_extras": "",
+        "pick_up_note": ""
+      }
+    },
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-07-01",
+      "date": "2026-07-02",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 19.7,
-          "wind_ms": 1.2,
-          "wind_dir": "SSW",
-          "rain_pct": 83,
-          "cloud_pct": 100,
-          "cloud_label": "Overcast"
+          "temp_c": 16.9,
+          "wind_ms": 0.4,
+          "wind_dir": "NW",
+          "rain_pct": 0,
+          "cloud_pct": 0,
+          "cloud_label": "Sunny"
         },
         {
           "time": "16:30",
-          "temp_c": 24.4,
-          "wind_ms": 1.5,
-          "wind_dir": "NNW",
-          "rain_pct": 48,
-          "cloud_pct": 100,
-          "cloud_label": "Overcast"
+          "temp_c": 26.4,
+          "wind_ms": 2.6,
+          "wind_dir": "W",
+          "rain_pct": 0,
+          "cloud_pct": 57,
+          "cloud_label": "Mostly cloudy"
         }
       ],
       "alerts": [],
@@ -36,20 +66,20 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Wednesday, 01 July 2026",
+      "date": "Thursday, 02 July 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 19.2,
-        "wind_ms": 0.99,
-        "wind_dir": "SW",
-        "rain_pct": 53,
-        "cloud_label": "Overcast"
+        "temp_c": 14.8,
+        "wind_ms": 0.71,
+        "wind_dir": "S",
+        "rain_pct": 0,
+        "cloud_label": "Partially sunny"
       },
       "alerts": [],
       "clothing": {
-        "dry": "short-sleeved top, shorts, short socks",
+        "dry": "short-sleeved top, shorts, standard socks",
         "wet": "cap",
-        "wet_active": true
+        "wet_active": false
       }
     },
     "swimming": {
@@ -58,15 +88,15 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Wednesday, 01 July 2026",
+      "date": "Thursday, 02 July 2026",
       "swim_time": "07:00",
-      "water_temp_c": 25.9,
+      "water_temp_c": 24.7,
       "air": {
-        "temp_c": 19.3,
-        "wind_ms": 0.63,
-        "wind_dir": "SSW",
-        "rain_pct": 75,
-        "cloud_label": "Overcast"
+        "temp_c": 16.3,
+        "wind_ms": 1.66,
+        "wind_dir": "WSW",
+        "rain_pct": 0,
+        "cloud_label": "Sunny"
       }
     },
     "stocks": {
@@ -75,82 +105,17 @@
           "ticker": "KRU",
           "exchange": "WSE",
           "currency": "PLN",
-          "date": "2026-06-30",
-          "close": 422.2,
-          "prev_close": 404.3,
-          "change_pct": 4.43,
+          "date": "2026-07-01",
+          "close": 421.6,
+          "prev_close": 422.2,
+          "change_pct": -0.14,
           "shares": 3109,
-          "portfolio_value": 1312619.8,
-          "portfolio_change": 55651.1,
+          "portfolio_value": 1310754.4,
+          "portfolio_change": -1865.4,
           "error": null
         }
       ]
     },
-    "wednesday_event": {
-      "location": {
-        "postcode": 8001,
-        "city": "Zurich"
-      },
-      "date": "Wednesday, 01 July 2026",
-      "status": "red",
-      "temperature": {
-        "slots": [
-          {
-            "time": "18:00",
-            "temp_c": 22.7
-          },
-          {
-            "time": "19:00",
-            "temp_c": 22.7
-          },
-          {
-            "time": "20:00",
-            "temp_c": 22.4
-          },
-          {
-            "time": "21:00",
-            "temp_c": 21.8
-          },
-          {
-            "time": "22:00",
-            "temp_c": 20.1
-          }
-        ],
-        "status": "green"
-      },
-      "rain": {
-        "slots": [
-          {
-            "time": "18:00",
-            "rain_pct": 48,
-            "precip_mm_h": 0.2
-          },
-          {
-            "time": "19:00",
-            "rain_pct": 48,
-            "precip_mm_h": 0.0
-          },
-          {
-            "time": "20:00",
-            "rain_pct": 25,
-            "precip_mm_h": 0.0
-          },
-          {
-            "time": "21:00",
-            "rain_pct": 15,
-            "precip_mm_h": 0.0
-          }
-        ],
-        "status": "red",
-        "max_pct": 48,
-        "max_precip_mm_h": 0.2,
-        "intensity_label": "light"
-      },
-      "thunderstorm": {
-        "present": false,
-        "status": "green",
-        "hours": []
-      }
-    }
+    "wednesday_event": null
   }
 }
