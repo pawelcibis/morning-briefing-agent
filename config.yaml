@@ -1,3 +1,8 @@
+# *** TEMPORARY — LOCARNO / LAGO MAGGIORE VACATION OVERRIDE ***
+# All locations are repointed from Zurich/Winterthur/Thalwil to Locarno (6600)
+# for the duration of the stay. Revert this commit to restore the originals.
+# Each changed line carries an inline "# vacation: was ..." marker.
+
 timezone: Europe/Zurich
 language_default: en
 
@@ -5,7 +10,7 @@ baby:
   birthdate: 2026-01-05
   creche:
     days: [Mon, Tue, Thu, Fri]
-    location: { postcode: 8400, city: Winterthur, lat: 47.4979, lon: 8.7240 }
+    location: { postcode: 6600, city: Locarno, lat: 46.1712, lon: 8.7994 }   # vacation: was 8400 Winterthur
     drop_off: "08:00"
     pick_up: "16:15"
     midday_alert_window: ["09:00", "16:00"]
@@ -14,18 +19,18 @@ baby:
 workouts:
   cycling:
     times: ["06:30", "16:30"]
-    location: { postcode: 8001, city: Zurich, lat: 47.3769, lon: 8.5417 }
+    location: { postcode: 6600, city: Locarno, lat: 46.1712, lon: 8.7994 }   # vacation: was 8001 Zurich
     clothing_table: cycling_clothing.yaml
     wet_threshold_pct: 30
   running:
     times: ["07:00"]
-    location: { postcode: 8400, city: Winterthur, lat: 47.4979, lon: 8.7240 }
+    location: { postcode: 6600, city: Locarno, lat: 46.1712, lon: 8.7994 }   # vacation: was 8400 Winterthur
     clothing_table: running_clothing.yaml
     wet_threshold_pct: 30
   swimming:
     times: ["07:00"]
-    location: { postcode: 8800, city: Thalwil, lat: 47.2920, lon: 8.5633 }
-    lake: zurich
+    location: { postcode: 6600, city: Locarno, lat: 46.1712, lon: 8.7994 }   # vacation: was 8800 Thalwil
+    lake: maggiore                                                            # vacation: was zurich (display label only)
     min_water_temp_to_show_c: 10
 
 cloud_cover_labels:
