@@ -1,102 +1,72 @@
 {
-  "target_date": "2026-07-03",
+  "target_date": "2026-07-04",
   "blocks": {
-    "baby": {
-      "location": {
-        "postcode": 8400,
-        "city": "Winterthur"
-      },
-      "date": "Friday, 03 July 2026",
-      "weekday": "Fri",
-      "baby_age_months": 5.9,
-      "drop_off": {
-        "time": "08:00",
-        "temp_c": 18.5,
-        "wind_ms": 1.49,
-        "wind_dir": "NNE",
-        "rain_pct": 3,
-        "cloud_label": "Overcast"
-      },
-      "pick_up": {
-        "time": "16:15",
-        "temp_c": 25.8,
-        "wind_ms": 1.03,
-        "wind_dir": "ENE",
-        "rain_pct": 0,
-        "cloud_label": "Overcast"
-      },
-      "alerts": [],
-      "clothing": {
-        "outfit": "Long-sleeved bodysuit and lightweight trousers or leggings",
-        "pushchair_extras": "",
-        "pick_up_note": ""
-      }
-    },
+    "baby": null,
     "cycling": {
-      "location": "Zurich 8001",
-      "date": "2026-07-03",
+      "location": "Locarno 6600",
+      "date": "2026-07-04",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 19.4,
-          "wind_ms": 1.6,
-          "wind_dir": "NNE",
-          "rain_pct": 15,
-          "cloud_pct": 100,
-          "cloud_label": "Overcast"
+          "temp_c": 23.6,
+          "wind_ms": 1.8,
+          "wind_dir": "NE",
+          "rain_pct": 0,
+          "cloud_pct": 66,
+          "cloud_label": "Mostly cloudy"
         },
         {
           "time": "16:30",
-          "temp_c": 25.9,
-          "wind_ms": 1.5,
-          "wind_dir": "NNE",
+          "temp_c": 33.6,
+          "wind_ms": 2.1,
+          "wind_dir": "SSW",
           "rain_pct": 0,
-          "cloud_pct": 40,
-          "cloud_label": "Partially sunny"
+          "cloud_pct": 0,
+          "cloud_label": "Sunny"
         }
       ],
       "alerts": [],
       "clothing": {
-        "wear": "underpants, light socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
-        "pack": "short socks"
+        "wear": "underpants, short socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
+        "pack": "light hat/cap with better sun protection or sunglasses"
       }
     },
     "running": {
       "location": {
-        "postcode": 8400,
-        "city": "Winterthur"
+        "postcode": 6600,
+        "city": "Locarno"
       },
-      "date": "Friday, 03 July 2026",
+      "date": "Saturday, 04 July 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 18.6,
-        "wind_ms": 0.45,
-        "wind_dir": "NNE",
-        "rain_pct": 5,
-        "cloud_label": "Overcast"
+        "temp_c": 24.6,
+        "wind_ms": 1.78,
+        "wind_dir": "NE",
+        "rain_pct": 0,
+        "cloud_label": "Sunny"
       },
       "alerts": [],
       "clothing": {
-        "dry": "short-sleeved top, shorts, short socks",
-        "wet": "cap",
+        "dry": "short-sleeved light top, shorts, short socks, sunglasses (optional)",
+        "wet": "no sunglasses, cap (recommended)",
         "wet_active": false
       }
     },
     "swimming": {
       "location": {
-        "postcode": 8800,
-        "city": "Thalwil",
-        "lake": "zurich"
+        "postcode": 6600,
+        "city": "Locarno",
+        "lake": "maggiore"
       },
-      "date": "Friday, 03 July 2026",
+      "date": "Saturday, 04 July 2026",
       "swim_time": "07:00",
-      "water_temp_c": 25.1,
+      "water_temp_c": 25.0,
       "air": {
-        "temp_c": 18.7,
-        "wind_ms": 1.68,
-        "wind_dir": "NNW",
-        "rain_pct": 10,
-        "cloud_label": "Overcast"
+        "temp_c": 24.6,
+        "wind_ms": 1.78,
+        "wind_dir": "NE",
+        "rain_pct": 0,
+        "cloud_label": "Sunny"
       }
     },
     "stocks": {
@@ -105,13 +75,13 @@
           "ticker": "KRU",
           "exchange": "WSE",
           "currency": "PLN",
-          "date": "2026-07-02",
-          "close": 422.4,
-          "prev_close": 421.6,
-          "change_pct": 0.19,
+          "date": "2026-07-03",
+          "close": 421.8,
+          "prev_close": 422.4,
+          "change_pct": -0.14,
           "shares": 3109,
-          "portfolio_value": 1313241.6,
-          "portfolio_change": 2487.2,
+          "portfolio_value": 1311376.2,
+          "portfolio_change": -1865.4,
           "error": null
         }
       ]
