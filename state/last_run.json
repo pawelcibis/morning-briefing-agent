@@ -1,24 +1,24 @@
 {
-  "target_date": "2026-07-04",
+  "target_date": "2026-07-05",
   "blocks": {
     "baby": null,
     "cycling": {
       "location": "Locarno 6600",
-      "date": "2026-07-04",
+      "date": "2026-07-05",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 23.6,
-          "wind_ms": 1.8,
+          "temp_c": 22.7,
+          "wind_ms": 1.9,
           "wind_dir": "NE",
           "rain_pct": 0,
-          "cloud_pct": 66,
-          "cloud_label": "Mostly cloudy"
+          "cloud_pct": 0,
+          "cloud_label": "Sunny"
         },
         {
           "time": "16:30",
-          "temp_c": 33.6,
-          "wind_ms": 2.1,
+          "temp_c": 33.8,
+          "wind_ms": 3.4,
           "wind_dir": "SSW",
           "rain_pct": 0,
           "cloud_pct": 0,
@@ -28,7 +28,7 @@
       "alerts": [],
       "clothing": {
         "wear": "underpants, short socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
-        "pack": "light hat/cap with better sun protection or sunglasses"
+        "pack": "nothing - afternoon is warmer, skip short gloves and light hat/cap on return"
       }
     },
     "running": {
@@ -36,11 +36,11 @@
         "postcode": 6600,
         "city": "Locarno"
       },
-      "date": "Saturday, 04 July 2026",
+      "date": "Sunday, 05 July 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 24.6,
-        "wind_ms": 1.78,
+        "temp_c": 23.8,
+        "wind_ms": 1.86,
         "wind_dir": "NE",
         "rain_pct": 0,
         "cloud_label": "Sunny"
@@ -58,34 +58,18 @@
         "city": "Locarno",
         "lake": "maggiore"
       },
-      "date": "Saturday, 04 July 2026",
+      "date": "Sunday, 05 July 2026",
       "swim_time": "07:00",
       "water_temp_c": 25.0,
       "air": {
-        "temp_c": 24.6,
-        "wind_ms": 1.78,
+        "temp_c": 23.8,
+        "wind_ms": 1.86,
         "wind_dir": "NE",
         "rain_pct": 0,
         "cloud_label": "Sunny"
       }
     },
-    "stocks": {
-      "tickers": [
-        {
-          "ticker": "KRU",
-          "exchange": "WSE",
-          "currency": "PLN",
-          "date": "2026-07-03",
-          "close": 421.8,
-          "prev_close": 422.4,
-          "change_pct": -0.14,
-          "shares": 3109,
-          "portfolio_value": 1311376.2,
-          "portfolio_change": -1865.4,
-          "error": null
-        }
-      ]
-    },
+    "stocks": null,
     "wednesday_event": null
   }
 }
