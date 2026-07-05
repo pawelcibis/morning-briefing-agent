@@ -1,34 +1,64 @@
 {
-  "target_date": "2026-07-05",
+  "target_date": "2026-07-06",
   "blocks": {
-    "baby": null,
+    "baby": {
+      "location": {
+        "postcode": 6600,
+        "city": "Locarno"
+      },
+      "date": "Monday, 06 July 2026",
+      "weekday": "Mon",
+      "baby_age_months": 6.0,
+      "drop_off": {
+        "time": "08:00",
+        "temp_c": 24.7,
+        "wind_ms": 3.59,
+        "wind_dir": "ENE",
+        "rain_pct": 0,
+        "cloud_label": "Overcast"
+      },
+      "pick_up": {
+        "time": "16:15",
+        "temp_c": 33.1,
+        "wind_ms": 4.83,
+        "wind_dir": "SW",
+        "rain_pct": 0,
+        "cloud_label": "Partially sunny"
+      },
+      "alerts": [],
+      "clothing": {
+        "outfit": "Long-sleeved bodysuit and lightweight trousers",
+        "pushchair_extras": "",
+        "pick_up_note": ""
+      }
+    },
     "cycling": {
       "location": "Locarno 6600",
-      "date": "2026-07-05",
+      "date": "2026-07-06",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 22.7,
-          "wind_ms": 1.9,
-          "wind_dir": "NE",
+          "temp_c": 23.3,
+          "wind_ms": 1.8,
+          "wind_dir": "E",
           "rain_pct": 0,
-          "cloud_pct": 0,
-          "cloud_label": "Sunny"
+          "cloud_pct": 100,
+          "cloud_label": "Overcast"
         },
         {
           "time": "16:30",
-          "temp_c": 33.8,
-          "wind_ms": 3.4,
-          "wind_dir": "SSW",
+          "temp_c": 33.1,
+          "wind_ms": 4.8,
+          "wind_dir": "SW",
           "rain_pct": 0,
-          "cloud_pct": 0,
-          "cloud_label": "Sunny"
+          "cloud_pct": 29,
+          "cloud_label": "Partially sunny"
         }
       ],
       "alerts": [],
       "clothing": {
         "wear": "underpants, short socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
-        "pack": "nothing - afternoon is warmer, skip short gloves and light hat/cap on return"
+        "pack": "nothing"
       }
     },
     "running": {
@@ -36,14 +66,14 @@
         "postcode": 6600,
         "city": "Locarno"
       },
-      "date": "Sunday, 05 July 2026",
+      "date": "Monday, 06 July 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 23.8,
-        "wind_ms": 1.86,
-        "wind_dir": "NE",
+        "temp_c": 24.0,
+        "wind_ms": 2.21,
+        "wind_dir": "E",
         "rain_pct": 0,
-        "cloud_label": "Sunny"
+        "cloud_label": "Overcast"
       },
       "alerts": [],
       "clothing": {
@@ -58,16 +88,10 @@
         "city": "Locarno",
         "lake": "maggiore"
       },
-      "date": "Sunday, 05 July 2026",
+      "date": "Monday, 06 July 2026",
       "swim_time": "07:00",
       "water_temp_c": 25.0,
-      "air": {
-        "temp_c": 23.8,
-        "wind_ms": 1.86,
-        "wind_dir": "NE",
-        "rain_pct": 0,
-        "cloud_label": "Sunny"
-      }
+      "air": null
     },
     "stocks": null,
     "wednesday_event": null
