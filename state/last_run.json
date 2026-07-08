@@ -1,25 +1,55 @@
 {
-  "target_date": "2026-07-08",
+  "target_date": "2026-07-09",
   "blocks": {
-    "baby": null,
+    "baby": {
+      "location": {
+        "postcode": 6600,
+        "city": "Locarno"
+      },
+      "date": "Thursday, 09 July 2026",
+      "weekday": "Thu",
+      "baby_age_months": 6.1,
+      "drop_off": {
+        "time": "08:00",
+        "temp_c": 26.1,
+        "wind_ms": 0.42,
+        "wind_dir": "NE",
+        "rain_pct": 0,
+        "cloud_label": "Sunny"
+      },
+      "pick_up": {
+        "time": "16:15",
+        "temp_c": 33.0,
+        "wind_ms": 5.41,
+        "wind_dir": "WSW",
+        "rain_pct": 0,
+        "cloud_label": "Sunny"
+      },
+      "alerts": [],
+      "clothing": {
+        "outfit": "Short-sleeved bodysuit and lightweight cotton trousers",
+        "pushchair_extras": "",
+        "pick_up_note": ""
+      }
+    },
     "cycling": {
       "location": "Locarno 6600",
-      "date": "2026-07-08",
+      "date": "2026-07-09",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 23.4,
+          "temp_c": 23.6,
           "wind_ms": 1.4,
-          "wind_dir": "NE",
+          "wind_dir": "NNE",
           "rain_pct": 0,
-          "cloud_pct": 3,
+          "cloud_pct": 19,
           "cloud_label": "Sunny"
         },
         {
           "time": "16:30",
-          "temp_c": 37.2,
-          "wind_ms": 5.3,
-          "wind_dir": "NW",
+          "temp_c": 33.0,
+          "wind_ms": 5.4,
+          "wind_dir": "WSW",
           "rain_pct": 0,
           "cloud_pct": 0,
           "cloud_label": "Sunny"
@@ -28,7 +58,7 @@
       "alerts": [],
       "clothing": {
         "wear": "underpants, short socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
-        "pack": "nothing"
+        "pack": "nothing - afternoon is warmer, wear less on return"
       }
     },
     "running": {
@@ -36,12 +66,12 @@
         "postcode": 6600,
         "city": "Locarno"
       },
-      "date": "Wednesday, 08 July 2026",
+      "date": "Thursday, 09 July 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 23.9,
-        "wind_ms": 1.41,
-        "wind_dir": "NE",
+        "temp_c": 24.2,
+        "wind_ms": 1.2,
+        "wind_dir": "N",
         "rain_pct": 0,
         "cloud_label": "Sunny"
       },
@@ -58,13 +88,13 @@
         "city": "Locarno",
         "lake": "maggiore"
       },
-      "date": "Wednesday, 08 July 2026",
+      "date": "Thursday, 09 July 2026",
       "swim_time": "07:00",
       "water_temp_c": 25.0,
       "air": {
-        "temp_c": 23.9,
-        "wind_ms": 1.41,
-        "wind_dir": "NE",
+        "temp_c": 24.2,
+        "wind_ms": 1.2,
+        "wind_dir": "N",
         "rain_pct": 0,
         "cloud_label": "Sunny"
       }
@@ -75,82 +105,17 @@
           "ticker": "KRU",
           "exchange": "WSE",
           "currency": "PLN",
-          "date": "2026-07-07",
+          "date": "2026-07-08",
           "close": 417.6,
-          "prev_close": 421.1,
-          "change_pct": -0.83,
+          "prev_close": 417.6,
+          "change_pct": 0.0,
           "shares": 3109,
           "portfolio_value": 1298318.4,
-          "portfolio_change": -10881.5,
+          "portfolio_change": 0.0,
           "error": null
         }
       ]
     },
-    "wednesday_event": {
-      "location": {
-        "postcode": 8001,
-        "city": "Zurich"
-      },
-      "date": "Wednesday, 08 July 2026",
-      "status": "green",
-      "temperature": {
-        "slots": [
-          {
-            "time": "18:00",
-            "temp_c": 29.0
-          },
-          {
-            "time": "19:00",
-            "temp_c": 29.0
-          },
-          {
-            "time": "20:00",
-            "temp_c": 27.9
-          },
-          {
-            "time": "21:00",
-            "temp_c": 26.8
-          },
-          {
-            "time": "22:00",
-            "temp_c": 25.5
-          }
-        ],
-        "status": "green"
-      },
-      "rain": {
-        "slots": [
-          {
-            "time": "18:00",
-            "rain_pct": 0,
-            "precip_mm_h": 0.0
-          },
-          {
-            "time": "19:00",
-            "rain_pct": 0,
-            "precip_mm_h": 0.0
-          },
-          {
-            "time": "20:00",
-            "rain_pct": 0,
-            "precip_mm_h": 0.0
-          },
-          {
-            "time": "21:00",
-            "rain_pct": 0,
-            "precip_mm_h": 0.0
-          }
-        ],
-        "status": "green",
-        "max_pct": 0,
-        "max_precip_mm_h": 0,
-        "intensity_label": "none"
-      },
-      "thunderstorm": {
-        "present": false,
-        "status": "green",
-        "hours": []
-      }
-    }
+    "wednesday_event": null
   }
 }
