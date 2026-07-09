@@ -1,39 +1,29 @@
 """
 Lake water-temperature fetcher.
 
-*** TEMPORARY — LOCARNO / LAGO MAGGIORE VACATION OVERRIDE ***
-Repointed from Lake Zurich (Thalwil, badi-info.ch) to Lago Maggiore for the
-duration of a stay in Locarno. Revert this commit to restore the original
-Thalwil source.
+Source: https://www.badi-info.ch/_temp/zuerichsee-thalwil.htm
+This page is a tiny static HTML wrapper around Eawag's Alplakes model output
+for the Thalwil station (Seebäder Bürger I/II, ~0.65m depth). It's updated
+daily and is much easier to consume than the Alplakes REST API directly
+(which has no public docs).
 
-Source: https://www.boot24.ch/chde/service/temperaturen/
-This is boot24.ch's overview page listing every larger Swiss lake with its
-current "today" surface temperature (mean of the whole lake), updated daily
-(data from MeteoNews). We read the Lago Maggiore row. The overview page is used
-rather than the per-lake page because it is a single stable URL and reliably
-served (the per-lake page intermittently 404s to non-browser clients).
-
-NOTE: the public function name is kept as `fetch_lake_temp_thalwil` on purpose,
-so agent/blocks/swimming.py needs no change and the whole switch reverts in one
-commit.
+Future work (Phase 10 — morning vs. evening editions):
+  - Add a separate boat24 scraper for the next-day FORECAST (used in evening run).
+  - Keep this badi-info source for current MEASUREMENT (used in morning run).
 
 Returns degrees Celsius as a float, or None if anything fails.
-Per SPEC §6.3, fetchers never raise — they return None on failure so the digest
-can still be sent with a "missing" marker.
 """
 
 import re
 import html as html_lib
 import requests
 
-# boot24.ch overview page — one stable URL that contains every lake's current
-# temperature. We pick out the Lago Maggiore row by its per-lake link slug.
-BOOT24_TEMPS_URL = "https://www.boot24.ch/chde/service/temperaturen/"
-LAKE_ANCHOR = "lagomaggiore"     # appears in the row's <a href=".../lagomaggiore/">
+# Module-level constants — easy to swap if the source changes.
+THALWIL_URL = "https://www.badi-info.ch/_temp/zuerichsee-thalwil.htm"
 REQUEST_TIMEOUT_S = 10
 
-# boot24 (like badi-info) rejects the default python-requests UA. A standard
-# browser UA is sufficient — we're just reading a public page.
+# Some sites (badi-info included) reject the default python-requests UA with 403.
+# A standard browser UA is sufficient — we're just reading a public page.
 _HEADERS = {
     "User-Agent": (
         "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
@@ -45,16 +35,19 @@ _HEADERS = {
 
 def fetch_lake_temp_thalwil():
     """
-    Fetch the current Lago Maggiore water temperature (see module note).
+    Fetch the current Lake Zurich water temperature at Thalwil.
 
     Returns:
-        float: temperature in °C, e.g. 26.0
+        float: temperature in °C, e.g. 16.5
         None : on any failure (network, parse, etc.)
+
+    Per the spec (§6.3), fetchers never raise — they return None on failure
+    so the digest can still be sent with a "missing" marker.
     """
     from agent.retry import with_retries
 
     def _do_request():
-        resp = requests.get(BOOT24_TEMPS_URL, headers=_HEADERS, timeout=REQUEST_TIMEOUT_S)
+        resp = requests.get(THALWIL_URL, headers=_HEADERS, timeout=REQUEST_TIMEOUT_S)
         resp.raise_for_status()
         return resp
 
@@ -64,29 +57,21 @@ def fetch_lake_temp_thalwil():
             exceptions=(requests.RequestException,), label="lake",
         )
     except requests.RequestException as e:
-        print(f"[lake] HTTP error fetching boot24: {e}")
+        print(f"[lake] HTTP error fetching badi-info: {e}")
         return None
 
-    page = html_lib.unescape(resp.text)   # &deg; → °, &#176; → °, &amp; → & etc.
+    # The page wraps the temperature in HTML tags like:  <strong>16.5</strong>°C
+    # Strip tags first so the regex can match cleanly on plain text.
 
-    # Locate the Lago Maggiore row by its per-lake link slug, then read the first
-    # temperature that follows it (the bold "today" cell, rendered like "26°").
-    idx = page.lower().find(LAKE_ANCHOR)
-    if idx == -1:
-        print("[lake] Lago Maggiore row not found on boot24 page")
-        return None
-
-    # Bounded window after the anchor: prevents grabbing a later row's value if
-    # this row's "today" cell is ever empty. The row's title/link text contains
-    # no digits, so the first "<number>°" after the anchor is today's reading.
-    window = re.sub(r"<[^>]+>", " ", page[idx: idx + 600])
-    match = re.search(r"(\d+(?:[.,]\d+)?)\s*°", window)
+    page = html_lib.unescape(resp.text)   # &deg; → °, &amp; → & etc.
+    plain = re.sub(r"<[^>]+>", "", page)
+    match = re.search(r"(\d+(?:\.\d+)?)\s*°\s*C", plain)
     if not match:
-        print("[lake] couldn't find a temperature for Lago Maggiore")
+        print(f"[lake] couldn't find a temperature in the page text")
         return None
 
     try:
-        return float(match.group(1).replace(",", "."))
+        return float(match.group(1))
     except ValueError:
         print(f"[lake] couldn't parse '{match.group(1)}' as a float")
         return None
@@ -95,4 +80,4 @@ def fetch_lake_temp_thalwil():
 if __name__ == "__main__":
     # Manual smoke test: `python -m agent.fetchers.lake`
     temp = fetch_lake_temp_thalwil()
-    print(f"Lago Maggiore: {temp}°C" if temp is not None else "Lake fetch failed")
+    print(f"Lake Zurich @ Thalwil: {temp}°C" if temp is not None else "Lake fetch failed")
