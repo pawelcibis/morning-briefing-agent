@@ -78,13 +78,26 @@ def _alerts_for_slots(raw_alerts: list[dict], slot_times: list[str]) -> list[str
     return result
 
 
-def build_cycling_block(cfg: dict, target_date: date) -> dict:
+def build_cycling_block(cfg: dict, target_date: date) -> dict | None:
     from agent.llm import cycling_clothing_recommendation
 
     cc  = cfg["workouts"]["cycling"]
     loc = cc["location"]
 
-    raw = fetch_hourly(latitude=loc["lat"], longitude=loc["lon"])
+    # Guard the fetch the same way baby/running/swimming do. On a total
+    # weather-fetch failure (e.g. Open-Meteo timing out) return None so the
+    # block is cleanly skipped and the rest of the digest still sends — instead
+    # of letting the exception propagate to main._safe_build, which marks the
+    # block FAILED and dumps a full traceback into the log.
+    #
+    # Note: this covers the *fetch call raising*. A partial API response (the
+    # fetch succeeds but one slot's hour is missing) is still handled gracefully
+    # per-slot below, via the "error" slot marker.
+    try:
+        raw = fetch_hourly(latitude=loc["lat"], longitude=loc["lon"])
+    except Exception as e:
+        print(f"[cycling] weather fetch failed: {e}")
+        return None
 
     slots = []
     bands = []
