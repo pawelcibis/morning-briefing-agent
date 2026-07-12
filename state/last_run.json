@@ -1,15 +1,45 @@
 {
-  "target_date": "2026-07-12",
+  "target_date": "2026-07-13",
   "blocks": {
-    "baby": null,
+    "baby": {
+      "location": {
+        "postcode": 8400,
+        "city": "Winterthur"
+      },
+      "date": "Monday, 13 July 2026",
+      "weekday": "Mon",
+      "baby_age_months": 6.2,
+      "drop_off": {
+        "time": "08:00",
+        "temp_c": 18.8,
+        "wind_ms": 0.7,
+        "wind_dir": "N",
+        "rain_pct": 0,
+        "cloud_label": "Overcast"
+      },
+      "pick_up": {
+        "time": "16:15",
+        "temp_c": 31.0,
+        "wind_ms": 1.5,
+        "wind_dir": "N",
+        "rain_pct": 0,
+        "cloud_label": "Overcast"
+      },
+      "alerts": [],
+      "clothing": {
+        "outfit": "Long-sleeved bodysuit and lightweight trousers",
+        "pushchair_extras": "",
+        "pick_up_note": ""
+      }
+    },
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-07-12",
+      "date": "2026-07-13",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 19.4,
-          "wind_ms": 1.9,
+          "temp_c": 19.0,
+          "wind_ms": 1.1,
           "wind_dir": "N",
           "rain_pct": 0,
           "cloud_pct": 0,
@@ -17,12 +47,12 @@
         },
         {
           "time": "16:30",
-          "temp_c": 31.6,
-          "wind_ms": 3.4,
-          "wind_dir": "NE",
+          "temp_c": 31.7,
+          "wind_ms": 0.8,
+          "wind_dir": "ENE",
           "rain_pct": 0,
-          "cloud_pct": 0,
-          "cloud_label": "Sunny"
+          "cloud_pct": 100,
+          "cloud_label": "Overcast"
         }
       ],
       "alerts": [],
@@ -36,11 +66,11 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Sunday, 12 July 2026",
+      "date": "Monday, 13 July 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 16.7,
-        "wind_ms": 0.8,
+        "temp_c": 16.6,
+        "wind_ms": 0.7,
         "wind_dir": "N",
         "rain_pct": 0,
         "cloud_label": "Sunny"
@@ -58,12 +88,12 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Sunday, 12 July 2026",
+      "date": "Monday, 13 July 2026",
       "swim_time": "07:00",
-      "water_temp_c": 25.6,
+      "water_temp_c": 25.8,
       "air": {
-        "temp_c": 19.1,
-        "wind_ms": 2.08,
+        "temp_c": 19.0,
+        "wind_ms": 1.22,
         "wind_dir": "NW",
         "rain_pct": 0,
         "cloud_label": "Sunny"
