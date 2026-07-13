@@ -1,64 +1,64 @@
 {
-  "target_date": "2026-07-13",
+  "target_date": "2026-07-14",
   "blocks": {
     "baby": {
       "location": {
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Monday, 13 July 2026",
-      "weekday": "Mon",
+      "date": "Tuesday, 14 July 2026",
+      "weekday": "Tue",
       "baby_age_months": 6.2,
       "drop_off": {
         "time": "08:00",
-        "temp_c": 18.8,
-        "wind_ms": 0.7,
+        "temp_c": 22.9,
+        "wind_ms": 0.61,
         "wind_dir": "N",
         "rain_pct": 0,
         "cloud_label": "Overcast"
       },
       "pick_up": {
         "time": "16:15",
-        "temp_c": 31.0,
-        "wind_ms": 1.5,
+        "temp_c": 31.3,
+        "wind_ms": 1.61,
         "wind_dir": "N",
-        "rain_pct": 0,
+        "rain_pct": 18,
         "cloud_label": "Overcast"
       },
       "alerts": [],
       "clothing": {
-        "outfit": "Long-sleeved bodysuit and lightweight trousers",
+        "outfit": "Long-sleeved bodysuit and cotton trousers",
         "pushchair_extras": "",
         "pick_up_note": ""
       }
     },
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-07-13",
+      "date": "2026-07-14",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 19.0,
-          "wind_ms": 1.1,
-          "wind_dir": "N",
-          "rain_pct": 0,
-          "cloud_pct": 0,
-          "cloud_label": "Sunny"
+          "temp_c": 23.8,
+          "wind_ms": 0.7,
+          "wind_dir": "NE",
+          "rain_pct": 8,
+          "cloud_pct": 94,
+          "cloud_label": "Overcast"
         },
         {
           "time": "16:30",
-          "temp_c": 31.7,
-          "wind_ms": 0.8,
-          "wind_dir": "ENE",
-          "rain_pct": 0,
+          "temp_c": 32.7,
+          "wind_ms": 2.0,
+          "wind_dir": "NW",
+          "rain_pct": 35,
           "cloud_pct": 100,
           "cloud_label": "Overcast"
         }
       ],
       "alerts": [],
       "clothing": {
-        "wear": "underpants, light socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
-        "pack": "short socks"
+        "wear": "underpants, short socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
+        "pack": "rain jacket"
       }
     },
     "running": {
@@ -66,19 +66,19 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Monday, 13 July 2026",
+      "date": "Tuesday, 14 July 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 16.6,
-        "wind_ms": 0.7,
-        "wind_dir": "N",
-        "rain_pct": 0,
-        "cloud_label": "Sunny"
+        "temp_c": 20.4,
+        "wind_ms": 0.91,
+        "wind_dir": "S",
+        "rain_pct": 3,
+        "cloud_label": "Overcast"
       },
       "alerts": [],
       "clothing": {
-        "dry": "short-sleeved top, shorts, short socks",
-        "wet": "cap",
+        "dry": "short-sleeved light top, shorts, short socks, sunglasses (optional)",
+        "wet": "no sunglasses, cap (recommended)",
         "wet_active": false
       }
     },
@@ -88,18 +88,34 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Monday, 13 July 2026",
+      "date": "Tuesday, 14 July 2026",
       "swim_time": "07:00",
-      "water_temp_c": 25.8,
+      "water_temp_c": 26.0,
       "air": {
-        "temp_c": 19.0,
-        "wind_ms": 1.22,
-        "wind_dir": "NW",
-        "rain_pct": 0,
-        "cloud_label": "Sunny"
+        "temp_c": 24.2,
+        "wind_ms": 1.06,
+        "wind_dir": "SW",
+        "rain_pct": 5,
+        "cloud_label": "Overcast"
       }
     },
-    "stocks": null,
+    "stocks": {
+      "tickers": [
+        {
+          "ticker": "KRU",
+          "exchange": "WSE",
+          "currency": "PLN",
+          "date": "2026-07-13",
+          "close": 413.4,
+          "prev_close": 414.0,
+          "change_pct": -0.14,
+          "shares": 3109,
+          "portfolio_value": 1285260.6,
+          "portfolio_change": -1865.4,
+          "error": null
+        }
+      ]
+    },
     "wednesday_event": null
   }
 }
