@@ -1,29 +1,29 @@
 {
-  "target_date": "2026-07-27",
+  "target_date": "2026-07-28",
   "blocks": {
     "baby": {
       "location": {
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Monday, 27 July 2026",
-      "weekday": "Mon",
+      "date": "Tuesday, 28 July 2026",
+      "weekday": "Tue",
       "baby_age_months": 6.7,
       "drop_off": {
         "time": "08:00",
-        "temp_c": 19.2,
-        "wind_ms": 2.84,
-        "wind_dir": "SW",
+        "temp_c": 17.8,
+        "wind_ms": 0.7,
+        "wind_dir": "N",
         "rain_pct": 0,
-        "cloud_label": "Overcast"
+        "cloud_label": "Sunny"
       },
       "pick_up": {
         "time": "16:15",
-        "temp_c": 26.5,
-        "wind_ms": 4.08,
-        "wind_dir": "WNW",
+        "temp_c": 29.6,
+        "wind_ms": 2.55,
+        "wind_dir": "NE",
         "rain_pct": 0,
-        "cloud_label": "Partially sunny"
+        "cloud_label": "Sunny"
       },
       "alerts": [],
       "clothing": {
@@ -34,25 +34,25 @@
     },
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-07-27",
+      "date": "2026-07-28",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 19.6,
-          "wind_ms": 2.1,
-          "wind_dir": "SW",
-          "rain_pct": 15,
-          "cloud_pct": 100,
-          "cloud_label": "Overcast"
+          "temp_c": 18.0,
+          "wind_ms": 1.2,
+          "wind_dir": "N",
+          "rain_pct": 0,
+          "cloud_pct": 0,
+          "cloud_label": "Sunny"
         },
         {
           "time": "16:30",
-          "temp_c": 26.5,
-          "wind_ms": 2.8,
-          "wind_dir": "WSW",
+          "temp_c": 30.3,
+          "wind_ms": 2.3,
+          "wind_dir": "NE",
           "rain_pct": 0,
-          "cloud_pct": 70,
-          "cloud_label": "Mostly cloudy"
+          "cloud_pct": 0,
+          "cloud_label": "Sunny"
         }
       ],
       "alerts": [],
@@ -66,14 +66,14 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Monday, 27 July 2026",
+      "date": "Tuesday, 28 July 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 19.0,
-        "wind_ms": 2.76,
-        "wind_dir": "SW",
-        "rain_pct": 5,
-        "cloud_label": "Mostly cloudy"
+        "temp_c": 16.6,
+        "wind_ms": 0.5,
+        "wind_dir": "NE",
+        "rain_pct": 0,
+        "cloud_label": "Sunny"
       },
       "alerts": [],
       "clothing": {
@@ -88,18 +88,34 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Monday, 27 July 2026",
+      "date": "Tuesday, 28 July 2026",
       "swim_time": "07:00",
-      "water_temp_c": 24.5,
+      "water_temp_c": 24.3,
       "air": {
-        "temp_c": 19.1,
-        "wind_ms": 2.66,
-        "wind_dir": "WSW",
-        "rain_pct": 5,
-        "cloud_label": "Overcast"
+        "temp_c": 17.7,
+        "wind_ms": 1.21,
+        "wind_dir": "WNW",
+        "rain_pct": 0,
+        "cloud_label": "Sunny"
       }
     },
-    "stocks": null,
+    "stocks": {
+      "tickers": [
+        {
+          "ticker": "KRU",
+          "exchange": "WSE",
+          "currency": "PLN",
+          "date": "2026-07-27",
+          "close": 424.0,
+          "prev_close": 411.4,
+          "change_pct": 3.06,
+          "shares": 3109,
+          "portfolio_value": 1318216.0,
+          "portfolio_change": 39173.4,
+          "error": null
+        }
+      ]
+    },
     "wednesday_event": null
   }
 }
