@@ -1,34 +1,34 @@
 {
-  "target_date": "2026-08-15",
+  "target_date": "2026-08-16",
   "blocks": {
     "baby": null,
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-08-15",
+      "date": "2026-08-16",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 23.9,
-          "wind_ms": 0.6,
-          "wind_dir": "E",
-          "rain_pct": 0,
-          "cloud_pct": 59,
-          "cloud_label": "Mostly cloudy"
+          "temp_c": 23.6,
+          "wind_ms": 0.5,
+          "wind_dir": "NE",
+          "rain_pct": 3,
+          "cloud_pct": 100,
+          "cloud_label": "Overcast"
         },
         {
           "time": "16:30",
-          "temp_c": 33.5,
-          "wind_ms": 2.0,
-          "wind_dir": "WNW",
-          "rain_pct": 10,
-          "cloud_pct": 75,
-          "cloud_label": "Mostly cloudy"
+          "temp_c": 28.9,
+          "wind_ms": 2.6,
+          "wind_dir": "NNW",
+          "rain_pct": 60,
+          "cloud_pct": 100,
+          "cloud_label": "Overcast"
         }
       ],
       "alerts": [],
       "clothing": {
         "wear": "underpants, short socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
-        "pack": "nothing"
+        "pack": "rain jacket, rain pants"
       }
     },
     "running": {
@@ -36,14 +36,14 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Saturday, 15 August 2026",
+      "date": "Sunday, 16 August 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 18.3,
-        "wind_ms": 1.0,
+        "temp_c": 18.5,
+        "wind_ms": 0.91,
         "wind_dir": "S",
-        "rain_pct": 3,
-        "cloud_label": "Mostly cloudy"
+        "rain_pct": 5,
+        "cloud_label": "Overcast"
       },
       "alerts": [],
       "clothing": {
@@ -58,34 +58,18 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Saturday, 15 August 2026",
+      "date": "Sunday, 16 August 2026",
       "swim_time": "07:00",
-      "water_temp_c": 26.4,
+      "water_temp_c": 26.6,
       "air": {
-        "temp_c": 22.0,
-        "wind_ms": 1.64,
+        "temp_c": 21.7,
+        "wind_ms": 1.72,
         "wind_dir": "SW",
-        "rain_pct": 0,
-        "cloud_label": "Partially sunny"
+        "rain_pct": 5,
+        "cloud_label": "Overcast"
       }
     },
-    "stocks": {
-      "tickers": [
-        {
-          "ticker": "KRU",
-          "exchange": "WSE",
-          "currency": "PLN",
-          "date": "2026-08-14",
-          "close": 433.0,
-          "prev_close": 432.2,
-          "change_pct": 0.19,
-          "shares": 3109,
-          "portfolio_value": 1346197.0,
-          "portfolio_change": 2487.2,
-          "error": null
-        }
-      ]
-    },
+    "stocks": null,
     "wednesday_event": null
   }
 }
