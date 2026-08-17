@@ -1,66 +1,64 @@
 {
-  "target_date": "2026-08-17",
+  "target_date": "2026-08-18",
   "blocks": {
     "baby": {
       "location": {
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Monday, 17 August 2026",
-      "weekday": "Mon",
+      "date": "Tuesday, 18 August 2026",
+      "weekday": "Tue",
       "baby_age_months": 7.4,
       "drop_off": {
         "time": "08:00",
-        "temp_c": 21.6,
-        "wind_ms": 0.71,
-        "wind_dir": "S",
-        "rain_pct": 65,
+        "temp_c": 19.5,
+        "wind_ms": 2.12,
+        "wind_dir": "SW",
+        "rain_pct": 3,
         "cloud_label": "Overcast"
       },
       "pick_up": {
         "time": "16:15",
-        "temp_c": 21.8,
-        "wind_ms": 4.12,
-        "wind_dir": "SW",
-        "rain_pct": 95,
-        "cloud_label": "Mostly cloudy"
+        "temp_c": 25.7,
+        "wind_ms": 4.49,
+        "wind_dir": "WNW",
+        "rain_pct": 0,
+        "cloud_label": "Overcast"
       },
-      "alerts": [
-        "Rain likely 09:00\u201316:00 (peak 100%)"
-      ],
+      "alerts": [],
       "clothing": {
-        "outfit": "Long-sleeved bodysuit and lightweight trousers",
-        "pushchair_extras": "Add rain cover",
+        "outfit": "Long-sleeved bodysuit and lightweight trousers or leggings",
+        "pushchair_extras": "",
         "pick_up_note": ""
       }
     },
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-08-17",
+      "date": "2026-08-18",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 23.2,
+          "temp_c": 19.2,
           "wind_ms": 0.7,
-          "wind_dir": "S",
-          "rain_pct": 35,
-          "cloud_pct": 100,
-          "cloud_label": "Overcast"
+          "wind_dir": "SSE",
+          "rain_pct": 0,
+          "cloud_pct": 60,
+          "cloud_label": "Mostly cloudy"
         },
         {
           "time": "16:30",
-          "temp_c": 22.1,
-          "wind_ms": 3.8,
-          "wind_dir": "SSW",
-          "rain_pct": 95,
-          "cloud_pct": 96,
+          "temp_c": 26.0,
+          "wind_ms": 3.5,
+          "wind_dir": "WNW",
+          "rain_pct": 0,
+          "cloud_pct": 100,
           "cloud_label": "Overcast"
         }
       ],
       "alerts": [],
       "clothing": {
-        "wear": "underpants, short socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
-        "pack": "rain jacket, rain pants"
+        "wear": "underpants, light socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
+        "pack": "short socks"
       }
     },
     "running": {
@@ -68,20 +66,20 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Monday, 17 August 2026",
+      "date": "Tuesday, 18 August 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 20.8,
-        "wind_ms": 0.7,
-        "wind_dir": "S",
-        "rain_pct": 45,
+        "temp_c": 18.9,
+        "wind_ms": 1.77,
+        "wind_dir": "SW",
+        "rain_pct": 5,
         "cloud_label": "Overcast"
       },
       "alerts": [],
       "clothing": {
-        "dry": "short-sleeved light top, shorts, short socks, sunglasses (optional)",
-        "wet": "no sunglasses, cap (recommended)",
-        "wet_active": true
+        "dry": "short-sleeved top, shorts, short socks",
+        "wet": "cap",
+        "wet_active": false
       }
     },
     "swimming": {
@@ -90,18 +88,28 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Monday, 17 August 2026",
+      "date": "Tuesday, 18 August 2026",
       "swim_time": "07:00",
-      "water_temp_c": 25.7,
-      "air": {
-        "temp_c": 22.2,
-        "wind_ms": 1.42,
-        "wind_dir": "SW",
-        "rain_pct": 63,
-        "cloud_label": "Overcast"
-      }
+      "water_temp_c": 25.3,
+      "air": null
     },
-    "stocks": null,
+    "stocks": {
+      "tickers": [
+        {
+          "ticker": "KRU",
+          "exchange": "WSE",
+          "currency": "PLN",
+          "date": "2026-08-17",
+          "close": 428.0,
+          "prev_close": 433.0,
+          "change_pct": -1.15,
+          "shares": 3109,
+          "portfolio_value": 1330652.0,
+          "portfolio_change": -15545.0,
+          "error": null
+        }
+      ]
+    },
     "wednesday_event": null
   }
 }
