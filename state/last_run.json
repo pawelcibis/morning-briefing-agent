@@ -1,28 +1,58 @@
 {
-  "target_date": "2026-08-30",
+  "target_date": "2026-08-31",
   "blocks": {
-    "baby": null,
+    "baby": {
+      "location": {
+        "postcode": 8400,
+        "city": "Winterthur"
+      },
+      "date": "Monday, 31 August 2026",
+      "weekday": "Mon",
+      "baby_age_months": 7.8,
+      "drop_off": {
+        "time": "08:00",
+        "temp_c": 18.0,
+        "wind_ms": 2.51,
+        "wind_dir": "W",
+        "rain_pct": 5,
+        "cloud_label": "Overcast"
+      },
+      "pick_up": {
+        "time": "16:15",
+        "temp_c": 24.7,
+        "wind_ms": 3.93,
+        "wind_dir": "WSW",
+        "rain_pct": 0,
+        "cloud_label": "Sunny"
+      },
+      "alerts": [],
+      "clothing": {
+        "outfit": "Long-sleeved bodysuit and lightweight trousers or leggings",
+        "pushchair_extras": "",
+        "pick_up_note": ""
+      }
+    },
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-08-30",
+      "date": "2026-08-31",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 17.8,
-          "wind_ms": 1.0,
-          "wind_dir": "ESE",
-          "rain_pct": 3,
-          "cloud_pct": 50,
-          "cloud_label": "Partially sunny"
+          "temp_c": 19.0,
+          "wind_ms": 0.3,
+          "wind_dir": "WSW",
+          "rain_pct": 70,
+          "cloud_pct": 89,
+          "cloud_label": "Overcast"
         },
         {
           "time": "16:30",
-          "temp_c": 26.2,
-          "wind_ms": 2.7,
+          "temp_c": 25.1,
+          "wind_ms": 4.3,
           "wind_dir": "W",
           "rain_pct": 0,
-          "cloud_pct": 61,
-          "cloud_label": "Mostly cloudy"
+          "cloud_pct": 33,
+          "cloud_label": "Partially sunny"
         }
       ],
       "alerts": [],
@@ -36,14 +66,14 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Sunday, 30 August 2026",
+      "date": "Monday, 31 August 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 15.8,
-        "wind_ms": 1.26,
-        "wind_dir": "SSW",
-        "rain_pct": 0,
-        "cloud_label": "Mostly cloudy"
+        "temp_c": 17.9,
+        "wind_ms": 1.51,
+        "wind_dir": "W",
+        "rain_pct": 18,
+        "cloud_label": "Overcast"
       },
       "alerts": [],
       "clothing": {
@@ -58,15 +88,15 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Sunday, 30 August 2026",
+      "date": "Monday, 31 August 2026",
       "swim_time": "07:00",
-      "water_temp_c": 23.8,
+      "water_temp_c": 24.3,
       "air": {
-        "temp_c": 16.8,
-        "wind_ms": 1.36,
-        "wind_dir": "SW",
-        "rain_pct": 0,
-        "cloud_label": "Partially sunny"
+        "temp_c": 18.3,
+        "wind_ms": 1.17,
+        "wind_dir": "NNW",
+        "rain_pct": 60,
+        "cloud_label": "Overcast"
       }
     },
     "stocks": null,
