@@ -1,34 +1,34 @@
 {
-  "target_date": "2026-09-05",
+  "target_date": "2026-09-06",
   "blocks": {
     "baby": null,
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-09-05",
+      "date": "2026-09-06",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 21.0,
-          "wind_ms": 0.6,
-          "wind_dir": "SW",
+          "temp_c": 15.6,
+          "wind_ms": 1.3,
+          "wind_dir": "N",
           "rain_pct": 0,
-          "cloud_pct": 96,
-          "cloud_label": "Overcast"
+          "cloud_pct": 0,
+          "cloud_label": "Sunny"
         },
         {
           "time": "16:30",
-          "temp_c": 24.4,
-          "wind_ms": 2.8,
-          "wind_dir": "WSW",
-          "rain_pct": 28,
-          "cloud_pct": 74,
-          "cloud_label": "Mostly cloudy"
+          "temp_c": 26.9,
+          "wind_ms": 1.8,
+          "wind_dir": "NE",
+          "rain_pct": 0,
+          "cloud_pct": 0,
+          "cloud_label": "Sunny"
         }
       ],
       "alerts": [],
       "clothing": {
-        "wear": "underpants, short socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
-        "pack": "nothing"
+        "wear": "underpants, light socks, cycling pants, cycling short shirt, light hat/cap, short gloves",
+        "pack": "short socks"
       }
     },
     "running": {
@@ -36,18 +36,18 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Saturday, 05 September 2026",
+      "date": "Sunday, 06 September 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 19.4,
-        "wind_ms": 1.53,
-        "wind_dir": "WSW",
+        "temp_c": 12.8,
+        "wind_ms": 0.41,
+        "wind_dir": "NNE",
         "rain_pct": 0,
         "cloud_label": "Overcast"
       },
       "alerts": [],
       "clothing": {
-        "dry": "short-sleeved top, shorts, short socks",
+        "dry": "short-sleeved top, shorts, standard socks",
         "wet": "cap",
         "wet_active": false
       }
@@ -58,34 +58,18 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Saturday, 05 September 2026",
+      "date": "Sunday, 06 September 2026",
       "swim_time": "07:00",
-      "water_temp_c": 23.9,
+      "water_temp_c": 23.4,
       "air": {
-        "temp_c": 19.7,
-        "wind_ms": 1.04,
-        "wind_dir": "WSW",
+        "temp_c": 15.4,
+        "wind_ms": 1.53,
+        "wind_dir": "WNW",
         "rain_pct": 0,
-        "cloud_label": "Overcast"
+        "cloud_label": "Sunny"
       }
     },
-    "stocks": {
-      "tickers": [
-        {
-          "ticker": "KRU",
-          "exchange": "WSE",
-          "currency": "PLN",
-          "date": "2026-09-04",
-          "close": 395.0,
-          "prev_close": 399.3,
-          "change_pct": -1.08,
-          "shares": 3109,
-          "portfolio_value": 1228055.0,
-          "portfolio_change": -13368.7,
-          "error": null
-        }
-      ]
-    },
+    "stocks": null,
     "wednesday_event": null
   }
 }
