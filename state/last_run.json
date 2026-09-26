@@ -1,28 +1,28 @@
 {
-  "target_date": "2026-09-26",
+  "target_date": "2026-09-27",
   "blocks": {
     "baby": null,
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-09-26",
+      "date": "2026-09-27",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 12.3,
-          "wind_ms": 0.9,
-          "wind_dir": "N",
-          "rain_pct": 0,
-          "cloud_pct": 36,
-          "cloud_label": "Partially sunny"
-        },
-        {
-          "time": "16:30",
-          "temp_c": 26.3,
-          "wind_ms": 1.1,
-          "wind_dir": "SW",
+          "temp_c": 12.6,
+          "wind_ms": 0.8,
+          "wind_dir": "NNE",
           "rain_pct": 0,
           "cloud_pct": 0,
           "cloud_label": "Sunny"
+        },
+        {
+          "time": "16:30",
+          "temp_c": 26.8,
+          "wind_ms": 1.4,
+          "wind_dir": "S",
+          "rain_pct": 0,
+          "cloud_pct": 32,
+          "cloud_label": "Partially sunny"
         }
       ],
       "alerts": [],
@@ -36,18 +36,18 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Saturday, 26 September 2026",
+      "date": "Sunday, 27 September 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 9.6,
-        "wind_ms": 0.5,
-        "wind_dir": "SE",
+        "temp_c": 10.3,
+        "wind_ms": 0.32,
+        "wind_dir": "SSW",
         "rain_pct": 0,
         "cloud_label": "Sunny"
       },
       "alerts": [],
       "clothing": {
-        "dry": "long-sleeved top, shorts, standard socks",
+        "dry": "short-sleeved top, shorts, standard socks",
         "wet": "cap",
         "wet_active": false
       }
@@ -58,34 +58,18 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Saturday, 26 September 2026",
+      "date": "Sunday, 27 September 2026",
       "swim_time": "07:00",
-      "water_temp_c": 21.4,
+      "water_temp_c": 21.5,
       "air": {
-        "temp_c": 13.2,
-        "wind_ms": 0.64,
+        "temp_c": 13.5,
+        "wind_ms": 0.78,
         "wind_dir": "NW",
         "rain_pct": 0,
-        "cloud_label": "Partially sunny"
+        "cloud_label": "Sunny"
       }
     },
-    "stocks": {
-      "tickers": [
-        {
-          "ticker": "KRU",
-          "exchange": "WSE",
-          "currency": "PLN",
-          "date": "2026-09-25",
-          "close": 382.0,
-          "prev_close": 385.7,
-          "change_pct": -0.96,
-          "shares": 3109,
-          "portfolio_value": 1187638.0,
-          "portfolio_change": -11503.3,
-          "error": null
-        }
-      ]
-    },
+    "stocks": null,
     "wednesday_event": null
   }
 }
