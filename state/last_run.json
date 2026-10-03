@@ -1,28 +1,28 @@
 {
-  "target_date": "2026-10-03",
+  "target_date": "2026-10-04",
   "blocks": {
     "baby": null,
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-10-03",
+      "date": "2026-10-04",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 14.3,
+          "temp_c": 13.3,
           "wind_ms": 0.8,
-          "wind_dir": "NNE",
+          "wind_dir": "N",
           "rain_pct": 0,
-          "cloud_pct": 98,
-          "cloud_label": "Overcast"
+          "cloud_pct": 7,
+          "cloud_label": "Sunny"
         },
         {
           "time": "16:30",
-          "temp_c": 23.0,
-          "wind_ms": 0.4,
-          "wind_dir": "N",
+          "temp_c": 24.4,
+          "wind_ms": 2.1,
+          "wind_dir": "NE",
           "rain_pct": 0,
-          "cloud_pct": 74,
-          "cloud_label": "Mostly cloudy"
+          "cloud_pct": 100,
+          "cloud_label": "Overcast"
         }
       ],
       "alerts": [],
@@ -36,14 +36,14 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Saturday, 03 October 2026",
+      "date": "Sunday, 04 October 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 12.7,
-        "wind_ms": 0.22,
-        "wind_dir": "ESE",
+        "temp_c": 10.7,
+        "wind_ms": 0.5,
+        "wind_dir": "S",
         "rain_pct": 0,
-        "cloud_label": "Overcast"
+        "cloud_label": "Partially sunny"
       },
       "alerts": [],
       "clothing": {
@@ -58,34 +58,18 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Saturday, 03 October 2026",
+      "date": "Sunday, 04 October 2026",
       "swim_time": "07:00",
-      "water_temp_c": 20.9,
+      "water_temp_c": 21.2,
       "air": {
-        "temp_c": 13.4,
-        "wind_ms": 0.95,
-        "wind_dir": "WNW",
+        "temp_c": 13.1,
+        "wind_ms": 0.78,
+        "wind_dir": "SW",
         "rain_pct": 0,
-        "cloud_label": "Overcast"
+        "cloud_label": "Sunny"
       }
     },
-    "stocks": {
-      "tickers": [
-        {
-          "ticker": "KRU",
-          "exchange": "WSE",
-          "currency": "PLN",
-          "date": "2026-10-01",
-          "close": 369.5,
-          "prev_close": 375.5,
-          "change_pct": -1.6,
-          "shares": 3109,
-          "portfolio_value": 1148775.5,
-          "portfolio_change": -18654.0,
-          "error": null
-        }
-      ]
-    },
+    "stocks": null,
     "wednesday_event": null
   }
 }
