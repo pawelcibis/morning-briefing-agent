@@ -21,6 +21,13 @@ blocks that have named time slots (cycling, running). This keeps the
 renderer look-up simple: f"cycling.{slot['time']}.temp_c".
 
 Stocks are intentionally skipped (per Phase 10 spec notes).
+
+Holiday mode (Phase 14) adds:
+    "holiday_weather.09:00.temp_c"      per slot: temp_c / wind_ms / rain_pct
+    "holiday_swimming.water_temp_c"
+Holiday blocks are only compared when the evening state is for the same date
+AND the same place. That guards a location change (Wrocław → Tigaki) from
+producing nonsense deltas if an evening state write was ever missed.
 """
 
 
@@ -49,6 +56,10 @@ def diff_blocks(current: dict, previous_state: dict) -> dict:
     _diff_cycling(current.get("cycling"), prev.get("cycling"),    deltas)
     _diff_running(current.get("running"), prev.get("running"),    deltas)
     _diff_swimming(current.get("swimming"), prev.get("swimming"), deltas)
+    _diff_holiday_weather(current.get("holiday_weather"),
+                          prev.get("holiday_weather"), deltas)
+    _diff_holiday_swimming(current.get("holiday_swimming"),
+                           prev.get("holiday_swimming"), deltas)
     # Stocks: skip (see module docstring).
 
     return deltas
@@ -116,3 +127,40 @@ def _diff_swimming(cur: dict | None, prev: dict | None, out: dict) -> None:
     p_air = prev.get("air") or {}
     for field in ("temp_c", "wind_ms", "rain_pct"):
         _delta("swimming.air", field, c_air.get(field), p_air.get(field), out)
+
+
+# ---------------------------------------------------------------------------
+# Holiday mode (Phase 14)
+# ---------------------------------------------------------------------------
+
+def _same_place_and_day(cur: dict, prev: dict) -> bool:
+    """True only if both holiday blocks are for the same date and location."""
+    if cur.get("date") != prev.get("date"):
+        return False
+    c, p = cur.get("location") or {}, prev.get("location") or {}
+    try:
+        return (abs(float(c["lat"]) - float(p["lat"])) < 1e-3
+                and abs(float(c["lon"]) - float(p["lon"])) < 1e-3)
+    except (KeyError, TypeError, ValueError):
+        return False
+
+
+def _diff_holiday_weather(cur: dict | None, prev: dict | None, out: dict) -> None:
+    if cur is None or prev is None or not _same_place_and_day(cur, prev):
+        return
+    c_slots = {s["time"]: s for s in cur.get("slots",  []) if "error" not in s}
+    p_slots = {s["time"]: s for s in prev.get("slots", []) if "error" not in s}
+    for time_key, c_slot in c_slots.items():
+        p_slot = p_slots.get(time_key)
+        if p_slot is None:
+            continue
+        for field in ("temp_c", "wind_ms", "rain_pct"):
+            _delta(f"holiday_weather.{time_key}", field,
+                   c_slot.get(field), p_slot.get(field), out)
+
+
+def _diff_holiday_swimming(cur: dict | None, prev: dict | None, out: dict) -> None:
+    if cur is None or prev is None or not _same_place_and_day(cur, prev):
+        return
+    _delta("holiday_swimming", "water_temp_c",
+           cur.get("water_temp_c"), prev.get("water_temp_c"), out)

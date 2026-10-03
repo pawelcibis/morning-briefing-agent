@@ -172,3 +172,98 @@ def baby_clothing_recommendation(
             "pushchair_extras": "",
             "pick_up_note": "",
         }
+
+
+# ---------------------------------------------------------------------------
+# Holiday mode (Phase 14) — baby clothing for a day out
+# ---------------------------------------------------------------------------
+# The crèche prompt above is built around a 5-minute, wind-protected journey
+# with spare clothes kept at daycare. On holiday the baby is out for much of
+# the day and heat / sun matter as much as cold, so it gets its own prompt.
+_BABY_HOLIDAY_SYSTEM = """\
+You are advising parents on how to dress their baby for a day out on holiday.
+
+Key context (read carefully before answering):
+- The baby is out with the parents for much of the day, mostly in a pushchair
+  with a good canopy that shields from wind; some time is spent indoors.
+- outfit: ONE simple base outfit for the main part of the day (one or two items).
+  NEVER recommend three or more layers.
+- adjustments: what to add or remove for the cooler morning (06:00-09:00) or
+  evening (18:00-21:00), only if the forecast genuinely calls for it.
+  Empty string "" if no change is needed.
+- extras: short practical items separated by "; ", or "" if none apply.
+  Add "sun hat; keep in the shade at midday" when any slot from 09:00 to 18:00
+  is Sunny or Partially sunny and 20 °C or warmer.
+  Add "rain cover" when any slot has rain probability >= 40% or a rain or
+  thunderstorm alert is listed.
+- Be specific: name actual items, not categories. No explanations.
+
+Respond ONLY with a JSON object — no markdown, no commentary:
+{"outfit": "...", "adjustments": "...", "extras": "..."}
+"""
+
+
+def baby_holiday_clothing_recommendation(
+    age_months: float,
+    slots: list,
+    alerts: list | None = None,
+    place: str = "",
+) -> dict:
+    """
+    Ask Claude Haiku how to dress the baby for a holiday day out.
+
+    slots: holiday weather slots ({"time", "temp_c", "wind_ms", "rain_pct",
+           "cloud_label"}), local time at the holiday location.
+    Returns {"outfit": "...", "adjustments": "...", "extras": "..."}.
+    Never raises: falls back to a placeholder outfit if the key is missing or
+    the call fails.
+    """
+    api_key = os.environ.get("ANTHROPIC_API_KEY", "")
+    if not api_key:
+        return {
+            "outfit": "(ANTHROPIC_API_KEY not set — LLM skipped)",
+            "adjustments": "",
+            "extras": "",
+        }
+
+    lines = [f"Baby age: {age_months} months." + (f" Location: {place}." if place else ""),
+             "Forecast (local time):"]
+    for s in slots:
+        temp = "?" if s.get("temp_c") is None else f"{s['temp_c']:.1f}°C"
+        lines.append(f"{s['time']}: {temp}, wind {s.get('wind_ms')} m/s, "
+                     f"rain {s.get('rain_pct')}%, {s.get('cloud_label')}")
+    lines.append("Alerts: " + ("; ".join(alerts) if alerts else "none"))
+    user_msg = "\n".join(lines)
+
+    try:
+        resp = requests.post(
+            _API_URL,
+            headers={
+                "x-api-key": api_key,
+                "anthropic-version": "2023-06-01",
+                "content-type": "application/json",
+            },
+            json={
+                "model": _MODEL,
+                "max_tokens": 250,
+                "system": _BABY_HOLIDAY_SYSTEM,
+                "messages": [{"role": "user", "content": user_msg}],
+            },
+            timeout=30,
+        )
+        resp.raise_for_status()
+        raw = resp.json()["content"][0]["text"].strip()
+        if raw.startswith("```"):
+            raw = raw.split("```")[1].lstrip("json").strip()
+        data = json.loads(raw)
+        return {
+            "outfit": data.get("outfit", ""),
+            "adjustments": data.get("adjustments", ""),
+            "extras": data.get("extras", ""),
+        }
+    except Exception as exc:
+        return {
+            "outfit": f"(LLM error: {exc})",
+            "adjustments": "",
+            "extras": "",
+        }

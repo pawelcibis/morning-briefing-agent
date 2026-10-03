@@ -68,6 +68,37 @@ wednesday_event:
   # Location: Zurich 8001 (same as cycling).
   location: { postcode: 8001, city: Zurich, lat: 47.3769, lon: 8.5417 }
 
+
+holiday:
+  # Holiday mode (Phase 14). For every digest whose TARGET date falls inside a
+  # period below (start/end inclusive), the normal baby / cycling / running /
+  # swimming blocks are switched off and replaced by holiday blocks for the
+  # period's location: one shared weather table, baby clothing (LLM), running
+  # clothing per slot, and water temperature if `swimming` is given.
+  # Stocks and wednesday_event are unaffected. Dispatch times are unchanged.
+  #
+  # Matching is on the TARGET date: the 20:00 run builds the next day, so the
+  # evening before a period starts is already in holiday mode.
+  # slot_times / alert_window are LOCAL time at the holiday location (the
+  # period's IANA timezone is passed to Open-Meteo). Keep times quoted: YAML
+  # reads an unquoted 06:00 as the number 360.
+  # Outside all periods the agent runs normally, so finished periods can stay.
+  slot_times: ["06:00", "09:00", "12:00", "15:00", "18:00", "21:00"]
+  alert_window: ["06:00", "21:00"]
+  rain_alert_threshold_pct: 40
+  periods:
+    - start: 2026-10-04
+      end:   2026-10-09
+      location: { city: Wrocław, country: PL, lat: 51.1079, lon: 17.0385, timezone: Europe/Warsaw }
+    - start: 2026-10-10
+      end:   2026-10-17
+      location: { city: Tigaki, country: GR, lat: 36.8904, lon: 27.1823, timezone: Europe/Athens }
+      # Sea temperature point just off Tigaki beach (Open-Meteo Marine API).
+      swimming: { name: Tigaki beach, water: sea, lat: 36.9000, lon: 27.1823 }
+    - start: 2026-10-18
+      end:   2026-10-21
+      location: { city: Wrocław, country: PL, lat: 51.1079, lon: 17.0385, timezone: Europe/Warsaw }
+
 recipients:
   - name: Pawel
     role: full

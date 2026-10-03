@@ -12,7 +12,9 @@ def load_config() -> dict:
     of band dicts (max_c, dry, wet) loaded from cycling_clothing.yaml.
     The YAML file path stays in config.yaml; the content lives in memory.
     """
-    with open(REPO_ROOT / "config.yaml") as f:
+    # Explicit UTF-8: on Windows the default is cp1252, which garbles non-ASCII
+    # values such as "Wrocław" (Linux runners are UTF-8 either way).
+    with open(REPO_ROOT / "config.yaml", encoding="utf-8") as f:
         cfg = yaml.safe_load(f)
 
     for workout_name, workout_cfg in cfg.get("workouts", {}).items():

@@ -18,6 +18,10 @@ The dot-path keys (e.g. "cycling.06:30.temp_c") MUST match diff.py exactly.
 
 run_type (Phase 13, item G): threaded into render_digest so the in-body banner
 ("Morning Briefing" vs "Morning Update") matches the email subject line.
+
+Holiday mode (Phase 14): four holiday_* blocks (see blocks/holiday.py). When any
+is present, the banner gets a "🌴 Holiday mode — <place>" line. The weather
+table is shared; baby / running / swimming add only their own content.
 """
 
 RULE_WIDTH = 52
@@ -214,7 +218,8 @@ def render_swimming_block(block,
     water_ann = _fmt_delta(d.get("swimming.water_temp_c"), "water_temp_c", thresholds)
 
     loc = block["location"]
-    lines = _block_header("🏊", f"SWIMMING — {loc['city']} {loc['postcode']} (Lake Zurich)")
+    lake  = str(loc.get("lake") or "zurich").title()      # "zurich" → "Zurich"
+    lines = _block_header("🏊", f"SWIMMING — {loc['city']} {loc['postcode']} (Lake {lake})")
     lines.append(f"  {block['swim_time']}")
     lines.append(f"    Water temp:   {_fmt_temp(water)}{water_ann}")
     if air:
@@ -328,6 +333,114 @@ def render_wednesday_event_block(block: dict,
 
 
 # ---------------------------------------------------------------------------
+# Holiday renderers (Phase 14)
+# ---------------------------------------------------------------------------
+
+def render_holiday_weather_block(block: dict,
+                                 deltas: dict | None = None,
+                                 thresholds: dict | None = None) -> str:
+    """Shared table, one line per slot:  06:00   19.8°C · 3.2 m/s N · rain 0% · Sunny"""
+    if block is None:
+        return ""
+    d  = deltas or {}
+    tz = (block.get("location") or {}).get("timezone")
+    lines = _block_header("🌤", "WEATHER", f"Local time ({tz})" if tz else None)
+
+    for slot in block["slots"]:
+        t = slot["time"]
+        if "error" in slot:
+            lines.append(f"  {t}   ⚠  {slot['error']}")
+            continue
+
+        def ann(field, t=t):
+            return _fmt_delta(d.get(f"holiday_weather.{t}.{field}"), field, thresholds)
+
+        lines.append(
+            f"  {t}   {_fmt_temp(slot['temp_c'])}{ann('temp_c')} · "
+            f"{_fmt_wind(slot['wind_ms'], slot['wind_dir'])}{ann('wind_ms')} · "
+            f"rain {_fmt_pct(slot['rain_pct'])}{ann('rain_pct')} · {slot['cloud_label']}"
+        )
+
+    alert_lines = _render_alerts(block.get("alerts", []))
+    if alert_lines:
+        lines.append("")
+        lines.extend(alert_lines)
+    return "\n".join(lines)
+
+
+def render_holiday_baby_block(block: dict,
+                              deltas: dict | None = None,       # accepted, not used
+                              thresholds: dict | None = None) -> str:
+    if block is None:
+        return ""
+    c = block.get("clothing") or {}
+    lines = _block_header("👶", "BABY", f"Baby age: {block['baby_age_months']} months")
+    lines.append(f"  Outfit:        {c.get('outfit') or 'n/a'}")
+    if c.get("adjustments"):
+        lines.append(f"  Adjustments:   {c['adjustments']}")
+    if c.get("extras"):
+        lines.append(f"  Extras:        {c['extras']}")
+    return "\n".join(lines)
+
+
+def render_holiday_running_block(block: dict,
+                                 deltas: dict | None = None,    # accepted, not used
+                                 thresholds: dict | None = None) -> str:
+    """Clothing per start time; consecutive slots with identical clothing are
+    merged into one range (06:00–09:00) to keep the block short."""
+    if block is None:
+        return ""
+    groups: list[dict] = []
+    for slot in block["slots"]:
+        if "error" in slot:
+            groups.append({"times": [slot["time"]], "error": slot["error"]})
+            continue
+        wet = slot["wet"] if slot.get("wet_active") and slot.get("wet") else ""
+        key = (slot["dry"], wet)
+        if groups and groups[-1].get("key") == key:
+            groups[-1]["times"].append(slot["time"])
+        else:
+            groups.append({"times": [slot["time"]], "key": key})
+
+    lines = _block_header("🏃", "RUNNING", "Clothing by start time")
+    for g in groups:
+        times = g["times"]
+        span = times[0] if len(times) == 1 else f"{times[0]}–{times[-1]}"
+        if "error" in g:
+            lines.append(f"  {span:<13}⚠  {g['error']}")
+            continue
+        dry, wet = g["key"]
+        lines.append(f"  {span:<13}{dry}")
+        if wet:
+            lines.append(f"  {'':<13}+ wet: {wet}")
+    return "\n".join(lines)
+
+
+def render_holiday_swimming_block(block: dict,
+                                  deltas: dict | None = None,
+                                  thresholds: dict | None = None) -> str:
+    if block is None:
+        return ""
+    d = deltas or {}
+    ann = _fmt_delta(d.get("holiday_swimming.water_temp_c"), "water_temp_c", thresholds)
+    lines = _block_header("🏊", f"SWIMMING — {block['spot']} ({block['water']})")
+    lines.append(f"  Water temp:   {_fmt_temp(block['water_temp_c'])} (day avg){ann}")
+    return "\n".join(lines)
+
+
+_HOLIDAY_KEYS = ("holiday_weather", "holiday_baby", "holiday_running", "holiday_swimming")
+
+
+def _holiday_place(blocks: dict) -> str | None:
+    """Place label of the first holiday block present, or None (normal mode)."""
+    for key in _HOLIDAY_KEYS:
+        block = blocks.get(key)
+        if block:
+            return block.get("place")
+    return None
+
+
+# ---------------------------------------------------------------------------
 # Digest assembly
 # ---------------------------------------------------------------------------
 
@@ -343,20 +456,30 @@ def render_digest(blocks, target_date,
       morning → "Morning Update — <date>"      (delta vs last night)
 
     Block order: Baby, Cycling, Running, Swimming, Stocks, Wednesday event.
+    Holiday mode: shared Weather table first, then each holiday block in the
+    slot of its normal counterpart (which is None during holiday mode).
     """
     banner = "Morning Update" if run_type == "morning" else "Morning Briefing"
     header = f"{banner} — {target_date.strftime('%A, %d %B %Y')}"
     sep    = "=" * len(header)
 
-    parts = [header, sep, ""]
+    parts = [header, sep]
+    place = _holiday_place(blocks)
+    if place:
+        parts.append(f"🌴 Holiday mode — {place}")
+    parts.append("")
 
     renderers = [
-        ("baby",            render_baby_block),
-        ("cycling",         render_cycling_block),
-        ("running",         render_running_block),
-        ("swimming",        render_swimming_block),
-        ("stocks",          render_stocks_block),
-        ("wednesday_event", render_wednesday_event_block),
+        ("holiday_weather",  render_holiday_weather_block),
+        ("baby",             render_baby_block),
+        ("holiday_baby",     render_holiday_baby_block),
+        ("cycling",          render_cycling_block),
+        ("running",          render_running_block),
+        ("holiday_running",  render_holiday_running_block),
+        ("swimming",         render_swimming_block),
+        ("holiday_swimming", render_holiday_swimming_block),
+        ("stocks",           render_stocks_block),
+        ("wednesday_event",  render_wednesday_event_block),
     ]
 
     for key, fn in renderers:
@@ -377,8 +500,9 @@ def render_digest(blocks, target_date,
 # ---------------------------------------------------------------------------
 
 ROLE_BLOCKS = {
-    "full":      {"baby", "cycling", "running", "swimming", "stocks", "wednesday_event"},
-    "baby_only": {"baby"},
+    "full":      {"baby", "cycling", "running", "swimming", "stocks", "wednesday_event",
+                  "holiday_weather", "holiday_baby", "holiday_running", "holiday_swimming"},
+    "baby_only": {"baby", "holiday_weather", "holiday_baby"},
 }
 
 

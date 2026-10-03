@@ -95,6 +95,9 @@ def _patch_builders(M, baby=True):
     M.build_running_block  = lambda cfg, td: _canned("running")
     M.build_swimming_block = lambda cfg, td: _canned("swimming")
     M.build_stocks_block   = lambda cfg:     _canned("stocks")
+    # Phase 14: these tests cover NORMAL mode, whatever today's date is.
+    # Holiday mode has its own test (holiday_test.py).
+    M.active_period        = lambda *a, **k: None
 
 
 class _FakeResp:

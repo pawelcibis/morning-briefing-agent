@@ -3,7 +3,9 @@ agent/main.py — Orchestrator for the morning briefing agent.
 
 Runs the full pipeline end-to-end:
   1. Load config + previous state
-  2. Build all five blocks (baby, cycling, running, swimming, stocks)
+  2. Build all blocks (baby, cycling, running, swimming, stocks, wednesday_event)
+     — or, inside a configured holiday period, the holiday blocks instead of
+     baby/cycling/running/swimming (stocks + wednesday_event unchanged)
   3. (Morning only) Compute deltas vs previous state
   4. Render per recipient role + dispatch via each configured channel
   5. (Evening only) Write new state to state/last_run.json
@@ -38,6 +40,11 @@ from agent.blocks.running  import build_running_block
 from agent.blocks.swimming import build_swimming_block
 from agent.blocks.stocks         import build_stocks_block
 from agent.blocks.wednesday_event import build_wednesday_event_block
+from agent.blocks.holiday import (
+    active_period, location_label,
+    build_holiday_weather_block, build_holiday_baby_block,
+    build_holiday_running_block, build_holiday_swimming_block,
+)
 
 from agent.dispatch.email    import send as send_email
 from agent.dispatch.telegram import send_telegram
@@ -85,6 +92,32 @@ def _build_all_blocks(cfg, target_date, run_type="evening", today=None,
     today = today or _dt.date.today()
     print(f"\n[main] Building blocks for target_date={target_date.isoformat()}")
 
+    # Holiday mode (Phase 14): matched on the TARGET date. Inside a period the
+    # normal baby/cycling/running/swimming blocks are switched off and the
+    # holiday_* blocks are built for the period's location instead. Stocks and
+    # wednesday_event are deliberately untouched by holiday mode.
+    period  = active_period(cfg, target_date)
+    holiday = period is not None
+    if holiday:
+        place = location_label(period)
+        print(f"[main] HOLIDAY MODE — {place} "
+              f"({period['start']} to {period['end']})")
+        if rl:
+            rl.note(f"holiday mode: {place} ({period['start']} to {period['end']})")
+
+    def normal(name, fn):
+        """Normal-mode block: built as usual, but switched off in holiday mode."""
+        if holiday:
+            print(f"[main] [{name:<10}] skipped (holiday mode)")
+            if rl:
+                rl.block(name, "skipped")
+            return None
+        return _safe_build(name, fn, cfg, target_date, rl=rl)
+
+    def holiday_only(name, fn):
+        """Holiday block: built only in holiday mode (silently None otherwise)."""
+        return _safe_build(name, fn, cfg, target_date, rl=rl) if holiday else None
+
     # Stocks: only on weekday evenings (Mon–Fri). Weekend markets are closed and
     # the morning delta for stocks is not useful (nothing changes overnight).
     stocks_eligible = run_type == "evening" and today.weekday() < 5
@@ -95,12 +128,17 @@ def _build_all_blocks(cfg, target_date, run_type="evening", today=None,
             rl.block("stocks", "skipped")
 
     return {
-        "baby":            _safe_build("baby",            build_baby_block,           cfg, target_date, rl=rl),
-        "cycling":         _safe_build("cycling",         build_cycling_block,         cfg, target_date, rl=rl),
-        "running":         _safe_build("running",         build_running_block,         cfg, target_date, rl=rl),
-        "swimming":        _safe_build("swimming",        build_swimming_block,        cfg, target_date, rl=rl),
-        "stocks":          _safe_build("stocks",          build_stocks_block,          cfg, rl=rl) if stocks_eligible else None,
-        "wednesday_event": _safe_build("wednesday_event", build_wednesday_event_block, cfg, target_date, rl=rl),
+        "baby":             normal("baby",         build_baby_block),
+        "cycling":          normal("cycling",      build_cycling_block),
+        "running":          normal("running",      build_running_block),
+        "swimming":         normal("swimming",     build_swimming_block),
+        "stocks":           _safe_build("stocks",          build_stocks_block,          cfg, rl=rl) if stocks_eligible else None,
+        "wednesday_event":  _safe_build("wednesday_event", build_wednesday_event_block, cfg, target_date, rl=rl),
+        # Weather first: the baby and running blocks reuse its memoised fetch.
+        "holiday_weather":  holiday_only("holiday_weather",  build_holiday_weather_block),
+        "holiday_baby":     holiday_only("holiday_baby",     build_holiday_baby_block),
+        "holiday_running":  holiday_only("holiday_running",  build_holiday_running_block),
+        "holiday_swimming": holiday_only("holiday_swimming", build_holiday_swimming_block),
     }
 
 
@@ -242,6 +280,9 @@ def main(run_type: str, dry_run: bool = False) -> int:
         subject = f"Morning briefing — {date_str}"
     else:
         subject = f"Morning update — {date_str}"
+    period = active_period(cfg, target_date, warn=False)
+    if period:
+        subject += f" · {location_label(period)}"     # e.g. "… — Mon 05 Oct · Wrocław, PL"
 
     # Dispatch per recipient
     recipients = cfg.get("recipients", [])
