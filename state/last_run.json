@@ -1,75 +1,152 @@
 {
-  "target_date": "2026-10-04",
+  "target_date": "2026-10-05",
   "blocks": {
     "baby": null,
-    "cycling": {
-      "location": "Zurich 8001",
-      "date": "2026-10-04",
+    "cycling": null,
+    "running": null,
+    "swimming": null,
+    "stocks": null,
+    "wednesday_event": null,
+    "holiday_weather": {
+      "place": "Wroc\u0142aw, PL",
+      "date": "2026-10-05",
+      "location": {
+        "city": "Wroc\u0142aw",
+        "country": "PL",
+        "lat": 51.1079,
+        "lon": 17.0385,
+        "timezone": "Europe/Warsaw"
+      },
       "slots": [
         {
-          "time": "06:30",
-          "temp_c": 13.3,
-          "wind_ms": 0.8,
-          "wind_dir": "N",
+          "time": "06:00",
+          "temp_c": 11.9,
+          "wind_ms": 0.2,
+          "wind_dir": "S",
           "rain_pct": 0,
-          "cloud_pct": 7,
+          "cloud_label": "Overcast"
+        },
+        {
+          "time": "09:00",
+          "temp_c": 11.8,
+          "wind_ms": 0.3,
+          "wind_dir": "SE",
+          "rain_pct": 0,
+          "cloud_label": "Overcast"
+        },
+        {
+          "time": "12:00",
+          "temp_c": 17.7,
+          "wind_ms": 0.8,
+          "wind_dir": "WSW",
+          "rain_pct": 0,
           "cloud_label": "Sunny"
         },
         {
-          "time": "16:30",
-          "temp_c": 24.4,
-          "wind_ms": 2.1,
-          "wind_dir": "NE",
+          "time": "15:00",
+          "temp_c": 19.8,
+          "wind_ms": 1.5,
+          "wind_dir": "WNW",
           "rain_pct": 0,
-          "cloud_pct": 100,
           "cloud_label": "Overcast"
+        },
+        {
+          "time": "18:00",
+          "temp_c": 19.0,
+          "wind_ms": 0.2,
+          "wind_dir": "N",
+          "rain_pct": 0,
+          "cloud_label": "Sunny"
+        },
+        {
+          "time": "21:00",
+          "temp_c": 14.6,
+          "wind_ms": 0.9,
+          "wind_dir": "SSE",
+          "rain_pct": 0,
+          "cloud_label": "Sunny"
         }
       ],
-      "alerts": [],
-      "clothing": {
-        "wear": "underpants, light socks, long sleeve shirt, cycling pants, cycling short shirt, light hat/cap, medium long gloves",
-        "pack": "short socks, short gloves"
-      }
+      "alerts": []
     },
-    "running": {
+    "holiday_baby": {
+      "place": "Wroc\u0142aw, PL",
+      "date": "2026-10-05",
       "location": {
-        "postcode": 8400,
-        "city": "Winterthur"
+        "city": "Wroc\u0142aw",
+        "country": "PL",
+        "lat": 51.1079,
+        "lon": 17.0385,
+        "timezone": "Europe/Warsaw"
       },
-      "date": "Sunday, 04 October 2026",
-      "slot": {
-        "time": "07:00",
-        "temp_c": 10.7,
-        "wind_ms": 0.5,
-        "wind_dir": "S",
-        "rain_pct": 0,
-        "cloud_label": "Partially sunny"
-      },
-      "alerts": [],
+      "baby_age_months": 9.0,
       "clothing": {
-        "dry": "short-sleeved top, shorts, standard socks",
-        "wet": "cap",
-        "wet_active": false
+        "outfit": "long-sleeved bodysuit; lightweight trousers",
+        "adjustments": "add lightweight cardigan for 06:00-09:00",
+        "extras": "sun hat; keep in the shade at midday"
       }
     },
-    "swimming": {
+    "holiday_running": {
+      "place": "Wroc\u0142aw, PL",
+      "date": "2026-10-05",
       "location": {
-        "postcode": 8800,
-        "city": "Thalwil",
-        "lake": "zurich"
+        "city": "Wroc\u0142aw",
+        "country": "PL",
+        "lat": 51.1079,
+        "lon": 17.0385,
+        "timezone": "Europe/Warsaw"
       },
-      "date": "Sunday, 04 October 2026",
-      "swim_time": "07:00",
-      "water_temp_c": 21.2,
-      "air": {
-        "temp_c": 13.1,
-        "wind_ms": 0.78,
-        "wind_dir": "SW",
-        "rain_pct": 0,
-        "cloud_label": "Sunny"
-      }
+      "slots": [
+        {
+          "time": "06:00",
+          "temp_c": 11.9,
+          "rain_pct": 0,
+          "dry": "short-sleeved top, shorts, standard socks",
+          "wet": "cap",
+          "wet_active": false
+        },
+        {
+          "time": "09:00",
+          "temp_c": 11.8,
+          "rain_pct": 0,
+          "dry": "short-sleeved top, shorts, standard socks",
+          "wet": "cap",
+          "wet_active": false
+        },
+        {
+          "time": "12:00",
+          "temp_c": 17.7,
+          "rain_pct": 0,
+          "dry": "short-sleeved top, shorts, short socks",
+          "wet": "cap",
+          "wet_active": false
+        },
+        {
+          "time": "15:00",
+          "temp_c": 19.8,
+          "rain_pct": 0,
+          "dry": "short-sleeved top, shorts, short socks",
+          "wet": "cap",
+          "wet_active": false
+        },
+        {
+          "time": "18:00",
+          "temp_c": 19.0,
+          "rain_pct": 0,
+          "dry": "short-sleeved top, shorts, short socks",
+          "wet": "cap",
+          "wet_active": false
+        },
+        {
+          "time": "21:00",
+          "temp_c": 14.6,
+          "rain_pct": 0,
+          "dry": "short-sleeved top, shorts, standard socks",
+          "wet": "cap",
+          "wet_active": false
+        }
+      ]
     },
-    "stocks": null,
-    "wednesday_event": null
+    "holiday_swimming": null
   }
 }
