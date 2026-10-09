@@ -1,5 +1,5 @@
 {
-  "target_date": "2026-10-09",
+  "target_date": "2026-10-10",
   "blocks": {
     "baby": null,
     "cycling": null,
@@ -11,158 +11,171 @@
           "ticker": "KRU",
           "exchange": "WSE",
           "currency": "PLN",
-          "date": "2026-10-08",
-          "close": 377.0,
-          "prev_close": 376.7,
-          "change_pct": 0.08,
+          "date": "2026-10-09",
+          "close": 347.9,
+          "prev_close": 377.0,
+          "change_pct": -7.72,
           "shares": 3109,
-          "portfolio_value": 1172093.0,
-          "portfolio_change": 932.7,
+          "portfolio_value": 1081621.1,
+          "portfolio_change": -90471.9,
           "error": null
         }
       ]
     },
     "wednesday_event": null,
     "holiday_weather": {
-      "place": "Wroc\u0142aw, PL",
-      "date": "2026-10-09",
+      "place": "Tigaki, GR",
+      "date": "2026-10-10",
       "location": {
-        "city": "Wroc\u0142aw",
-        "country": "PL",
-        "lat": 51.1079,
-        "lon": 17.0385,
-        "timezone": "Europe/Warsaw"
+        "city": "Tigaki",
+        "country": "GR",
+        "lat": 36.8904,
+        "lon": 27.1823,
+        "timezone": "Europe/Athens"
       },
       "slots": [
         {
           "time": "06:00",
-          "temp_c": 9.3,
-          "wind_ms": 3.9,
-          "wind_dir": "W",
+          "temp_c": 17.3,
+          "wind_ms": 0.9,
+          "wind_dir": "N",
           "rain_pct": 0,
-          "cloud_label": "Mostly cloudy"
+          "cloud_label": "Sunny"
         },
         {
           "time": "09:00",
-          "temp_c": 9.7,
-          "wind_ms": 3.8,
-          "wind_dir": "W",
+          "temp_c": 20.2,
+          "wind_ms": 0.7,
+          "wind_dir": "NNE",
           "rain_pct": 0,
-          "cloud_label": "Overcast"
+          "cloud_label": "Sunny"
         },
         {
           "time": "12:00",
-          "temp_c": 14.0,
-          "wind_ms": 4.7,
-          "wind_dir": "W",
+          "temp_c": 26.3,
+          "wind_ms": 0.4,
+          "wind_dir": "NW",
           "rain_pct": 0,
-          "cloud_label": "Overcast"
+          "cloud_label": "Sunny"
         },
         {
           "time": "15:00",
-          "temp_c": 15.7,
-          "wind_ms": 4.1,
-          "wind_dir": "WSW",
+          "temp_c": 26.7,
+          "wind_ms": 3.0,
+          "wind_dir": "W",
           "rain_pct": 0,
-          "cloud_label": "Overcast"
+          "cloud_label": "Sunny"
         },
         {
           "time": "18:00",
-          "temp_c": 14.4,
-          "wind_ms": 3.4,
-          "wind_dir": "SW",
+          "temp_c": 23.5,
+          "wind_ms": 1.8,
+          "wind_dir": "W",
           "rain_pct": 0,
-          "cloud_label": "Overcast"
+          "cloud_label": "Sunny"
         },
         {
           "time": "21:00",
-          "temp_c": 12.5,
-          "wind_ms": 2.9,
-          "wind_dir": "SSW",
-          "rain_pct": 8,
+          "temp_c": 19.7,
+          "wind_ms": 0.2,
+          "wind_dir": "W",
+          "rain_pct": 0,
           "cloud_label": "Overcast"
         }
       ],
       "alerts": []
     },
     "holiday_baby": {
-      "place": "Wroc\u0142aw, PL",
-      "date": "2026-10-09",
+      "place": "Tigaki, GR",
+      "date": "2026-10-10",
       "location": {
-        "city": "Wroc\u0142aw",
-        "country": "PL",
-        "lat": 51.1079,
-        "lon": 17.0385,
-        "timezone": "Europe/Warsaw"
+        "city": "Tigaki",
+        "country": "GR",
+        "lat": 36.8904,
+        "lon": 27.1823,
+        "timezone": "Europe/Athens"
       },
       "baby_age_months": 9.1,
       "clothing": {
-        "outfit": "long-sleeved bodysuit; soft trousers",
-        "adjustments": "add lightweight fleece jacket for 06:00-09:00",
-        "extras": ""
+        "outfit": "lightweight cotton short-sleeved shirt; lightweight cotton shorts",
+        "adjustments": "lightweight cardigan or thin long-sleeved layer for 06:00-09:00",
+        "extras": "sun hat; keep in the shade at midday"
       }
     },
     "holiday_running": {
-      "place": "Wroc\u0142aw, PL",
-      "date": "2026-10-09",
+      "place": "Tigaki, GR",
+      "date": "2026-10-10",
       "location": {
-        "city": "Wroc\u0142aw",
-        "country": "PL",
-        "lat": 51.1079,
-        "lon": 17.0385,
-        "timezone": "Europe/Warsaw"
+        "city": "Tigaki",
+        "country": "GR",
+        "lat": 36.8904,
+        "lon": 27.1823,
+        "timezone": "Europe/Athens"
       },
       "slots": [
         {
           "time": "06:00",
-          "temp_c": 9.3,
-          "rain_pct": 0,
-          "dry": "long-sleeved top, shorts, standard socks",
-          "wet": "cap",
-          "wet_active": false
-        },
-        {
-          "time": "09:00",
-          "temp_c": 9.7,
-          "rain_pct": 0,
-          "dry": "long-sleeved top, shorts, standard socks",
-          "wet": "cap",
-          "wet_active": false
-        },
-        {
-          "time": "12:00",
-          "temp_c": 14.0,
-          "rain_pct": 0,
-          "dry": "short-sleeved top, shorts, standard socks",
-          "wet": "cap",
-          "wet_active": false
-        },
-        {
-          "time": "15:00",
-          "temp_c": 15.7,
+          "temp_c": 17.3,
           "rain_pct": 0,
           "dry": "short-sleeved top, shorts, short socks",
           "wet": "cap",
           "wet_active": false
         },
         {
-          "time": "18:00",
-          "temp_c": 14.4,
+          "time": "09:00",
+          "temp_c": 20.2,
           "rain_pct": 0,
-          "dry": "short-sleeved top, shorts, standard socks",
-          "wet": "cap",
+          "dry": "short-sleeved light top, shorts, short socks, sunglasses (optional)",
+          "wet": "no sunglasses, cap (recommended)",
+          "wet_active": false
+        },
+        {
+          "time": "12:00",
+          "temp_c": 26.3,
+          "rain_pct": 0,
+          "dry": "sleeveless top, shorts, short socks, sunglasses (optional), cap (optional)",
+          "wet": "no sunglasses, cap (recommended)",
+          "wet_active": false
+        },
+        {
+          "time": "15:00",
+          "temp_c": 26.7,
+          "rain_pct": 0,
+          "dry": "sleeveless top, shorts, short socks, sunglasses (optional), cap (optional)",
+          "wet": "no sunglasses, cap (recommended)",
+          "wet_active": false
+        },
+        {
+          "time": "18:00",
+          "temp_c": 23.5,
+          "rain_pct": 0,
+          "dry": "short-sleeved light top, shorts, short socks, sunglasses (optional)",
+          "wet": "no sunglasses, cap (recommended)",
           "wet_active": false
         },
         {
           "time": "21:00",
-          "temp_c": 12.5,
-          "rain_pct": 8,
-          "dry": "short-sleeved top, shorts, standard socks",
+          "temp_c": 19.7,
+          "rain_pct": 0,
+          "dry": "short-sleeved top, shorts, short socks",
           "wet": "cap",
           "wet_active": false
         }
       ]
     },
-    "holiday_swimming": null
+    "holiday_swimming": {
+      "place": "Tigaki, GR",
+      "date": "2026-10-10",
+      "location": {
+        "city": "Tigaki",
+        "country": "GR",
+        "lat": 36.8904,
+        "lon": 27.1823,
+        "timezone": "Europe/Athens"
+      },
+      "spot": "Tigaki beach",
+      "water": "sea",
+      "water_temp_c": 24.1
+    }
   }
 }
