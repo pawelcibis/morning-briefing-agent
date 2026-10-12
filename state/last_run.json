@@ -1,15 +1,31 @@
 {
-  "target_date": "2026-10-12",
+  "target_date": "2026-10-13",
   "blocks": {
     "baby": null,
     "cycling": null,
     "running": null,
     "swimming": null,
-    "stocks": null,
+    "stocks": {
+      "tickers": [
+        {
+          "ticker": "KRU",
+          "exchange": "WSE",
+          "currency": "PLN",
+          "date": "2026-10-12",
+          "close": 337.0,
+          "prev_close": 347.9,
+          "change_pct": -3.13,
+          "shares": 3109,
+          "portfolio_value": 1047733.0,
+          "portfolio_change": -33888.1,
+          "error": null
+        }
+      ]
+    },
     "wednesday_event": null,
     "holiday_weather": {
       "place": "Tigaki, GR",
-      "date": "2026-10-12",
+      "date": "2026-10-13",
       "location": {
         "city": "Tigaki",
         "country": "GR",
@@ -20,58 +36,60 @@
       "slots": [
         {
           "time": "06:00",
-          "temp_c": 20.4,
+          "temp_c": 19.5,
           "wind_ms": 1.6,
-          "wind_dir": "S",
-          "rain_pct": 10,
-          "cloud_label": "Mostly cloudy"
+          "wind_dir": "ESE",
+          "rain_pct": 17,
+          "cloud_label": "Overcast"
         },
         {
           "time": "09:00",
-          "temp_c": 20.2,
-          "wind_ms": 1.6,
-          "wind_dir": "SSE",
-          "rain_pct": 25,
+          "temp_c": 20.7,
+          "wind_ms": 1.9,
+          "wind_dir": "SE",
+          "rain_pct": 20,
           "cloud_label": "Overcast"
         },
         {
           "time": "12:00",
-          "temp_c": 22.7,
-          "wind_ms": 3.0,
-          "wind_dir": "S",
-          "rain_pct": 32,
-          "cloud_label": "Mostly cloudy"
+          "temp_c": 21.5,
+          "wind_ms": 2.9,
+          "wind_dir": "SSE",
+          "rain_pct": 35,
+          "cloud_label": "Overcast"
         },
         {
           "time": "15:00",
-          "temp_c": 23.0,
-          "wind_ms": 4.8,
-          "wind_dir": "SSE",
-          "rain_pct": 35,
-          "cloud_label": "Mostly cloudy"
+          "temp_c": 21.5,
+          "wind_ms": 3.4,
+          "wind_dir": "SSW",
+          "rain_pct": 48,
+          "cloud_label": "Overcast"
         },
         {
           "time": "18:00",
-          "temp_c": 21.4,
-          "wind_ms": 3.0,
+          "temp_c": 22.6,
+          "wind_ms": 3.1,
           "wind_dir": "S",
-          "rain_pct": 33,
-          "cloud_label": "Mostly cloudy"
+          "rain_pct": 38,
+          "cloud_label": "Overcast"
         },
         {
           "time": "21:00",
-          "temp_c": 20.3,
-          "wind_ms": 2.4,
+          "temp_c": 21.3,
+          "wind_ms": 3.7,
           "wind_dir": "SE",
           "rain_pct": 28,
-          "cloud_label": "Mostly cloudy"
+          "cloud_label": "Overcast"
         }
       ],
-      "alerts": []
+      "alerts": [
+        "Rain likely 13:00\u201317:00 (peak 48%)"
+      ]
     },
     "holiday_baby": {
       "place": "Tigaki, GR",
-      "date": "2026-10-12",
+      "date": "2026-10-13",
       "location": {
         "city": "Tigaki",
         "country": "GR",
@@ -81,14 +99,14 @@
       },
       "baby_age_months": 9.2,
       "clothing": {
-        "outfit": "lightweight cotton long-sleeve shirt; cotton pants",
+        "outfit": "lightweight long-sleeved shirt; cotton shorts",
         "adjustments": "",
         "extras": "rain cover"
       }
     },
     "holiday_running": {
       "place": "Tigaki, GR",
-      "date": "2026-10-12",
+      "date": "2026-10-13",
       "location": {
         "city": "Tigaki",
         "country": "GR",
@@ -99,47 +117,47 @@
       "slots": [
         {
           "time": "06:00",
-          "temp_c": 20.4,
-          "rain_pct": 10,
-          "dry": "short-sleeved light top, shorts, short socks, sunglasses (optional)",
-          "wet": "no sunglasses, cap (recommended)",
+          "temp_c": 19.5,
+          "rain_pct": 17,
+          "dry": "short-sleeved top, shorts, short socks",
+          "wet": "cap",
           "wet_active": false
         },
         {
           "time": "09:00",
-          "temp_c": 20.2,
-          "rain_pct": 25,
+          "temp_c": 20.7,
+          "rain_pct": 20,
           "dry": "short-sleeved light top, shorts, short socks, sunglasses (optional)",
           "wet": "no sunglasses, cap (recommended)",
           "wet_active": false
         },
         {
           "time": "12:00",
-          "temp_c": 22.7,
-          "rain_pct": 32,
-          "dry": "short-sleeved light top, shorts, short socks, sunglasses (optional)",
-          "wet": "no sunglasses, cap (recommended)",
-          "wet_active": true
-        },
-        {
-          "time": "15:00",
-          "temp_c": 23.0,
+          "temp_c": 21.5,
           "rain_pct": 35,
           "dry": "short-sleeved light top, shorts, short socks, sunglasses (optional)",
           "wet": "no sunglasses, cap (recommended)",
           "wet_active": true
         },
         {
+          "time": "15:00",
+          "temp_c": 21.5,
+          "rain_pct": 48,
+          "dry": "short-sleeved light top, shorts, short socks, sunglasses (optional)",
+          "wet": "no sunglasses, cap (recommended)",
+          "wet_active": true
+        },
+        {
           "time": "18:00",
-          "temp_c": 21.4,
-          "rain_pct": 33,
+          "temp_c": 22.6,
+          "rain_pct": 38,
           "dry": "short-sleeved light top, shorts, short socks, sunglasses (optional)",
           "wet": "no sunglasses, cap (recommended)",
           "wet_active": true
         },
         {
           "time": "21:00",
-          "temp_c": 20.3,
+          "temp_c": 21.3,
           "rain_pct": 28,
           "dry": "short-sleeved light top, shorts, short socks, sunglasses (optional)",
           "wet": "no sunglasses, cap (recommended)",
@@ -149,7 +167,7 @@
     },
     "holiday_swimming": {
       "place": "Tigaki, GR",
-      "date": "2026-10-12",
+      "date": "2026-10-13",
       "location": {
         "city": "Tigaki",
         "country": "GR",
