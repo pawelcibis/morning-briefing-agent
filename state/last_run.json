@@ -1,5 +1,5 @@
 {
-  "target_date": "2026-10-18",
+  "target_date": "2026-10-19",
   "blocks": {
     "baby": null,
     "cycling": null,
@@ -9,7 +9,7 @@
     "wednesday_event": null,
     "holiday_weather": {
       "place": "Wroc\u0142aw, PL",
-      "date": "2026-10-18",
+      "date": "2026-10-19",
       "location": {
         "city": "Wroc\u0142aw",
         "country": "PL",
@@ -20,58 +20,58 @@
       "slots": [
         {
           "time": "06:00",
-          "temp_c": 12.1,
-          "wind_ms": 1.9,
-          "wind_dir": "NNW",
-          "rain_pct": 0,
+          "temp_c": 10.1,
+          "wind_ms": 1.6,
+          "wind_dir": "NE",
+          "rain_pct": 5,
           "cloud_label": "Overcast"
         },
         {
           "time": "09:00",
-          "temp_c": 10.3,
-          "wind_ms": 1.5,
-          "wind_dir": "NNE",
-          "rain_pct": 0,
-          "cloud_label": "Partially sunny"
+          "temp_c": 9.6,
+          "wind_ms": 2.6,
+          "wind_dir": "NE",
+          "rain_pct": 10,
+          "cloud_label": "Overcast"
         },
         {
           "time": "12:00",
-          "temp_c": 13.0,
-          "wind_ms": 1.9,
-          "wind_dir": "NNE",
-          "rain_pct": 0,
-          "cloud_label": "Overcast"
+          "temp_c": 10.2,
+          "wind_ms": 2.4,
+          "wind_dir": "NE",
+          "rain_pct": 5,
+          "cloud_label": "Mostly cloudy"
         },
         {
           "time": "15:00",
-          "temp_c": 15.0,
-          "wind_ms": 2.6,
-          "wind_dir": "NNE",
-          "rain_pct": 0,
-          "cloud_label": "Sunny"
+          "temp_c": 11.6,
+          "wind_ms": 2.5,
+          "wind_dir": "NE",
+          "rain_pct": 8,
+          "cloud_label": "Mostly cloudy"
         },
         {
           "time": "18:00",
-          "temp_c": 13.4,
-          "wind_ms": 2.5,
-          "wind_dir": "NNE",
-          "rain_pct": 0,
-          "cloud_label": "Overcast"
+          "temp_c": 10.0,
+          "wind_ms": 2.8,
+          "wind_dir": "NE",
+          "rain_pct": 3,
+          "cloud_label": "Mostly cloudy"
         },
         {
           "time": "21:00",
-          "temp_c": 10.9,
-          "wind_ms": 1.8,
-          "wind_dir": "NE",
+          "temp_c": 7.0,
+          "wind_ms": 2.4,
+          "wind_dir": "ENE",
           "rain_pct": 0,
-          "cloud_label": "Partially sunny"
+          "cloud_label": "Sunny"
         }
       ],
       "alerts": []
     },
     "holiday_baby": {
       "place": "Wroc\u0142aw, PL",
-      "date": "2026-10-18",
+      "date": "2026-10-19",
       "location": {
         "city": "Wroc\u0142aw",
         "country": "PL",
@@ -81,14 +81,14 @@
       },
       "baby_age_months": 9.4,
       "clothing": {
-        "outfit": "long-sleeved bodysuit; lightweight trousers",
-        "adjustments": "add lightweight cardigan for 06:00-09:00",
-        "extras": "sun hat; keep in the shade at midday"
+        "outfit": "long-sleeved bodysuit; warm trousers",
+        "adjustments": "fleece jacket or wool cardigan for morning and evening",
+        "extras": ""
       }
     },
     "holiday_running": {
       "place": "Wroc\u0142aw, PL",
-      "date": "2026-10-18",
+      "date": "2026-10-19",
       "location": {
         "city": "Wroc\u0142aw",
         "country": "PL",
@@ -99,49 +99,49 @@
       "slots": [
         {
           "time": "06:00",
-          "temp_c": 12.1,
-          "rain_pct": 0,
+          "temp_c": 10.1,
+          "rain_pct": 5,
           "dry": "short-sleeved top, shorts, standard socks",
           "wet": "cap",
           "wet_active": false
         },
         {
           "time": "09:00",
-          "temp_c": 10.3,
-          "rain_pct": 0,
-          "dry": "short-sleeved top, shorts, standard socks",
+          "temp_c": 9.6,
+          "rain_pct": 10,
+          "dry": "long-sleeved top, shorts, standard socks",
           "wet": "cap",
           "wet_active": false
         },
         {
           "time": "12:00",
-          "temp_c": 13.0,
-          "rain_pct": 0,
+          "temp_c": 10.2,
+          "rain_pct": 5,
           "dry": "short-sleeved top, shorts, standard socks",
           "wet": "cap",
           "wet_active": false
         },
         {
           "time": "15:00",
-          "temp_c": 15.0,
-          "rain_pct": 0,
-          "dry": "short-sleeved top, shorts, short socks",
+          "temp_c": 11.6,
+          "rain_pct": 8,
+          "dry": "short-sleeved top, shorts, standard socks",
           "wet": "cap",
           "wet_active": false
         },
         {
           "time": "18:00",
-          "temp_c": 13.4,
-          "rain_pct": 0,
+          "temp_c": 10.0,
+          "rain_pct": 3,
           "dry": "short-sleeved top, shorts, standard socks",
           "wet": "cap",
           "wet_active": false
         },
         {
           "time": "21:00",
-          "temp_c": 10.9,
+          "temp_c": 7.0,
           "rain_pct": 0,
-          "dry": "short-sleeved top, shorts, standard socks",
+          "dry": "long-sleeved top, shorts, standard socks",
           "wet": "cap",
           "wet_active": false
         }
