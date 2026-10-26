@@ -1,64 +1,64 @@
 {
-  "target_date": "2026-10-26",
+  "target_date": "2026-10-27",
   "blocks": {
     "baby": {
       "location": {
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Monday, 26 October 2026",
-      "weekday": "Mon",
+      "date": "Tuesday, 27 October 2026",
+      "weekday": "Tue",
       "baby_age_months": 9.7,
       "drop_off": {
         "time": "08:00",
-        "temp_c": 4.9,
-        "wind_ms": 0.9,
-        "wind_dir": "S",
+        "temp_c": 6.7,
+        "wind_ms": 0.22,
+        "wind_dir": "SSE",
         "rain_pct": 0,
         "cloud_label": "Sunny"
       },
       "pick_up": {
         "time": "16:15",
-        "temp_c": 11.6,
-        "wind_ms": 0.58,
-        "wind_dir": "SSW",
+        "temp_c": 15.8,
+        "wind_ms": 0.14,
+        "wind_dir": "SE",
         "rain_pct": 0,
-        "cloud_label": "Overcast"
+        "cloud_label": "Sunny"
       },
       "alerts": [],
       "clothing": {
-        "outfit": "Long-sleeved bodysuit, warm padded suit",
+        "outfit": "Long-sleeved bodysuit and warm fleece-lined suit or snowsuit",
         "pushchair_extras": "",
         "pick_up_note": ""
       }
     },
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-10-26",
+      "date": "2026-10-27",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 7.5,
-          "wind_ms": 0.7,
-          "wind_dir": "SSE",
+          "temp_c": 7.7,
+          "wind_ms": 0.9,
+          "wind_dir": "N",
           "rain_pct": 0,
-          "cloud_pct": 55,
-          "cloud_label": "Mostly cloudy"
+          "cloud_pct": 0,
+          "cloud_label": "Sunny"
         },
         {
           "time": "16:30",
-          "temp_c": 12.4,
-          "wind_ms": 0.7,
+          "temp_c": 16.7,
+          "wind_ms": 0.4,
           "wind_dir": "S",
           "rain_pct": 0,
-          "cloud_pct": 100,
-          "cloud_label": "Overcast"
+          "cloud_pct": 0,
+          "cloud_label": "Sunny"
         }
       ],
       "alerts": [],
       "clothing": {
         "wear": "underpants, light socks, long pants, long sleeve shirt, cycling pants, cycling short shirt, medium jacket, bandana, warm hat, medium long gloves",
-        "pack": "light hat/cap"
+        "pack": "light hat/cap, short gloves"
       }
     },
     "running": {
@@ -66,19 +66,19 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Monday, 26 October 2026",
+      "date": "Tuesday, 27 October 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 4.7,
-        "wind_ms": 1.2,
-        "wind_dir": "S",
+        "temp_c": 6.7,
+        "wind_ms": 0.1,
+        "wind_dir": "W",
         "rain_pct": 0,
         "cloud_label": "Sunny"
       },
       "alerts": [],
       "clothing": {
-        "dry": "long-sleeved top, long pants, standard socks",
-        "wet": "warm hat, light gloves, warm long-sleeved top (replaces: long-sleeved top)",
+        "dry": "long-sleeved top, shorts, standard socks",
+        "wet": "cap",
         "wet_active": false
       }
     },
@@ -88,18 +88,34 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Monday, 26 October 2026",
+      "date": "Tuesday, 27 October 2026",
       "swim_time": "07:00",
-      "water_temp_c": 16.6,
+      "water_temp_c": 16.5,
       "air": {
-        "temp_c": 6.7,
-        "wind_ms": 1.0,
-        "wind_dir": "SW",
+        "temp_c": 9.0,
+        "wind_ms": 1.21,
+        "wind_dir": "WNW",
         "rain_pct": 0,
         "cloud_label": "Sunny"
       }
     },
-    "stocks": null,
+    "stocks": {
+      "tickers": [
+        {
+          "ticker": "KRU",
+          "exchange": "WSE",
+          "currency": "PLN",
+          "date": "2026-10-26",
+          "close": 355.9,
+          "prev_close": 354.5,
+          "change_pct": 0.39,
+          "shares": 3109,
+          "portfolio_value": 1106493.1,
+          "portfolio_change": 4352.6,
+          "error": null
+        }
+      ]
+    },
     "wednesday_event": null,
     "holiday_weather": null,
     "holiday_baby": null,
