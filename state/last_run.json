@@ -1,58 +1,58 @@
 {
-  "target_date": "2026-10-29",
+  "target_date": "2026-10-30",
   "blocks": {
     "baby": {
       "location": {
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Thursday, 29 October 2026",
-      "weekday": "Thu",
+      "date": "Friday, 30 October 2026",
+      "weekday": "Fri",
       "baby_age_months": 9.8,
       "drop_off": {
         "time": "08:00",
-        "temp_c": 4.7,
-        "wind_ms": 1.14,
+        "temp_c": 6.2,
+        "wind_ms": 2.55,
         "wind_dir": "NE",
         "rain_pct": 0,
-        "cloud_label": "Partially sunny"
+        "cloud_label": "Overcast"
       },
       "pick_up": {
         "time": "16:15",
-        "temp_c": 10.7,
-        "wind_ms": 2.82,
+        "temp_c": 10.0,
+        "wind_ms": 3.1,
         "wind_dir": "ENE",
         "rain_pct": 0,
-        "cloud_label": "Mostly cloudy"
+        "cloud_label": "Overcast"
       },
       "alerts": [],
       "clothing": {
-        "outfit": "Warm all-in-one suit (fleece or padded), long-sleeved bodysuit underneath",
+        "outfit": "Long-sleeved bodysuit, warm fleece suit or snowsuit",
         "pushchair_extras": "",
         "pick_up_note": ""
       }
     },
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-10-29",
+      "date": "2026-10-30",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 6.2,
-          "wind_ms": 1.8,
-          "wind_dir": "N",
+          "temp_c": 6.1,
+          "wind_ms": 2.2,
+          "wind_dir": "NNE",
           "rain_pct": 0,
-          "cloud_pct": 29,
-          "cloud_label": "Partially sunny"
+          "cloud_pct": 74,
+          "cloud_label": "Mostly cloudy"
         },
         {
           "time": "16:30",
-          "temp_c": 11.2,
-          "wind_ms": 3.2,
+          "temp_c": 10.3,
+          "wind_ms": 3.1,
           "wind_dir": "NE",
           "rain_pct": 0,
-          "cloud_pct": 14,
-          "cloud_label": "Sunny"
+          "cloud_pct": 42,
+          "cloud_label": "Partially sunny"
         }
       ],
       "alerts": [],
@@ -66,19 +66,19 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Thursday, 29 October 2026",
+      "date": "Friday, 30 October 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 4.3,
-        "wind_ms": 1.0,
+        "temp_c": 5.9,
+        "wind_ms": 2.19,
         "wind_dir": "NE",
         "rain_pct": 0,
-        "cloud_label": "Partially sunny"
+        "cloud_label": "Overcast"
       },
       "alerts": [],
       "clothing": {
-        "dry": "long-sleeved top, long pants, standard socks",
-        "wet": "warm hat, light gloves, warm long-sleeved top (replaces: long-sleeved top)",
+        "dry": "long-sleeved top, shorts, standard socks",
+        "wet": "cap",
         "wet_active": false
       }
     },
@@ -88,15 +88,15 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Thursday, 29 October 2026",
+      "date": "Friday, 30 October 2026",
       "swim_time": "07:00",
       "water_temp_c": 16.1,
       "air": {
-        "temp_c": 7.1,
-        "wind_ms": 2.06,
-        "wind_dir": "WNW",
+        "temp_c": 7.0,
+        "wind_ms": 2.1,
+        "wind_dir": "N",
         "rain_pct": 0,
-        "cloud_label": "Mostly cloudy"
+        "cloud_label": "Overcast"
       }
     },
     "stocks": {
