@@ -1,59 +1,55 @@
 {
-  "target_date": "2026-11-06",
+  "target_date": "2026-11-07",
   "blocks": {
-    "baby": {
-      "location": {
-        "postcode": 8400,
-        "city": "Winterthur"
-      },
-      "date": "Friday, 06 November 2026",
-      "weekday": "Fri",
-      "baby_age_months": 10.0,
-      "drop_off": {
-        "time": "08:00",
-        "temp_c": 4.8,
-        "wind_ms": 0.4,
-        "wind_dir": "N",
-        "rain_pct": 8,
-        "cloud_label": "Overcast"
-      },
-      "pick_up": {
-        "time": "16:15",
-        "temp_c": 7.7,
-        "wind_ms": 0.5,
-        "wind_dir": "NW",
-        "rain_pct": 48,
-        "cloud_label": "Overcast"
-      },
-      "alerts": [
-        "Rain likely 14:00\u201316:00 (peak 50%)"
+    "baby": null,
+    "cycling": {
+      "location": "Zurich 8001",
+      "date": "2026-11-07",
+      "slots": [
+        {
+          "time": "06:30",
+          "temp_c": 8.2,
+          "wind_ms": 0.6,
+          "wind_dir": "SSE",
+          "rain_pct": 68,
+          "cloud_pct": 100,
+          "cloud_label": "Overcast"
+        },
+        {
+          "time": "16:30",
+          "temp_c": 10.9,
+          "wind_ms": 1.2,
+          "wind_dir": "NNW",
+          "rain_pct": 0,
+          "cloud_pct": 100,
+          "cloud_label": "Overcast"
+        }
       ],
+      "alerts": [],
       "clothing": {
-        "outfit": "Warm all-in-one suit (fleece-lined or padded)",
-        "pushchair_extras": "",
-        "pick_up_note": ""
+        "wear": "underpants, light socks, long pants, long sleeve shirt, cycling pants, cycling short shirt, medium jacket, bandana, warm hat, medium long gloves",
+        "pack": "light hat/cap"
       }
     },
-    "cycling": null,
     "running": {
       "location": {
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Friday, 06 November 2026",
+      "date": "Saturday, 07 November 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 4.8,
-        "wind_ms": 0.45,
-        "wind_dir": "NNE",
-        "rain_pct": 5,
+        "temp_c": 7.8,
+        "wind_ms": 0.58,
+        "wind_dir": "WSW",
+        "rain_pct": 30,
         "cloud_label": "Overcast"
       },
       "alerts": [],
       "clothing": {
-        "dry": "long-sleeved top, long pants, standard socks",
-        "wet": "warm hat, light gloves, warm long-sleeved top (replaces: long-sleeved top)",
-        "wet_active": false
+        "dry": "long-sleeved top, shorts, standard socks",
+        "wet": "cap",
+        "wet_active": true
       }
     },
     "swimming": {
@@ -62,14 +58,14 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Friday, 06 November 2026",
+      "date": "Saturday, 07 November 2026",
       "swim_time": "07:00",
-      "water_temp_c": 15.0,
+      "water_temp_c": 14.8,
       "air": {
-        "temp_c": 5.5,
-        "wind_ms": 0.22,
-        "wind_dir": "SSW",
-        "rain_pct": 10,
+        "temp_c": 8.4,
+        "wind_ms": 0.6,
+        "wind_dir": "S",
+        "rain_pct": 58,
         "cloud_label": "Overcast"
       }
     },
@@ -79,13 +75,13 @@
           "ticker": "KRU",
           "exchange": "WSE",
           "currency": "PLN",
-          "date": "2026-11-05",
-          "close": 330.8,
-          "prev_close": 329.8,
-          "change_pct": 0.3,
+          "date": "2026-11-06",
+          "close": 331.0,
+          "prev_close": 330.8,
+          "change_pct": 0.06,
           "shares": 3109,
-          "portfolio_value": 1028457.2,
-          "portfolio_change": 3109.0,
+          "portfolio_value": 1029079.0,
+          "portfolio_change": 621.8,
           "error": null
         }
       ]
