@@ -1,34 +1,66 @@
 {
-  "target_date": "2026-11-11",
+  "target_date": "2026-11-12",
   "blocks": {
-    "baby": null,
+    "baby": {
+      "location": {
+        "postcode": 8400,
+        "city": "Winterthur"
+      },
+      "date": "Thursday, 12 November 2026",
+      "weekday": "Thu",
+      "baby_age_months": 10.2,
+      "drop_off": {
+        "time": "08:00",
+        "temp_c": 8.0,
+        "wind_ms": 0.51,
+        "wind_dir": "N",
+        "rain_pct": 33,
+        "cloud_label": "Overcast"
+      },
+      "pick_up": {
+        "time": "16:15",
+        "temp_c": 12.1,
+        "wind_ms": 1.62,
+        "wind_dir": "NNE",
+        "rain_pct": 83,
+        "cloud_label": "Overcast"
+      },
+      "alerts": [
+        "Rain likely 09:00\u201316:00 (peak 83%)"
+      ],
+      "clothing": {
+        "outfit": "Long-sleeved bodysuit, warm fleece suit or padded snowsuit",
+        "pushchair_extras": "",
+        "pick_up_note": ""
+      }
+    },
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-11-11",
+      "date": "2026-11-12",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 10.8,
-          "wind_ms": 0.2,
-          "wind_dir": "WSW",
-          "rain_pct": 48,
-          "cloud_pct": 94,
+          "temp_c": 8.8,
+          "wind_ms": 0.8,
+          "wind_dir": "N",
+          "rain_pct": 8,
+          "cloud_pct": 100,
           "cloud_label": "Overcast"
         },
         {
           "time": "16:30",
-          "temp_c": 13.6,
-          "wind_ms": 1.6,
-          "wind_dir": "SSE",
-          "rain_pct": 78,
+          "temp_c": 12.7,
+          "wind_ms": 1.9,
+          "wind_dir": "N",
+          "rain_pct": 73,
           "cloud_pct": 100,
           "cloud_label": "Overcast"
         }
       ],
       "alerts": [],
       "clothing": {
-        "wear": "underpants, light socks, long sleeve shirt, cycling pants, cycling short shirt, light hat/cap, medium long gloves",
-        "pack": "rain jacket"
+        "wear": "underpants, light socks, long pants, long sleeve shirt, cycling pants, cycling short shirt, medium jacket, bandana, warm hat, medium long gloves",
+        "pack": "rain jacket, light hat/cap"
       }
     },
     "running": {
@@ -36,20 +68,20 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Wednesday, 11 November 2026",
+      "date": "Thursday, 12 November 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 9.1,
-        "wind_ms": 0.2,
-        "wind_dir": "S",
-        "rain_pct": 65,
+        "temp_c": 8.5,
+        "wind_ms": 0.22,
+        "wind_dir": "SSE",
+        "rain_pct": 10,
         "cloud_label": "Overcast"
       },
       "alerts": [],
       "clothing": {
         "dry": "long-sleeved top, shorts, standard socks",
         "wet": "cap",
-        "wet_active": true
+        "wet_active": false
       }
     },
     "swimming": {
@@ -58,14 +90,14 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Wednesday, 11 November 2026",
+      "date": "Thursday, 12 November 2026",
       "swim_time": "07:00",
       "water_temp_c": 14.4,
       "air": {
-        "temp_c": 11.0,
-        "wind_ms": 1.0,
-        "wind_dir": "S",
-        "rain_pct": 55,
+        "temp_c": 10.2,
+        "wind_ms": 0.85,
+        "wind_dir": "SW",
+        "rain_pct": 20,
         "cloud_label": "Overcast"
       }
     },
