@@ -1,19 +1,73 @@
 {
-  "target_date": "2026-11-17",
+  "target_date": "2026-11-18",
   "blocks": {
     "baby": null,
-    "cycling": null,
-    "running": null,
+    "cycling": {
+      "location": "Zurich 8001",
+      "date": "2026-11-18",
+      "slots": [
+        {
+          "time": "06:30",
+          "temp_c": 11.9,
+          "wind_ms": 4.2,
+          "wind_dir": "WSW",
+          "rain_pct": 68,
+          "cloud_pct": 100,
+          "cloud_label": "Overcast"
+        },
+        {
+          "time": "16:30",
+          "temp_c": 11.5,
+          "wind_ms": 4.6,
+          "wind_dir": "WSW",
+          "rain_pct": 78,
+          "cloud_pct": 86,
+          "cloud_label": "Overcast"
+        }
+      ],
+      "alerts": [],
+      "clothing": {
+        "wear": "underpants, light socks, long sleeve shirt, cycling pants, cycling short shirt, light hat/cap, medium long gloves",
+        "pack": "rain jacket"
+      }
+    },
+    "running": {
+      "location": {
+        "postcode": 8400,
+        "city": "Winterthur"
+      },
+      "date": "Wednesday, 18 November 2026",
+      "slot": {
+        "time": "07:00",
+        "temp_c": 10.7,
+        "wind_ms": 4.43,
+        "wind_dir": "WSW",
+        "rain_pct": 55,
+        "cloud_label": "Partially sunny"
+      },
+      "alerts": [],
+      "clothing": {
+        "dry": "short-sleeved top, shorts, standard socks",
+        "wet": "cap",
+        "wet_active": true
+      }
+    },
     "swimming": {
       "location": {
         "postcode": 8800,
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Tuesday, 17 November 2026",
+      "date": "Wednesday, 18 November 2026",
       "swim_time": "07:00",
-      "water_temp_c": 13.7,
-      "air": null
+      "water_temp_c": 13.6,
+      "air": {
+        "temp_c": 11.5,
+        "wind_ms": 3.79,
+        "wind_dir": "WSW",
+        "rain_pct": 60,
+        "cloud_label": "Overcast"
+      }
     },
     "stocks": {
       "tickers": [
@@ -21,13 +75,13 @@
           "ticker": "KRU",
           "exchange": "WSE",
           "currency": "PLN",
-          "date": "2026-11-16",
-          "close": 329.6,
-          "prev_close": 336.6,
-          "change_pct": -2.08,
+          "date": "2026-11-17",
+          "close": 324.5,
+          "prev_close": 329.6,
+          "change_pct": -1.55,
           "shares": 3109,
-          "portfolio_value": 1024726.4,
-          "portfolio_change": -21763.0,
+          "portfolio_value": 1008870.5,
+          "portfolio_change": -15855.9,
           "error": null
         }
       ]
