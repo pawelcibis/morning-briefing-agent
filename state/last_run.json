@@ -1,34 +1,34 @@
 {
-  "target_date": "2026-11-21",
+  "target_date": "2026-11-22",
   "blocks": {
     "baby": null,
     "cycling": {
       "location": "Zurich 8001",
-      "date": "2026-11-21",
+      "date": "2026-11-22",
       "slots": [
         {
           "time": "06:30",
-          "temp_c": 7.7,
-          "wind_ms": 2.3,
-          "wind_dir": "SW",
-          "rain_pct": 45,
+          "temp_c": 4.7,
+          "wind_ms": 0.9,
+          "wind_dir": "NNE",
+          "rain_pct": 0,
           "cloud_pct": 100,
           "cloud_label": "Overcast"
         },
         {
           "time": "16:30",
-          "temp_c": 9.9,
-          "wind_ms": 0.7,
-          "wind_dir": "NNW",
-          "rain_pct": 5,
-          "cloud_pct": 98,
+          "temp_c": 6.2,
+          "wind_ms": 1.4,
+          "wind_dir": "SSE",
+          "rain_pct": 98,
+          "cloud_pct": 100,
           "cloud_label": "Overcast"
         }
       ],
       "alerts": [],
       "clothing": {
-        "wear": "underpants, light socks, long pants, long sleeve shirt, cycling pants, cycling short shirt, medium jacket, bandana, warm hat, medium long gloves",
-        "pack": "nothing"
+        "wear": "underpants, light socks, long pants, long sleeve shirt, cycling pants, cycling short shirt, medium jacket, bandana, warm hat, warm gloves",
+        "pack": "rain jacket, medium long gloves"
       }
     },
     "running": {
@@ -36,19 +36,19 @@
         "postcode": 8400,
         "city": "Winterthur"
       },
-      "date": "Saturday, 21 November 2026",
+      "date": "Sunday, 22 November 2026",
       "slot": {
         "time": "07:00",
-        "temp_c": 7.1,
-        "wind_ms": 2.98,
-        "wind_dir": "SW",
-        "rain_pct": 28,
+        "temp_c": 4.5,
+        "wind_ms": 1.13,
+        "wind_dir": "NE",
+        "rain_pct": 0,
         "cloud_label": "Overcast"
       },
       "alerts": [],
       "clothing": {
-        "dry": "long-sleeved top, shorts, standard socks",
-        "wet": "cap",
+        "dry": "long-sleeved top, long pants, standard socks",
+        "wet": "warm hat, light gloves, warm long-sleeved top (replaces: long-sleeved top)",
         "wet_active": false
       }
     },
@@ -58,34 +58,18 @@
         "city": "Thalwil",
         "lake": "zurich"
       },
-      "date": "Saturday, 21 November 2026",
+      "date": "Sunday, 22 November 2026",
       "swim_time": "07:00",
-      "water_temp_c": 13.3,
+      "water_temp_c": 13.1,
       "air": {
-        "temp_c": 7.5,
-        "wind_ms": 2.27,
-        "wind_dir": "SW",
-        "rain_pct": 75,
+        "temp_c": 4.6,
+        "wind_ms": 0.95,
+        "wind_dir": "WNW",
+        "rain_pct": 0,
         "cloud_label": "Overcast"
       }
     },
-    "stocks": {
-      "tickers": [
-        {
-          "ticker": "KRU",
-          "exchange": "WSE",
-          "currency": "PLN",
-          "date": "2026-11-20",
-          "close": 308.3,
-          "prev_close": 315.1,
-          "change_pct": -2.16,
-          "shares": 3109,
-          "portfolio_value": 958504.7,
-          "portfolio_change": -21141.2,
-          "error": null
-        }
-      ]
-    },
+    "stocks": null,
     "wednesday_event": null,
     "holiday_weather": null,
     "holiday_baby": null,
